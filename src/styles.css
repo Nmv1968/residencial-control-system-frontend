@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+/* Fix Angular Material Input Background Transparency issue with Tailwind Preflight */
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #f5f5f5 !important;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Ensure border styles are not completely overridden by Tailwind */
+.mat-mdc-form-field-infix {
+  border-top-width: 0px !important;
+  border-bottom-width: 0px !important;
+}
+
+/* Fix generic input reset */
+input.mat-input-element {
+  margin-top: 0 !important;
+}

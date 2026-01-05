@@ -1,0 +1,63 @@
+<div class="overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left text-gray-500">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+      <tr>
+        @for (col of columns; track col.key) {
+        <th scope="col" class="px-6 py-3">
+          {{ col.label }}
+        </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @if (isLoading) {
+      <tr class="bg-white border-b">
+        <td [attr.colspan]="columns.length" class="px-6 py-4 text-center">
+          Cargando datos...
+        </td>
+      </tr>
+      } @else if (data.length === 0) {
+      <tr class="bg-white border-b">
+        <td [attr.colspan]="columns.length" class="px-6 py-4 text-center">
+          No se encontraron registros.
+        </td>
+      </tr>
+      } @else { @for (item of data; track item._id) {
+      <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+        @for (col of columns; track col.key) {
+        <td class="px-6 py-4 whitespace-nowrap">
+          @switch (col.type) { @case ('currency') {
+          {{ getValue(item, col.key) | currency }}
+          } @case ('date') {
+          {{ getValue(item, col.key) | date : "mediumDate" }}
+          } @case ('badge') {
+          <span
+            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+          >
+            {{ getValue(item, col.key) }}
+          </span>
+          } @case ('actions') {
+          <div class="flex space-x-2">
+            <button
+              (click)="onEdit(item)"
+              class="font-medium text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              Editar
+            </button>
+            <button
+              (click)="onDelete(item)"
+              class="font-medium text-red-600 hover:text-red-800 hover:underline"
+            >
+              Eliminar
+            </button>
+          </div>
+          } @default {
+          {{ getValue(item, col.key) }}
+          } }
+        </td>
+        }
+      </tr>
+      } }
+    </tbody>
+  </table>
+</div>

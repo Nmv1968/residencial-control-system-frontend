@@ -1,0 +1,56 @@
+<div
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in"
+>
+  <!-- Card 1: Total Housing -->
+  <mat-card class="dashboard-card border-l-4 border-primary">
+    <mat-card-header>
+      <mat-card-title>Total Viviendas</mat-card-title>
+      <mat-icon mat-card-avatar color="primary" class="scale-150"
+        >home</mat-icon
+      >
+    </mat-card-header>
+    <mat-card-content class="pt-4">
+      <h3 class="text-3xl font-bold text-gray-800">{{ totalHousing }}</h3>
+      <p class="text-sm text-gray-500">Unidades Registradas</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Card 3: Total Balance -->
+  <mat-card class="dashboard-card border-l-4 border-warning">
+    <mat-card-header>
+      <mat-card-title>Balance Total</mat-card-title>
+      <mat-icon mat-card-avatar class="text-yellow-600 scale-150"
+        >attach_money</mat-icon
+      >
+    </mat-card-header>
+    <mat-card-content class="pt-4">
+      <h3 class="text-3xl font-bold text-gray-800">
+        {{ totalBalance | currency }}
+      </h3>
+      <p class="text-sm text-gray-500">Saldo Pendiente</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- System Status -->
+  <mat-card class="dashboard-card border-l-4 border-green-500">
+    <mat-card-header>
+      <mat-card-title>Estado del Sistema</mat-card-title>
+      <mat-icon mat-card-avatar class="text-green-500 scale-150">dns</mat-icon>
+    </mat-card-header>
+    <mat-card-content class="pt-4">
+      <div class="flex items-center space-x-2">
+        <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+        <span class="text-gray-700 font-medium">Sistema Online</span>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">Base de Datos: Conectada</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Recent Activity Area (Placeholder) -->
+<div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-white p-6 rounded-2xl shadow-sm">
+    <h3 class="text-lg font-bold text-gray-700 mb-4">Movimientos Recientes</h3>
+    <div class="text-gray-400 text-center py-8">Sin actividad reciente</div>
+  </div>
+</div>

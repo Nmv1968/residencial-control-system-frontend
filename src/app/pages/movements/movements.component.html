@@ -1,0 +1,73 @@
+<div class="space-y-6 animate-fade-in p-6">
+  <div class="flex justify-between items-center bg-white p-4 rounded shadow">
+    <h2 class="text-2xl font-bold text-gray-800">Movimientos Financieros</h2>
+
+    @if (authService.isAuthenticated()) {
+    <a mat-raised-button color="primary" routerLink="/movements/create">
+      <mat-icon>add</mat-icon>
+      Registrar Movimiento
+    </a>
+    }
+  </div>
+
+  <div class="mat-elevation-z8 overflow-auto">
+    <table mat-table [dataSource]="movements()" class="w-full">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">{{ element.date | date }}</td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-chip-option
+            [color]="element.type === 'Income' ? 'primary' : 'warn'"
+            selected
+          >
+            {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
+          </mat-chip-option>
+        </td>
+      </ng-container>
+
+      <!-- Concept Column -->
+      <ng-container matColumnDef="concept">
+        <th mat-header-cell *matHeaderCellDef>Concepto</th>
+        <td mat-cell *matCellDef="let element">{{ element.concept }}</td>
+      </ng-container>
+
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Monto</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.amount | currency }}
+        </td>
+      </ng-container>
+
+      <!-- Housing Column -->
+      <ng-container matColumnDef="housing">
+        <th mat-header-cell *matHeaderCellDef>Vivienda</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.housing?.number || "-" }}
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let element">
+          @if (authService.isAuthenticated()) {
+          <button mat-button color="warn" (click)="reverseMovement(element)">
+            <mat-icon>undo</mat-icon>
+            Revertir
+          </button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<mat-sidenav-container class="h-screen w-full">
+  <!-- Sidenav -->
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    opened
+    class="w-64 border-r bg-white"
+    fixedInViewport="false"
+  >
+    <mat-toolbar
+      color="primary"
+      class="!bg-primary !text-white shadow-md z-10 relative"
+    >
+      <span class="font-bold text-lg tracking-wide">ResiControl</span>
+    </mat-toolbar>
+
+    <mat-nav-list class="pt-0">
+      <a
+        mat-list-item
+        routerLink="/dashboard"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+      >
+        <mat-icon
+          matListItemIcon
+          class="text-gray-500"
+          [class.text-primary]="rlaDashboard.isActive"
+          >dashboard</mat-icon
+        >
+        <span matListItemTitle class="font-medium">Panel Principal</span>
+      </a>
+      <a
+        mat-list-item
+        routerLink="/housing"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+        #rlaDashboard="routerLinkActive"
+      >
+        <mat-icon matListItemIcon class="text-gray-500">home</mat-icon>
+        <span matListItemTitle class="font-medium">Viviendas</span>
+      </a>
+      <a
+        mat-list-item
+        routerLink="/periods"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+      >
+        <mat-icon matListItemIcon class="text-gray-500"
+          >calendar_today</mat-icon
+        >
+        <span matListItemTitle class="font-medium">Periodos</span>
+      </a>
+      <a
+        mat-list-item
+        routerLink="/movements"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+      >
+        <mat-icon matListItemIcon class="text-gray-500">attach_money</mat-icon>
+        <span matListItemTitle class="font-medium">Movimientos</span>
+      </a>
+      <!-- 
+      <a
+        mat-list-item
+        routerLink="/account-status"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+      >
+        <mat-icon matListItemIcon class="text-gray-500">account_balance</mat-icon>
+        <span matListItemTitle class="font-medium">Estados de Cuenta</span>
+      </a>
+      <a
+        mat-list-item
+        routerLink="/reports"
+        routerLinkActive="bg-blue-50 text-primary border-r-4 border-primary"
+        class="hover:bg-gray-50 transition-colors"
+      >
+        <mat-icon matListItemIcon class="text-gray-500">assessment</mat-icon>
+        <span matListItemTitle class="font-medium">Reportes</span>
+      </a>
+      -->
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="flex flex-col bg-gray-50 h-full">
+    <mat-toolbar
+      class="bg-white border-b !text-gray-800 flex justify-between shadow-sm px-6 h-16 z-20"
+    >
+      <div class="flex items-center gap-2">
+        <button
+          mat-icon-button
+          (click)="sidenav.toggle()"
+          class="mr-2 lg:hidden"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="text-xl font-medium tracking-tight"
+          >Conjunto Residencial</span
+        >
+      </div>
+
+      <div class="flex items-center gap-4">
+        @if (isAuthenticated()) {
+        <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
+          <mat-icon class="text-gray-500 text-sm scale-75">person</mat-icon>
+          <span class="text-sm font-medium text-gray-700 hidden sm:inline"
+            >Admin</span
+          >
+        </div>
+        <button mat-button color="warn" (click)="logout()">
+          <mat-icon class="mr-1">logout</mat-icon>
+          Salir
+        </button>
+        } @else {
+        <a mat-button color="primary" routerLink="/login">
+          <mat-icon class="mr-1">login</mat-icon>
+          Ingresar
+        </a>
+        }
+      </div>
+    </mat-toolbar>
+
+    <main class="flex-1 overflow-y-auto p-6 w-full">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

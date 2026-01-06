@@ -7,8 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { PeriodDialogComponent } from './period-dialog.component';
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-periods',
@@ -20,6 +20,7 @@ import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/c
     MatIconModule,
     MatDialogModule,
     MatChipsModule,
+    RouterLink,
   ],
   templateUrl: './periods.component.html',
 })
@@ -37,16 +38,6 @@ export class PeriodsComponent implements OnInit {
 
   loadData() {
     this.periodsService.findAll().subscribe((data) => this.periods.set(data));
-  }
-
-  openCreateModal() {
-    const dialogRef = this.dialog.open(PeriodDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.periodsService.create(result).subscribe(() => this.loadData());
-      }
-    });
   }
 
   closePeriod(item: any) {

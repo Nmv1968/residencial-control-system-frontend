@@ -35,6 +35,13 @@ export const routes: Routes = [
       },
       { path: 'owners', component: OwnersComponent },
       { path: 'periods', component: PeriodsComponent },
+      {
+        path: 'periods/create',
+        loadComponent: () =>
+          import('./pages/periods/period-form.component').then(
+            (m) => m.PeriodFormComponent
+          ),
+      },
       { path: 'movements', component: MovementsComponent },
       {
         path: 'movements/create',

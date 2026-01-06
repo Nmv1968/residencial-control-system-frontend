@@ -29,3 +29,20 @@ body {
 input.mat-input-element {
   margin-top: 0 !important;
 }
+
+/* Custom ng-select styling to match Tailwind inputs */
+.ng-select.custom-ng-select .ng-select-container {
+  min-height: 42px; /* Matches standard input height approx */
+  border-radius: 0.5rem; /* rounded-lg */
+  border-color: #d1d5db; /* border-gray-300 */
+}
+
+.ng-select.custom-ng-select.ng-select-focused:not(.ng-select-opened)
+  > .ng-select-container {
+  border-color: #3b82f6; /* focus:border-blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 */
+}
+
+.ng-select.custom-ng-select .ng-select-container:hover {
+  border-color: #3b82f6;
+}

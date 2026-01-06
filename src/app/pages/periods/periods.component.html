@@ -3,10 +3,10 @@
     <h2 class="text-2xl font-bold text-gray-800">Periodos de Facturación</h2>
 
     @if (authService.isAuthenticated()) {
-    <button mat-raised-button color="primary" (click)="openCreateModal()">
+    <a mat-raised-button color="primary" routerLink="/periods/create">
       <mat-icon>add</mat-icon>
       Abrir Nuevo Periodo
-    </button>
+    </a>
     }
   </div>
 

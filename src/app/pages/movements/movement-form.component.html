@@ -1,0 +1,236 @@
+<div class="max-w-3xl mx-auto space-y-6 animate-fade-in p-6">
+  <!-- Header -->
+  <div class="flex items-center gap-4 mb-8">
+    <a
+      routerLink="/movements"
+      mat-icon-button
+      class="bg-white border border-gray-200 text-gray-500 hover:text-primary hover:border-primary transition-all"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <div>
+      <h1 class="text-2xl font-bold text-primary">Registrar Movimiento</h1>
+      <p class="text-sm text-gray-400">
+        Ingresa los detalles de la transacción financiera
+      </p>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card-base bg-white">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-8"
+    >
+      <!-- Section: Transaction Details -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Left Column -->
+        <div class="space-y-6">
+          <div>
+            <label class="label-bold">Tipo de Movimiento</label>
+            <ng-select
+              formControlName="type"
+              [items]="typeOptions"
+              bindLabel="label"
+              bindValue="value"
+              [searchable]="false"
+              [clearable]="false"
+              class="custom-ng-select font-medium"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [ngClass]="{
+                      'bg-green-500': item.value === 'Income',
+                      'bg-red-500': item.value === 'Expense'
+                    }"
+                  ></span>
+                  {{ item.label }}
+                </div>
+              </ng-template>
+              <ng-template ng-label-tmp let-item="item">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider"
+                    [ngClass]="{
+                      'bg-green-100 text-green-700': item.value === 'Income',
+                      'bg-red-100 text-red-700': item.value === 'Expense'
+                    }"
+                  >
+                    {{ item.value === "Income" ? "Ingreso" : "Egreso" }}
+                  </div>
+                  <span class="text-gray-900 font-medium">{{
+                    item.label
+                  }}</span>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <div>
+            <label class="label-bold">Fecha de Transacción</label>
+            <input type="date" formControlName="date" class="input-primary" />
+          </div>
+
+          <div>
+            <label class="label-bold"
+              >Vivienda Relacionada
+              <span class="text-gray-400 font-normal text-xs"
+                >(Opcional)</span
+              ></label
+            >
+            <ng-select
+              formControlName="housingId"
+              [items]="housingList"
+              bindLabel="number"
+              bindValue="_id"
+              placeholder="Seleccionar unidad..."
+              appendTo="body"
+              class="custom-ng-select"
+            >
+            </ng-select>
+            <p class="text-xs text-gray-400 mt-1">
+              Vincula este movimiento a una unidad específica
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+          <!-- Provider (Conditional) -->
+          @if (!form.get('housingId')?.value && form.get('type')?.value ===
+          'Expense') {
+          <div class="animate-fade-in">
+            <label class="label-bold"
+              >Proveedor <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              formControlName="provider"
+              class="input-primary"
+              placeholder="Ej. Empresa Eléctrica"
+            />
+          </div>
+          }
+
+          <div>
+            <label class="label-bold">Monto</label>
+            <div class="relative">
+              <span
+                class="absolute left-3 top-2.5 text-gray-400 font-medium text-lg"
+                >$</span
+              >
+              <input
+                type="number"
+                formControlName="amount"
+                class="input-primary pl-7 text-lg font-bold"
+                placeholder="0.00"
+                [class.text-green-600]="form.get('type')?.value === 'Income'"
+                [class.text-red-600]="form.get('type')?.value === 'Expense'"
+                [class.border-red-500]="
+                  form.get('amount')?.invalid && form.get('amount')?.touched
+                "
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="label-bold">Concepto / Descripción</label>
+            <textarea
+              formControlName="concept"
+              rows="4"
+              class="input-primary resize-none"
+              placeholder="Detalles sobre el movimiento..."
+              [class.border-red-500]="
+                form.get('concept')?.invalid && form.get('concept')?.touched
+              "
+            ></textarea>
+            @if (form.get('concept')?.hasError('required') &&
+            form.get('concept')?.touched) {
+            <span class="text-xs text-red-500 mt-1"
+              >El concepto es obligatorio</span
+            >
+            }
+          </div>
+
+          <!-- Evidence URL (Upload) -->
+          <div>
+            <label class="label-bold"
+              >Evidencia / Factura
+              <span class="text-gray-400 font-normal text-xs"
+                >(Opcional)</span
+              ></label
+            >
+
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center gap-3">
+                <button
+                  type="button"
+                  class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 transition-colors border border-gray-300"
+                  (click)="fileInput.click()"
+                  [disabled]="uploading"
+                >
+                  <mat-icon class="scale-90">cloud_upload</mat-icon>
+                  <span class="font-medium text-sm">{{
+                    uploading ? "Subiendo..." : "Subir Archivo"
+                  }}</span>
+                </button>
+                <input
+                  #fileInput
+                  type="file"
+                  class="hidden"
+                  (change)="onFileSelected($event)"
+                  accept="image/*,application/pdf"
+                />
+                @if (form.get('evidenceUrl')?.value) {
+                <div
+                  class="text-sm text-green-600 flex items-center gap-1 animate-fade-in"
+                >
+                  <mat-icon class="text-base scale-75">check_circle</mat-icon>
+                  <span class="font-medium">Archivo cargado</span>
+                </div>
+                }
+              </div>
+
+              <!-- Helper to show URL or allow manual edit if absolutely needed, or just hidden storage -->
+              @if (form.get('evidenceUrl')?.value) {
+              <div
+                class="text-xs text-gray-500 break-all bg-gray-50 p-2 rounded border border-gray-200 mt-1 font-mono"
+              >
+                {{ form.get("evidenceUrl")?.value }}
+              </div>
+              }
+              <input type="hidden" formControlName="evidenceUrl" />
+            </div>
+            <p class="text-xs text-gray-400 mt-1">
+              Soporta imágenes (JPG, PNG) o PDF
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div
+        class="flex items-center justify-end gap-3 pt-6 mt-2 border-t border-gray-100"
+      >
+        <a
+          routerLink="/movements"
+          class="px-6 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading"
+          class="btn-accent shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:shadow-none min-w-[140px] flex justify-center"
+        >
+          @if (loading) {
+          <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
+          Procesando... } @else { Registrar }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

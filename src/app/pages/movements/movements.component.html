@@ -1,73 +1,187 @@
-<div class="space-y-6 animate-fade-in p-6">
-  <div class="flex justify-between items-center bg-white p-4 rounded shadow">
-    <h2 class="text-2xl font-bold text-gray-800">Movimientos Financieros</h2>
-
+<div class="space-y-6 animate-fade-in pb-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-primary">Movimientos Financieros</h1>
+      <p class="text-sm text-gray-500">
+        Historial de pagos, cobros y gastos del conjunto
+      </p>
+    </div>
     @if (authService.isAuthenticated()) {
-    <a mat-raised-button color="primary" routerLink="/movements/create">
+    <a
+      mat-flat-button
+      color="primary"
+      routerLink="/movements/create"
+      class="bg-primary shadow-lg shadow-blue-900/20"
+    >
       <mat-icon>add</mat-icon>
-      Registrar Movimiento
+      Nuevo Movimiento
     </a>
     }
   </div>
 
-  <div class="mat-elevation-z8 overflow-auto">
-    <table mat-table [dataSource]="movements()" class="w-full">
-      <!-- Date Column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>Fecha</th>
-        <td mat-cell *matCellDef="let element">{{ element.date | date }}</td>
-      </ng-container>
-
-      <!-- Type Column -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Tipo</th>
-        <td mat-cell *matCellDef="let element">
-          <mat-chip-option
-            [color]="element.type === 'Income' ? 'primary' : 'warn'"
-            selected
+  <!-- Table Card -->
+  <div class="card-base p-0 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table mat-table [dataSource]="movements()" class="w-full">
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
           >
-            {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
-          </mat-chip-option>
-        </td>
-      </ng-container>
+            Fecha
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="px-6 py-4 text-gray-600 font-medium"
+          >
+            {{ element.date | date : "mediumDate" }}
+          </td>
+        </ng-container>
 
-      <!-- Concept Column -->
-      <ng-container matColumnDef="concept">
-        <th mat-header-cell *matHeaderCellDef>Concepto</th>
-        <td mat-cell *matCellDef="let element">{{ element.concept }}</td>
-      </ng-container>
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+          >
+            Tipo
+          </th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4">
+            <span
+              class="px-2.5 py-1 rounded-full text-xs font-bold border flex items-center w-fit gap-1.5"
+              [ngClass]="{
+                'bg-green-50 text-green-700 border-green-200':
+                  element.type === 'Income',
+                'bg-red-50 text-red-700 border-red-200':
+                  element.type === 'Expense'
+              }"
+            >
+              <mat-icon class="text-xs scale-75 font-bold">{{
+                element.type === "Income" ? "arrow_downward" : "arrow_upward"
+              }}</mat-icon>
+              {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
+            </span>
+          </td>
+        </ng-container>
 
-      <!-- Amount Column -->
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Monto</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.amount | currency }}
-        </td>
-      </ng-container>
+        <!-- Concept Column -->
+        <ng-container matColumnDef="concept">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+          >
+            Concepto
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="px-6 py-4 text-gray-800"
+          >
+            {{ element.concept }}
+          </td>
+        </ng-container>
 
-      <!-- Housing Column -->
-      <ng-container matColumnDef="housing">
-        <th mat-header-cell *matHeaderCellDef>Vivienda</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.housing?.number || "-" }}
-        </td>
-      </ng-container>
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+          >
+            Monto
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="px-6 py-4 text-right font-bold"
+          >
+            <span
+              [ngClass]="{
+                'text-green-600': element.type === 'Income',
+                'text-gray-800': element.type === 'Expense'
+              }"
+            >
+              {{ element.type === "Expense" ? "-" : "+" }}
+              {{ element.amount | currency }}
+            </span>
+          </td>
+        </ng-container>
 
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let element">
-          @if (authService.isAuthenticated()) {
-          <button mat-button color="warn" (click)="reverseMovement(element)">
-            <mat-icon>undo</mat-icon>
-            Revertir
-          </button>
-          }
-        </td>
-      </ng-container>
+        <!-- Housing Column -->
+        <ng-container matColumnDef="housing">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+          >
+            Vivienda
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="px-6 py-4 text-gray-500"
+          >
+            @if(element.housing) {
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-xs text-gray-400 scale-75">home</mat-icon>
+              {{ element.housing.number }}
+            </div>
+            } @else {
+            <span class="text-gray-300">-</span>
+            }
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+          >
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 text-right">
+            @if (authService.isAuthenticated()) {
+            <div class="flex items-center justify-end gap-2">
+              <a
+                mat-icon-button
+                color="primary"
+                [routerLink]="['/movements', element._id]"
+                class="text-blue-600 hover:bg-blue-50"
+                matTooltip="Ver detalles"
+              >
+                <mat-icon>visibility</mat-icon>
+              </a>
+              <button
+                mat-button
+                color="warn"
+                class="border border-red-100 hover:bg-red-50 text-red-600 !h-8 !px-3 font-normal"
+                (click)="reverseMovement(element)"
+              >
+                <mat-icon class="text-sm scale-75 mr-1 text-red-400"
+                  >undo</mat-icon
+                >
+                Revertir
+              </button>
+            </div>
+            }
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
+        ></tr>
+      </table>
+    </div>
   </div>
 </div>

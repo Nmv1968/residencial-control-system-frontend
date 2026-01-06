@@ -9,7 +9,35 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  @apply bg-background-light text-primary-light;
 }
+
+@layer components {
+  /* Form Utilities */
+  .label-bold {
+    @apply block text-sm font-semibold text-primary mb-1;
+  }
+  
+  .input-primary {
+    @apply w-full px-4 py-2 bg-white border border-border rounded-lg text-sm text-primary
+           focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
+           disabled:bg-gray-100 disabled:text-gray-500 transition-all shadow-sm;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors shadow-sm;
+  }
+
+  .btn-accent {
+    @apply px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors shadow-sm;
+  }
+
+  /* Card Utility */
+  .card-base {
+    @apply bg-background-card rounded-xl border border-border shadow-sm p-6;
+  }
+}
+
 /* Fix Angular Material Input Background Transparency issue with Tailwind Preflight */
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: #f5f5f5 !important;
@@ -34,7 +62,7 @@ input.mat-input-element {
 .ng-select.custom-ng-select .ng-select-container {
   min-height: 42px; /* Matches standard input height approx */
   border-radius: 0.5rem; /* rounded-lg */
-  border-color: #d1d5db; /* border-gray-300 */
+  border-color: #E2E8F0; /* border-border */
 }
 
 .ng-select.custom-ng-select.ng-select-focused:not(.ng-select-opened)

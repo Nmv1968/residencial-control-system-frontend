@@ -1,0 +1,135 @@
+<div class="max-w-5xl mx-auto space-y-8 animate-fade-in p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <a
+        routerLink="/housing"
+        mat-icon-button
+        class="bg-white border border-gray-200 text-gray-500 hover:text-primary hover:border-primary transition-all"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">
+          {{ loading ? "Cargando..." : unit?.number }}
+        </h1>
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <mat-icon class="scale-75">home</mat-icon>
+          <span>Detalles de la Unidad</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      @if (unit) {
+      <a
+        [routerLink]="['/housing/edit', unit._id]"
+        mat-flat-button
+        color="primary"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        <mat-icon class="mr-2">edit</mat-icon>
+        Editar
+      </a>
+      }
+    </div>
+  </div>
+
+  @if (unit && !loading) {
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Main Info Card -->
+    <div
+      class="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+    >
+      <div
+        class="bg-blue-50/50 px-6 py-4 border-b border-blue-100 flex justify-between items-center"
+      >
+        <h3 class="font-bold text-blue-900">Información General</h3>
+      </div>
+      <div class="p-6 grid grid-cols-2 gap-y-6 gap-x-4">
+        <div>
+          <p class="text-sm text-gray-400 mb-1">Tipo de Unidad</p>
+          <p class="font-medium text-gray-800 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+            {{ unit.type || "N/A" }}
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400 mb-1">Propietario Actual</p>
+          <p class="font-medium text-gray-800">
+            {{ unit.owner || "Sin asignar" }}
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400 mb-1">Tarifa Mensual</p>
+          <p class="font-medium text-gray-800 text-lg">
+            ${{ unit.monthlyFee | number : "1.2-2" }}
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400 mb-1">Identificador Sistema</p>
+          <p
+            class="font-mono text-xs text-gray-500 bg-gray-50 p-1 rounded inline-block"
+          >
+            {{ unit._id }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Status Card -->
+    <div
+      class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+    >
+      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h3 class="font-bold text-gray-700">Estado Financiero</h3>
+      </div>
+      <div class="p-6 flex flex-col items-center justify-center h-64 space-y-4">
+        <p class="text-sm text-gray-400">Saldo Actual</p>
+        <p
+          class="text-4xl font-bold"
+          [ngClass]="{
+            'text-green-600': unit.balance <= 0,
+            'text-red-600': unit.balance > 0
+          }"
+        >
+          ${{ unit.balance | number : "1.2-2" }}
+        </p>
+        <div
+          class="px-4 py-1 rounded-full text-sm font-medium"
+          [ngClass]="{
+            'bg-green-100 text-green-700': unit.balance <= 0,
+            'bg-red-100 text-red-700': unit.balance > 0
+          }"
+        >
+          {{ unit.balance > 0 ? "Con Deuda" : "Al Día" }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder for History -->
+  <div
+    class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center"
+  >
+    <div
+      class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4 text-gray-300"
+    >
+      <mat-icon class="scale-150">history</mat-icon>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">
+      Historial de Transacciones
+    </h3>
+    <p class="text-gray-400 max-w-sm mx-auto">
+      Próximamente podrás ver aquí todos los pagos y cargos asociados a esta
+      unidad.
+    </p>
+  </div>
+
+  } @else {
+  <div class="flex justify-center py-20">
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"
+    ></div>
+  </div>
+  }
+</div>

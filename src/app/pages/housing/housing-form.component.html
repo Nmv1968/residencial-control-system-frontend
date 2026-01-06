@@ -1,0 +1,157 @@
+<div class="max-w-3xl mx-auto space-y-6 animate-fade-in p-6">
+  <!-- Header -->
+  <div class="flex items-center gap-4 mb-8">
+    <a
+      routerLink="/housing"
+      mat-icon-button
+      class="bg-white border border-gray-200 text-gray-500 hover:text-primary hover:border-primary transition-all"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <div>
+      <h1 class="text-2xl font-bold text-primary">
+        {{ isEditing ? "Editar Unidad" : "Nueva Unidad" }}
+      </h1>
+      <p class="text-sm text-gray-400">
+        Completa la información de la unidad de vivienda
+      </p>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card-base bg-white">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-8"
+    >
+      <!-- Section: Unit Details -->
+      <div>
+        <h3
+          class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2"
+        >
+          Información de Unidad
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Number Input -->
+          <div>
+            <label class="label-bold"
+              >Nombre de Unidad / Casa
+              <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              formControlName="number"
+              placeholder="Ej. Casa 101"
+              class="input-primary"
+              [class.border-red-500]="
+                form.get('number')?.invalid && form.get('number')?.touched
+              "
+            />
+            @if (form.get('number')?.hasError('required') &&
+            form.get('number')?.touched) {
+            <span class="text-xs text-red-500 mt-1 block"
+              >El nombre es requerido</span
+            >
+            }
+          </div>
+
+          <!-- Type Select -->
+          <div>
+            <label class="label-bold">Tipo de Unidad</label>
+            <ng-select
+              formControlName="type"
+              [items]="typeOptions"
+              bindLabel="label"
+              bindValue="value"
+              [searchable]="false"
+              [clearable]="false"
+              class="custom-ng-select"
+            >
+            </ng-select>
+          </div>
+
+          <!-- Owner Input -->
+          <div class="col-span-1 md:col-span-2">
+            <label class="label-bold">Propietario</label>
+            <input
+              type="text"
+              formControlName="owner"
+              placeholder="Nombre del propietario"
+              class="input-primary"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Financials -->
+      <div>
+        <h3
+          class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2"
+        >
+          Financiero
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Monthly Fee -->
+          <div>
+            <label class="label-bold">Tarifa Mensual (Alícuota)</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2.5 text-gray-400 font-medium"
+                >$</span
+              >
+              <input
+                type="number"
+                formControlName="monthlyFee"
+                class="input-primary pl-7"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="label-bold">Saldo Inicial / Actual</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2.5 text-gray-400 font-medium"
+                >$</span
+              >
+              <input
+                type="number"
+                formControlName="balance"
+                class="input-primary pl-7"
+                placeholder="0.00"
+                [class.border-red-500]="
+                  form.get('balance')?.invalid && form.get('balance')?.touched
+                "
+              />
+            </div>
+            <p class="text-xs text-gray-400 mt-1">
+              Saldo positivo: a favor. Saldo negativo: deuda.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div
+        class="flex items-center justify-end gap-3 pt-6 mt-2 border-t border-gray-100"
+      >
+        <a
+          routerLink="/housing"
+          class="px-6 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+        >
+          Cancelar
+        </a>
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading"
+          class="btn-accent shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:shadow-none min-w-[140px] flex justify-center"
+        >
+          @if (loading) {
+          <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
+          Guardando... } @else { Guardar Unidad }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

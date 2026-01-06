@@ -3,7 +3,6 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HousingComponent } from './pages/housing/housing.component';
 import { OwnersComponent } from './pages/owners/owners.component';
-import { PeriodsComponent } from './pages/periods/periods.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { AccountStatusComponent } from './pages/account-status/account-status.component';
 import { ReportsComponent } from './pages/reports/reports.component';
@@ -33,21 +32,27 @@ export const routes: Routes = [
             (m) => m.HousingFormComponent
           ),
       },
-      { path: 'owners', component: OwnersComponent },
-      { path: 'periods', component: PeriodsComponent },
       {
-        path: 'periods/create',
+        path: 'housing/:id',
         loadComponent: () =>
-          import('./pages/periods/period-form.component').then(
-            (m) => m.PeriodFormComponent
+          import('./pages/housing/housing-detail.component').then(
+            (m) => m.HousingDetailComponent
           ),
       },
+      { path: 'owners', component: OwnersComponent },
       { path: 'movements', component: MovementsComponent },
       {
         path: 'movements/create',
         loadComponent: () =>
           import('./pages/movements/movement-form.component').then(
             (m) => m.MovementFormComponent
+          ),
+      },
+      {
+        path: 'movements/:id',
+        loadComponent: () =>
+          import('./pages/movements/movement-detail.component').then(
+            (m) => m.MovementDetailComponent
           ),
       },
       { path: 'account-status', component: AccountStatusComponent },

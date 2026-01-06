@@ -1,56 +1,215 @@
-<div
-  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in"
->
-  <!-- Card 1: Total Housing -->
-  <mat-card class="dashboard-card border-l-4 border-primary">
-    <mat-card-header>
-      <mat-card-title>Total Viviendas</mat-card-title>
-      <mat-icon mat-card-avatar color="primary" class="scale-150"
-        >home</mat-icon
+<div class="space-y-6 animate-fade-in pb-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-primary">Vista General</h1>
+      <p class="text-gray-500 text-sm">
+        Resumen financiero y operativo del conjunto
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <button
+        mat-flat-button
+        color="primary"
+        class="bg-primary shadow-lg shadow-blue-900/20"
       >
-    </mat-card-header>
-    <mat-card-content class="pt-4">
-      <h3 class="text-3xl font-bold text-gray-800">{{ totalHousing }}</h3>
-      <p class="text-sm text-gray-500">Unidades Registradas</p>
-    </mat-card-content>
-  </mat-card>
+        <mat-icon>add</mat-icon> Nueva Transacción
+      </button>
+      <button mat-stroked-button class="bg-white">
+        <mat-icon>download</mat-icon> Reporte
+      </button>
+    </div>
+  </div>
 
-  <!-- Card 3: Total Balance -->
-  <mat-card class="dashboard-card border-l-4 border-warning">
-    <mat-card-header>
-      <mat-card-title>Balance Total</mat-card-title>
-      <mat-icon mat-card-avatar class="text-yellow-600 scale-150"
-        >attach_money</mat-icon
+  <!-- KPI Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Card 1: Cash Balance -->
+    <div
+      class="card-base flex flex-col justify-between h-32 relative overflow-hidden group hover:shadow-md transition-all"
+    >
+      <div
+        class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
       >
-    </mat-card-header>
-    <mat-card-content class="pt-4">
-      <h3 class="text-3xl font-bold text-gray-800">
-        {{ totalBalance | currency }}
-      </h3>
-      <p class="text-sm text-gray-500">Saldo Pendiente</p>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- System Status -->
-  <mat-card class="dashboard-card border-l-4 border-green-500">
-    <mat-card-header>
-      <mat-card-title>Estado del Sistema</mat-card-title>
-      <mat-icon mat-card-avatar class="text-green-500 scale-150">dns</mat-icon>
-    </mat-card-header>
-    <mat-card-content class="pt-4">
-      <div class="flex items-center space-x-2">
-        <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-        <span class="text-gray-700 font-medium">Sistema Online</span>
+        <mat-icon class="scale-[4] text-primary"
+          >account_balance_wallet</mat-icon
+        >
       </div>
-      <p class="text-xs text-gray-400 mt-2">Base de Datos: Conectada</p>
-    </mat-card-content>
-  </mat-card>
-</div>
+      <div>
+        <p class="text-gray-500 font-medium text-xs uppercase tracking-wider">
+          Saldo en Caja
+        </p>
+        <h3 class="text-2xl font-bold text-primary mt-1">
+          {{ kpis.cashBalance | currency }}
+        </h3>
+      </div>
+      <div
+        class="flex items-center text-green-500 text-xs font-semibold bg-green-50 w-fit px-2 py-1 rounded"
+      >
+        <mat-icon class="text-xs mr-1 scale-75">trending_up</mat-icon> +12% vs
+        mes anterior
+      </div>
+    </div>
 
-<!-- Recent Activity Area (Placeholder) -->
-<div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-  <div class="bg-white p-6 rounded-2xl shadow-sm">
-    <h3 class="text-lg font-bold text-gray-700 mb-4">Movimientos Recientes</h3>
-    <div class="text-gray-400 text-center py-8">Sin actividad reciente</div>
+    <!-- Card 2: Debt -->
+    <div
+      class="card-base flex flex-col justify-between h-32 relative overflow-hidden group hover:shadow-md transition-all"
+    >
+      <div
+        class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+      >
+        <mat-icon class="scale-[4] text-danger">money_off</mat-icon>
+      </div>
+      <div>
+        <p class="text-gray-500 font-medium text-xs uppercase tracking-wider">
+          Por Cobrar
+        </p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">
+          {{ kpis.totalReceivable | currency }}
+        </h3>
+      </div>
+      <div
+        class="flex items-center text-red-500 text-xs font-semibold bg-red-50 w-fit px-2 py-1 rounded"
+      >
+        {{ kpis.unitsInArrears }} unidades en mora
+      </div>
+    </div>
+
+    <!-- Card 3: Occupancy (Simulated for layout) -->
+    <div
+      class="card-base flex flex-col justify-between h-32 relative overflow-hidden group hover:shadow-md transition-all"
+    >
+      <div
+        class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+      >
+        <mat-icon class="scale-[4] text-accent">home</mat-icon>
+      </div>
+      <div>
+        <p class="text-gray-500 font-medium text-xs uppercase tracking-wider">
+          Ocupación
+        </p>
+        <h3 class="text-2xl font-bold text-gray-800 mt-1">95%</h3>
+      </div>
+      <div class="text-xs text-gray-500 mt-1">Total 120 Unidades</div>
+    </div>
+
+    <!-- Card 4: Collection Progress -->
+    <div
+      class="card-base flex flex-col justify-center h-32 relative overflow-hidden"
+    >
+      <div class="flex justify-between items-end mb-2">
+        <div>
+          <p class="text-gray-500 font-medium text-xs uppercase tracking-wider">
+            Recaudo del Mes
+          </p>
+          <h3 class="text-2xl font-bold text-primary mt-1">
+            {{ kpis.collectionProgress }}%
+          </h3>
+        </div>
+      </div>
+      <mat-progress-bar
+        mode="determinate"
+        [value]="kpis.collectionProgress"
+        class="rounded"
+      ></mat-progress-bar>
+      <p class="text-xs text-gray-400 mt-2 text-right">Meta: $20,000</p>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-96">
+    <!-- Main Chart -->
+    <div class="card-base lg:col-span-2 flex flex-col">
+      <h3 class="font-bold text-gray-700 mb-4">Ingresos vs Gastos (6 Meses)</h3>
+      <div class="flex-1 relative">
+        <canvas
+          baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="barChartType"
+        >
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Stats Chart -->
+    <div class="card-base flex flex-col">
+      <h3 class="font-bold text-gray-700 mb-4">Estado de Unidades</h3>
+      <div class="flex-1 relative">
+        <canvas
+          baseChart
+          [data]="doughnutChartData"
+          [options]="doughnutChartOptions"
+          [type]="doughnutChartType"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card-base">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-bold text-gray-700">Actividad Reciente</h3>
+      <button mat-button color="primary">Ver Todo</button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b">
+          <tr>
+            <th class="px-4 py-3">Tipo</th>
+            <th class="px-4 py-3">Unidad / Detalle</th>
+            <th class="px-4 py-3">Fecha</th>
+            <th class="px-4 py-3 text-right">Monto</th>
+            <th class="px-4 py-3 text-center">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of recentActivity; track item.id) {
+          <tr class="border-b hover:bg-gray-50 transition-colors">
+            <td class="px-4 py-3">
+              <span
+                class="px-2 py-1 rounded text-xs font-bold"
+                [class.bg-green-100]="item.type === 'PAGO'"
+                [class.text-green-700]="item.type === 'PAGO'"
+                [class.bg-red-100]="item.type === 'GASTO'"
+                [class.text-red-700]="item.type === 'GASTO'"
+                [class.bg-blue-100]="item.type === 'CARGO'"
+                [class.text-blue-700]="item.type === 'CARGO'"
+              >
+                {{ item.type }}
+              </span>
+            </td>
+            <td class="px-4 py-3 font-medium text-gray-800">
+              {{ item.unit !== "ALL" ? "Unidad " + item.unit : "" }}
+              {{ item.description || "" }}
+            </td>
+            <td class="px-4 py-3 text-gray-500">
+              {{ item.date | date : "mediumDate" }}
+            </td>
+            <td
+              class="px-4 py-3 text-right font-bold"
+              [class.text-green-600]="item.type === 'PAGO'"
+              [class.text-gray-800]="item.type !== 'PAGO'"
+            >
+              {{ item.type === "GASTO" ? "-" : "+" }}
+              {{ item.amount | currency }}
+            </td>
+            <td class="px-4 py-3 text-center">
+              @if(item.status === 'COMPLETED') {
+              <mat-icon class="text-green-500 text-sm scale-75"
+                >check_circle</mat-icon
+              >
+              } @else {
+              <mat-icon class="text-yellow-500 text-sm scale-75"
+                >schedule</mat-icon
+              >
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

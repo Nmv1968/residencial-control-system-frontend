@@ -1,77 +1,127 @@
-<div class="space-y-6 animate-fade-in p-6">
-  <div class="flex justify-between items-center bg-white p-4 rounded shadow">
-    <h2 class="text-2xl font-bold text-gray-800">Gestión de Viviendas</h2>
-
+<div class="space-y-6 animate-fade-in pb-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-primary">Unidades de Vivienda</h1>
+      <p class="text-gray-500 text-sm">
+        Administra los apartamentos y propietarios del conjunto
+      </p>
+    </div>
     @if (authService.isAuthenticated()) {
-    <a mat-raised-button color="primary" routerLink="/housing/create">
+    <a
+      mat-flat-button
+      color="primary"
+      routerLink="/housing/create"
+      class="bg-primary shadow-lg shadow-blue-900/20"
+    >
       <mat-icon>add</mat-icon>
-      Agregar Vivienda
+      Nueva Unidad
     </a>
     }
   </div>
 
-  <div class="mat-elevation-z8 overflow-auto">
-    <table mat-table [dataSource]="housing()" class="w-full">
-      <!-- Number Column -->
-      <ng-container matColumnDef="number">
-        <th mat-header-cell *matHeaderCellDef>Unidad</th>
-        <td mat-cell *matCellDef="let element">{{ element.number }}</td>
-      </ng-container>
-
-      <!-- Status Column -->
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let element">
-          <span
-            class="px-2 py-1 rounded text-xs font-medium"
-            [ngClass]="{
-              'bg-green-100 text-green-800': element.status === 'Occupied',
-              'bg-yellow-100 text-yellow-800': element.status === 'Empty'
-            }"
+  <!-- Table Card -->
+  <div class="card-base overflow-hidden p-0">
+    <div class="overflow-x-auto">
+      <table mat-table [dataSource]="housing()" class="w-full">
+        <!-- Number Column -->
+        <ng-container matColumnDef="number">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
           >
-            {{ element.status === "Occupied" ? "Ocupado" : "Vacío" }}
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- Balance Column -->
-      <ng-container matColumnDef="balance">
-        <th mat-header-cell *matHeaderCellDef>Saldo</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.balance | currency }}
-        </td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let element">
-          @if (authService.isAuthenticated()) {
-          <a
-            mat-icon-button
-            color="primary"
-            [routerLink]="['/housing/edit', element._id]"
+            Nombre / Unidad
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="px-6 py-4 font-medium text-gray-900"
           >
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button color="warn" (click)="delete(element._id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          }
-        </td>
-      </ng-container>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded bg-blue-50 flex items-center justify-center text-primary font-bold text-xs"
+              >
+                {{ element.number.charAt(0) }}
+              </div>
+              {{ element.number }}
+            </div>
+          </td>
+        </ng-container>
 
-      <tr
-        mat-header-row
-        *matHeaderRowDef="['number', 'status', 'balance', 'actions']"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="
-          let row;
-          columns: ['number', 'status', 'balance', 'actions']
-        "
-      ></tr>
-    </table>
+        <!-- Balance Column -->
+        <ng-container matColumnDef="balance">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+          >
+            Saldo Pendiente
+          </th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4">
+            <span
+              class="font-bold"
+              [ngClass]="{
+                'text-red-500': element.balance > 0,
+                'text-green-500': element.balance <= 0
+              }"
+            >
+              {{ element.balance | currency }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+          >
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 text-right">
+            @if (authService.isAuthenticated()) {
+            <div class="flex items-center justify-end gap-2">
+              <a
+                mat-icon-button
+                class="text-gray-400 hover:text-primary bg-transparent hover:bg-blue-50"
+                [routerLink]="['/housing', element._id]"
+                matTooltip="Ver detalles"
+              >
+                <mat-icon class="scale-90">visibility</mat-icon>
+              </a>
+              <a
+                mat-icon-button
+                class="text-gray-400 hover:text-accent bg-transparent hover:bg-blue-50"
+                [routerLink]="['/housing/edit', element._id]"
+                matTooltip="Editar"
+              >
+                <mat-icon class="scale-90">edit</mat-icon>
+              </a>
+              <button
+                mat-icon-button
+                class="text-gray-400 hover:text-danger bg-transparent hover:bg-red-50"
+                (click)="delete(element._id)"
+                matTooltip="Eliminar"
+              >
+                <mat-icon class="scale-90">delete</mat-icon>
+              </button>
+            </div>
+            }
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="['number', 'balance', 'actions']"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['number', 'balance', 'actions']"
+          class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
+        ></tr>
+      </table>
+    </div>
   </div>
 </div>

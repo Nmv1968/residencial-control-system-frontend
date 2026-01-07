@@ -56,8 +56,8 @@ export class MovementFormComponent implements OnInit {
 
   ngOnInit() {
     this.housingService
-      .findAll()
-      .subscribe((data) => (this.housingList = data));
+      .findAll(1, 1000) // Get all units for dropdown
+      .subscribe((response) => (this.housingList = response.data));
   }
 
   // Helper to format date for input[type="date"]

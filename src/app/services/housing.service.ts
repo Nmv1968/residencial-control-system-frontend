@@ -10,19 +10,27 @@ export class HousingService {
   private apiUrl = `${environment.apiUrl}/units`;
   private http = inject(HttpClient);
 
-  findAll() {
-    return this.http.get<any[]>(this.apiUrl).pipe(
-      map((units) =>
-        units.map((u) => ({
-          ...u,
-          number: u.nombre,
-          balance: u.saldoActual,
-          type: u.tipo,
-          monthlyFee: u.tarifaMensual,
-          owner: u.propietario,
-        }))
+  findAll(page: number = 1, limit: number = 10) {
+    return this.http
+      .get<{ data: any[]; total: number; page: number; lastPage: number }>(
+        this.apiUrl,
+        {
+          params: { page: page.toString(), limit: limit.toString() },
+        }
       )
-    );
+      .pipe(
+        map((response) => ({
+          ...response,
+          data: response.data.map((u) => ({
+            ...u,
+            number: u.nombre,
+            balance: u.saldoActual,
+            type: u.tipo,
+            monthlyFee: u.tarifaMensual,
+            owner: u.propietario,
+          })),
+        }))
+      );
   }
 
   findOne(id: string) {

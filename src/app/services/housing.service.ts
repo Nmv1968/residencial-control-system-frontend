@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HousingService {
-  private apiUrl = 'http://localhost:3000/api/v1/units';
+  private apiUrl = `${environment.apiUrl}/units`;
   private http = inject(HttpClient);
 
   findAll() {

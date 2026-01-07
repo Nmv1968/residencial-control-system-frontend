@@ -116,7 +116,7 @@
         >
         <p class="text-sm text-gray-500 mb-4">Documento PDF Adjunto</p>
         <a
-          [href]="getFullUrl(movement.evidenceUrl)"
+          [href]="movement.evidenceUrl"
           target="_blank"
           mat-stroked-button
           color="primary"
@@ -127,10 +127,10 @@
         <!-- Image Preview -->
         <div
           class="relative w-full h-64 rounded-lg overflow-hidden border border-gray-200 cursor-pointer group bg-gray-50"
-          (click)="window.open(getFullUrl(movement.evidenceUrl), '_blank')"
+          (click)="(movement.evidenceUrl)"
         >
           <img
-            [src]="getFullUrl(movement.evidenceUrl)"
+            [src]="movement.evidenceUrl"
             class="w-full h-full object-contain p-2"
             alt="Evidencia"
           />

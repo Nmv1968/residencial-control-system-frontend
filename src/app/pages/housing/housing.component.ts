@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
 import { RouterLink } from '@angular/router';
-import { PaginatorNavIntl } from '../../components/common/paginator-nav/paginator-nav.component';
+import { PaginatorNavIntl } from '../../services/paginator-nav.service';
 
 @Component({
   selector: 'app-housing',

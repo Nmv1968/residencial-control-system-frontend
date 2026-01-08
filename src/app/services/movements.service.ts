@@ -26,6 +26,7 @@ export class MovementsService {
           provider: t.proveedor,
           source: 'Transaction', // Unified source
           originalType: t.tipo, // Keep original type for debugging or detailed view
+          isReversed: t.isReversed,
         }));
       })
     );
@@ -44,6 +45,7 @@ export class MovementsService {
         provider: t.proveedor,
         source: 'Transaction',
         originalType: t.tipo,
+        isReversed: t.isReversed,
       }))
     );
   }
@@ -73,6 +75,8 @@ export class MovementsService {
   }
 
   reverse(id: string, reason: string) {
-    return of(null);
+    return this.http.post<any>(`${this.transactionsUrl}/${id}/reverse`, {
+      reason,
+    });
   }
 }

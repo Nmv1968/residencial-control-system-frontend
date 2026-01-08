@@ -55,16 +55,19 @@
             <span
               class="px-2.5 py-1 rounded-full text-xs font-bold border flex items-center w-fit gap-1.5"
               [ngClass]="{
+                'bg-gray-200 text-gray-500 decoration-slice line-through border-gray-300':
+                  element.isReversed,
                 'bg-green-50 text-green-700 border-green-200':
-                  element.type === 'Income',
+                  element.type === 'Income' && !element.isReversed,
                 'bg-red-50 text-red-700 border-red-200':
-                  element.type === 'Expense'
+                  element.type === 'Expense' && !element.isReversed
               }"
             >
               <mat-icon class="text-xs scale-75 font-bold">{{
                 element.type === "Income" ? "arrow_downward" : "arrow_upward"
               }}</mat-icon>
               {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
+              @if(element.isReversed) { (REV) }
             </span>
           </td>
         </ng-container>
@@ -82,6 +85,8 @@
             mat-cell
             *matCellDef="let element"
             class="px-6 py-4 text-gray-800"
+            [class.text-gray-400]="element.isReversed"
+            [class.line-through]="element.isReversed"
           >
             {{ element.concept }}
           </td>
@@ -103,8 +108,12 @@
           >
             <span
               [ngClass]="{
-                'text-green-600': element.type === 'Income',
-                'text-gray-800': element.type === 'Expense'
+                'text-gray-400 line-through decoration-gray-400':
+                  element.isReversed,
+                'text-green-600':
+                  element.type === 'Income' && !element.isReversed,
+                'text-gray-800':
+                  element.type === 'Expense' && !element.isReversed
               }"
             >
               {{ element.type === "Expense" ? "-" : "+" }}
@@ -127,14 +136,10 @@
             *matCellDef="let element"
             class="px-6 py-4 text-gray-500"
           >
-            @if(element.housing) {
             <div class="flex items-center gap-2">
               <mat-icon class="text-xs text-gray-400 scale-75">home</mat-icon>
-              {{ element.housing.number }}
+              {{ element.unidad.nombre }}
             </div>
-            } @else {
-            <span class="text-gray-300">-</span>
-            }
           </td>
         </ng-container>
 
@@ -143,13 +148,13 @@
           <th
             mat-header-cell
             *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center justify-center"
           >
-            Acciones
+            <div class="w-full flex justify-center items-center">Acciones</div>
           </th>
-          <td mat-cell *matCellDef="let element" class="px-6 py-4 text-right">
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 text-center">
             @if (authService.isAuthenticated()) {
-            <div class="flex items-center justify-end gap-2">
+            <div class="flex items-center justify-center gap-2">
               <a
                 mat-icon-button
                 color="primary"
@@ -159,6 +164,7 @@
               >
                 <mat-icon>visibility</mat-icon>
               </a>
+              @if(!element.isReversed) {
               <button
                 mat-button
                 color="warn"
@@ -170,6 +176,9 @@
                 >
                 Revertir
               </button>
+              } @else {
+              <span class="text-xs text-gray-400 italic px-2">Revertido</span>
+              }
             </div>
             }
           </td>

@@ -58,6 +58,29 @@ export class MovementFormComponent implements OnInit {
     this.housingService
       .findAll(1, 1000) // Get all units for dropdown
       .subscribe((response) => (this.housingList = response.data));
+
+    // Listen to Type changes to toggle validations
+    this.form.get('type')?.valueChanges.subscribe((type) => {
+      const housingControl = this.form.get('housingId');
+      const providerControl = this.form.get('provider');
+
+      if (type === 'Income') {
+        // Ingreso: Require Housing, Disable Provider
+        housingControl?.setValidators([Validators.required]);
+        providerControl?.clearValidators();
+        providerControl?.setValue('');
+      } else {
+        // Egreso: Require Provider, Disable Housing
+        housingControl?.clearValidators();
+        housingControl?.setValue(null);
+        providerControl?.setValidators([Validators.required]);
+      }
+      housingControl?.updateValueAndValidity();
+      providerControl?.updateValueAndValidity();
+    });
+
+    // Trigger initial validation state (Default is Income/PAGO)
+    this.form.get('type')?.setValue('Income');
   }
 
   // Helper to format date for input[type="date"]

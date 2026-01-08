@@ -74,12 +74,11 @@
             <input type="date" formControlName="date" class="input-primary" />
           </div>
 
-          <div>
+          <!-- Housing Selection (Only for Income) -->
+          @if (form.get('type')?.value === 'Income') {
+          <div class="animate-fade-in">
             <label class="label-bold"
-              >Vivienda Relacionada
-              <span class="text-gray-400 font-normal text-xs"
-                >(Opcional)</span
-              ></label
+              >Vivienda Relacionada <span class="text-red-500">*</span></label
             >
             <ng-select
               formControlName="housingId"
@@ -92,16 +91,16 @@
             >
             </ng-select>
             <p class="text-xs text-gray-400 mt-1">
-              Vincula este movimiento a una unidad específica
+              Unidad que realiza el pago (Ingreso)
             </p>
           </div>
+          }
         </div>
 
         <!-- Right Column -->
         <div class="space-y-6">
-          <!-- Provider (Conditional) -->
-          @if (!form.get('housingId')?.value && form.get('type')?.value ===
-          'Expense') {
+          <!-- Provider (Only for Expense) -->
+          @if (form.get('type')?.value === 'Expense') {
           <div class="animate-fade-in">
             <label class="label-bold"
               >Proveedor <span class="text-red-500">*</span></label
@@ -112,6 +111,9 @@
               class="input-primary"
               placeholder="Ej. Empresa Eléctrica"
             />
+            <p class="text-xs text-gray-400 mt-1">
+              Entidad a quien se realiza el pago (Egreso)
+            </p>
           </div>
           }
 

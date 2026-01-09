@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto space-y-8 animate-fade-in p-6">
+<div class="max-w-6xl mx-auto space-y-8 animate-fade-in p-6">
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-4">
@@ -9,127 +9,295 @@
       >
         <mat-icon>arrow_back</mat-icon>
       </a>
-      <div>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <mat-icon class="scale-100">home</mat-icon>
         <h1 class="text-2xl font-bold text-gray-800">
-          {{ loading ? "Cargando..." : unit?.number }}
+          {{
+            loading
+              ? "Cargando..."
+              : unit?.number
+              ? "Unidad " + unit?.number
+              : "Detalles"
+          }}
         </h1>
-        <div class="flex items-center gap-2 text-sm text-gray-500">
-          <mat-icon class="scale-75">home</mat-icon>
-          <span>Detalles de la Unidad</span>
-        </div>
       </div>
     </div>
     <div class="flex items-center gap-3">
-      @if (unit) {
       <a
+        *ngIf="unit"
         [routerLink]="['/housing/edit', unit._id]"
         mat-flat-button
         color="primary"
-        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
       >
-        <mat-icon class="mr-2">edit</mat-icon>
-        Editar
+        <mat-icon class="mr-2">edit</mat-icon> Editar
       </a>
-      }
     </div>
   </div>
 
-  @if (unit && !loading) {
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Main Info Card -->
-    <div
-      class="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
-    >
-      <div
-        class="bg-blue-50/50 px-6 py-4 border-b border-blue-100 flex justify-between items-center"
-      >
-        <h3 class="font-bold text-blue-900">Información General</h3>
-      </div>
-      <div class="p-6 grid grid-cols-2 gap-y-6 gap-x-4">
-        <div>
-          <p class="text-sm text-gray-400 mb-1">Tipo de Unidad</p>
-          <p class="font-medium text-gray-800 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-            {{ unit.type || "N/A" }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-400 mb-1">Propietario Actual</p>
-          <p class="font-medium text-gray-800">
-            {{ unit.owner || "Sin asignar" }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-400 mb-1">Tarifa Mensual</p>
-          <p class="font-medium text-gray-800 text-lg">
-            ${{ unit.monthlyFee | number : "1.2-2" }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-400 mb-1">Identificador Sistema</p>
-          <p
-            class="font-mono text-xs text-gray-500 bg-gray-50 p-1 rounded inline-block"
-          >
-            {{ unit._id }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Financial Status Card -->
-    <div
-      class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
-    >
-      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-        <h3 class="font-bold text-gray-700">Estado Financiero</h3>
-      </div>
-      <div class="p-6 flex flex-col items-center justify-center h-64 space-y-4">
-        <p class="text-sm text-gray-400">Saldo Actual</p>
-        <p
-          class="text-4xl font-bold"
-          [ngClass]="{
-            'text-green-600': unit.balance <= 0,
-            'text-red-600': unit.balance > 0
-          }"
-        >
-          ${{ unit.balance | number : "1.2-2" }}
-        </p>
-        <div
-          class="px-4 py-1 rounded-full text-sm font-medium"
-          [ngClass]="{
-            'bg-green-100 text-green-700': unit.balance <= 0,
-            'bg-red-100 text-red-700': unit.balance > 0
-          }"
-        >
-          {{ unit.balance > 0 ? "Con Deuda" : "Al Día" }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Placeholder for History -->
   <div
-    class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center"
+    *ngIf="unit && !loading; else loadingTpl"
+    class="grid grid-cols-1 md:grid-cols-4 gap-6"
   >
-    <div
-      class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4 text-gray-300"
-    >
-      <mat-icon class="scale-150">history</mat-icon>
-    </div>
-    <h3 class="text-lg font-medium text-gray-900 mb-2">
-      Historial de Transacciones
-    </h3>
-    <p class="text-gray-400 max-w-sm mx-auto">
-      Próximamente podrás ver aquí todos los pagos y cargos asociados a esta
-      unidad.
-    </p>
-  </div>
+    <!-- Sidebar / Summary Card -->
+    <div class="md:col-span-1 space-y-6">
+      <!-- Info Card -->
+      <div
+        class="bg-white rounded-lg shadow border border-gray-100 p-6 space-y-4"
+      >
+        <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold"
+          >
+            {{ unit.number | slice : 0 : 1 }}
+          </div>
+          <div>
+            <div class="font-bold text-gray-900">
+              {{ unit.number || "Sin Residente" }}
+            </div>
+            <div class="text-xs text-gray-500">
+              {{ unit.category?.name || "Sin Categoría" }}
+            </div>
+          </div>
+        </div>
 
-  } @else {
+        <div>
+          <div class="text-xs font-bold uppercase text-gray-400">
+            Estado Ocupacional
+          </div>
+          <div class="font-medium text-gray-800">
+            {{ unit.status === "OCCUPIED" ? "Ocupado" : "Vacante" }}
+          </div>
+        </div>
+
+        @if (unit.residentName) {
+        <div>
+          <div class="text-xs font-bold uppercase text-gray-400">Residente</div>
+          <div class="font-medium text-gray-800">
+            {{ unit.residentName }}
+          </div>
+        </div>
+        }
+
+        <div>
+          <div class="text-xs font-bold uppercase text-gray-400">Teléfono</div>
+          <div class="font-medium text-gray-800">{{ unit.phone || "N/A" }}</div>
+        </div>
+      </div>
+
+      <!-- Financial Card -->
+      <div
+        class="bg-white rounded-lg shadow border border-gray-100 p-6 text-center"
+      >
+        <div class="text-xs font-bold uppercase text-gray-400 mb-2">
+          Saldo Actual
+        </div>
+        <div
+          class="text-3xl font-bold mb-2"
+          [ngClass]="{
+            'text-green-600': (unit?.balance || 0) <= 0,
+            'text-red-600': (unit?.balance || 0) > 0
+          }"
+        >
+          {{ unit?.balance || 0 | currency }}
+        </div>
+        <div
+          class="inline-block px-3 py-1 rounded-full text-xs font-bold"
+          [ngClass]="{
+            'bg-green-100 text-green-700': (unit?.balance || 0) <= 0,
+            'bg-red-100 text-red-700': (unit?.balance || 0) > 0
+          }"
+        >
+          {{ (unit?.balance || 0) > 0 ? "CON DEUDA" : "AL DÍA" }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div
+      class="md:col-span-3 bg-white rounded-lg shadow border border-gray-100 overflow-hidden min-h-[500px]"
+    >
+      <mat-tab-group animationDuration="0ms">
+        <!-- Tab 1: Pending Debts -->
+        <mat-tab label="Deudas Pendientes">
+          <div class="p-6">
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <mat-icon class="text-red-500">warning</mat-icon> Cuentas por
+              Cobrar
+            </h3>
+            <table mat-table [dataSource]="pendingDebts" class="w-full">
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Generado</th>
+                <td mat-cell *matCellDef="let d">
+                  {{ d.generationDate | date : "shortDate" }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="concept">
+                <th mat-header-cell *matHeaderCellDef>Concepto</th>
+                <td mat-cell *matCellDef="let d">{{ d.concept }}</td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                  Monto
+                </th>
+                <td mat-cell *matCellDef="let d" class="text-right font-bold">
+                  {{ d.amount | currency }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dueDate">
+                <th mat-header-cell *matHeaderCellDef>Vence</th>
+                <td
+                  mat-cell
+                  *matCellDef="let d"
+                  class="text-red-600 font-medium"
+                >
+                  {{ d.dueDate | date : "shortDate" }}
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsDebts"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumnsDebts"
+              ></tr>
+            </table>
+            <div
+              *ngIf="pendingDebts.length === 0"
+              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+            >
+              No hay deudas pendientes.
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Tab 2: Payments History -->
+        <mat-tab label="Historial Pagos">
+          <div class="p-6">
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <mat-icon class="text-green-600">payments</mat-icon> Pagos
+              Realizados
+            </h3>
+            <table mat-table [dataSource]="payments" class="w-full">
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let p">
+                  {{ p.paymentDate | date : "shortDate" }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="method">
+                <th mat-header-cell *matHeaderCellDef>Método</th>
+                <td mat-cell *matCellDef="let p">
+                  {{ p.paymentMethod?.name || "N/A" }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                  Total
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let p"
+                  class="text-right font-bold text-green-700"
+                >
+                  {{ p.totalAmount | currency }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let p" class="text-right">
+                  <a
+                    [routerLink]="['/financial/payments', p._id]"
+                    mat-icon-button
+                    color="primary"
+                    ><mat-icon class="scale-75">visibility</mat-icon></a
+                  >
+                </td>
+              </ng-container>
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumnsPayments"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumnsPayments"
+              ></tr>
+            </table>
+            <div
+              *ngIf="payments.length === 0"
+              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+            >
+              No hay pagos registrados.
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Tab 3: Paid/Historical Debts -->
+        <mat-tab label="Histórico Deudas">
+          <div class="p-6">
+            <h3 class="font-bold text-gray-800 mb-4">
+              Deudas Pagadas o Canceladas
+            </h3>
+            <table mat-table [dataSource]="paidDebts" class="w-full">
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let d">
+                  {{ d.generationDate | date : "shortDate" }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="concept">
+                <th mat-header-cell *matHeaderCellDef>Concepto</th>
+                <td mat-cell *matCellDef="let d">{{ d.concept }}</td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                  Monto
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let d"
+                  class="text-right font-medium text-gray-500"
+                >
+                  {{ d.amount | currency }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <td mat-cell *matCellDef="let d">
+                  <span
+                    class="px-2 py-0.5 rounded text-xs"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': d.status === 'PAID',
+                      'bg-gray-100': d.status === 'CANCELLED'
+                    }"
+                  >
+                    {{ d.status }}
+                  </span>
+                </td>
+              </ng-container>
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumnsPaidDebts"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumnsPaidDebts"
+              ></tr>
+            </table>
+            <div
+              *ngIf="paidDebts.length === 0"
+              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+            >
+              No hay historial de deudas pagadas.
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
   <div class="flex justify-center py-20">
     <div
       class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"
     ></div>
   </div>
-  }
-</div>
+</ng-template>

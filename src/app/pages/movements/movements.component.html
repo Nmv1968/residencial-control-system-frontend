@@ -138,7 +138,7 @@
           >
             <div class="flex items-center gap-2">
               <mat-icon class="text-xs text-gray-400 scale-75">home</mat-icon>
-              {{ element.unidad.nombre }}
+              {{ element.unidad?.number || element.housingId?.number || "N/A" }}
             </div>
           </td>
         </ng-container>

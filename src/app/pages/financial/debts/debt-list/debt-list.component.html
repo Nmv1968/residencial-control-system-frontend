@@ -1,0 +1,150 @@
+<div class="space-y-6 p-6 animate-fade-in">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">
+        Listado de Deudas y Cuotas
+      </h1>
+      <p class="text-sm text-gray-500">
+        Histórico de deudas generadas y saldos iniciales
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <a
+        routerLink="/financial/initial-balance"
+        mat-stroked-button
+        color="primary"
+      >
+        <mat-icon>add</mat-icon> Saldo Inicial
+      </a>
+      <a routerLink="/financial/debt-wizard" mat-flat-button color="primary">
+        <mat-icon>post_add</mat-icon> Generar Masivo
+      </a>
+    </div>
+  </div>
+
+  <div
+    class="bg-white rounded-lg shadow overflow-hidden border border-gray-100"
+  >
+    <table mat-table [dataSource]="debts" class="w-full">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500"
+        >
+          Fecha
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.generationDate | date : "shortDate" }}
+        </td>
+      </ng-container>
+
+      <!-- Unit Column -->
+      <ng-container matColumnDef="unit">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500"
+        >
+          Vivienda
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="font-medium text-blue-600"
+        >
+          {{ getUnitNumber(element) }}
+        </td>
+      </ng-container>
+
+      <!-- Concept Column -->
+      <ng-container matColumnDef="concept">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500"
+        >
+          Concepto
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.concept }}</td>
+      </ng-container>
+
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500 text-right"
+        >
+          Monto
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-right font-bold">
+          {{ element.amount | currency }}
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500"
+        >
+          Estado
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            [class]="
+              element.status === 'PAID'
+                ? 'bg-green-100 text-green-800'
+                : element.status === 'PENDING'
+                ? 'bg-red-100 text-red-800'
+                : 'bg-gray-100 text-gray-800'
+            "
+            class="px-2 py-1 rounded-full text-xs font-semibold"
+          >
+            {{
+              element.status === "PAID"
+                ? "PAGADO"
+                : element.status === "PENDING"
+                ? "PENDIENTE"
+                : "CANCELADO"
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-gray-50 font-bold text-gray-500 text-right"
+        >
+          Acciones
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-right">
+          <a
+            [routerLink]="['/financial/debts', element._id]"
+            mat-icon-button
+            color="primary"
+          >
+            <mat-icon>visibility</mat-icon>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="hover:bg-gray-50"
+      ></tr>
+    </table>
+
+    <div *ngIf="debts.length === 0" class="p-8 text-center text-gray-500">
+      No hay registros de deudas.
+    </div>
+  </div>
+</div>

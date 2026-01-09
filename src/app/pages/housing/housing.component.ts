@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
 import { RouterLink } from '@angular/router';
 import { PaginatorNavIntl } from '../../services/paginator-nav.service';
+import { SweetAlertService } from '../../services/sweet-alert.service';
 
 @Component({
   selector: 'app-housing',
@@ -38,6 +39,8 @@ export class HousingComponent implements OnInit {
   housing = signal<any[]>([]);
   isLoading = signal(false);
 
+  private sweetAlert = inject(SweetAlertService); // [NEW]
+
   // Pagination State
   totalItems = 0;
   pageSize = 10;
@@ -58,7 +61,10 @@ export class HousingComponent implements OnInit {
         this.totalItems = response.total;
         this.isLoading.set(false);
       },
-      error: () => this.isLoading.set(false),
+      error: () => {
+        this.isLoading.set(false);
+        this.sweetAlert.error('Error', 'No se pudieron cargar los datos.');
+      },
     });
   }
 
@@ -68,15 +74,26 @@ export class HousingComponent implements OnInit {
     this.loadData();
   }
 
-  delete(id: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: '¿Estás seguro de que deseas eliminar esta vivienda?' },
-    });
+  async delete(id: string) {
+    const confirmed = await this.sweetAlert.confirm(
+      '¿Estás seguro?',
+      'Esta acción eliminará la vivienda y no se puede deshacer.',
+      'Sí, eliminar'
+    );
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        this.housingService.delete(id).subscribe(() => this.loadData());
-      }
-    });
+    if (confirmed) {
+      this.housingService.delete(id).subscribe({
+        next: () => {
+          this.sweetAlert.success(
+            'Eliminado',
+            'La vivienda ha sido eliminada.'
+          );
+          this.loadData();
+        },
+        error: () => {
+          this.sweetAlert.error('Error', 'No se pudo eliminar la vivienda.');
+        },
+      });
+    }
   }
 }

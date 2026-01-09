@@ -57,6 +57,20 @@ export const routes: Routes = [
       },
       { path: 'account-status', component: AccountStatusComponent },
       { path: 'reports', component: ReportsComponent },
+      {
+        path: 'configuration',
+        loadChildren: () =>
+          import('./pages/configuration/configuration-module').then(
+            (m) => m.ConfigurationModule
+          ),
+      },
+      {
+        path: 'financial',
+        loadChildren: () =>
+          import('./pages/financial/financial-module').then(
+            (m) => m.FinancialModule
+          ),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

@@ -82,6 +82,76 @@
         <span class="font-medium">Reportes</span>
       </a>
       -->
+      <!-- Financial Section -->
+      @if (isAuthenticated()) {
+      <div class="px-4 mb-2 mt-6">
+        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+          >Financiero</span
+        >
+      </div>
+
+      <a
+        routerLink="/financial/initial-balance"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+      >
+        <mat-icon class="transition-colors group-hover:text-white"
+          >account_balance_wallet</mat-icon
+        >
+        <span class="font-medium">Saldos Iniciales</span>
+      </a>
+
+      <a
+        routerLink="/financial/debt-wizard"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+      >
+        <mat-icon class="transition-colors group-hover:text-white"
+          >post_add</mat-icon
+        >
+        <span class="font-medium">Gen. Deudas</span>
+      </a>
+
+      <a
+        routerLink="/financial/payment-process"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+      >
+        <mat-icon class="transition-colors group-hover:text-white"
+          >payments</mat-icon
+        >
+        <span class="font-medium">Caja / Pagos</span>
+      </a>
+
+      <!-- Configuration Section -->
+      <div class="px-4 mb-2 mt-6">
+        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+          >Configuración</span
+        >
+      </div>
+
+      <a
+        routerLink="/configuration/categories"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+      >
+        <mat-icon class="transition-colors group-hover:text-white"
+          >category</mat-icon
+        >
+        <span class="font-medium">Categorías</span>
+      </a>
+
+      <a
+        routerLink="/configuration/payment-methods"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+      >
+        <mat-icon class="transition-colors group-hover:text-white"
+          >credit_card</mat-icon
+        >
+        <span class="font-medium">Métodos Pago</span>
+      </a>
+      }
     </nav>
   </mat-sidenav>
 

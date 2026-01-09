@@ -38,6 +38,11 @@ export class MovementDetailComponent implements OnInit {
     return url ? url.toLowerCase().endsWith('.pdf') : false;
   }
 
+  openFile(url: string | undefined): void {
+    if (!url) return;
+    window.open(url, '_blank');
+  }
+
   getFullUrl(path: string | undefined): string {
     if (!path) return '';
     if (path.startsWith('http')) return path;

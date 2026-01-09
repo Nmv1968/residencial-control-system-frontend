@@ -13,7 +13,7 @@
         {{ isEditing ? "Editar Unidad" : "Nueva Unidad" }}
       </h1>
       <p class="text-sm text-gray-400">
-        Completa la información de la unidad de vivienda
+        Información de la vivienda (Sin datos financieros)
       </p>
     </div>
   </div>
@@ -26,108 +26,115 @@
       class="flex flex-col gap-8"
     >
       <!-- Section: Unit Details -->
+      <div
+        *ngIf="errorMessage"
+        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4"
+        role="alert"
+      >
+        <span class="block sm:inline">{{ errorMessage }}</span>
+      </div>
       <div>
         <h3
           class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2"
         >
-          Información de Unidad
+          Datos de la Vivienda
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Number Input -->
           <div>
             <label class="label-bold"
-              >Nombre de Unidad / Casa
-              <span class="text-red-500">*</span></label
+              >Unidad / Departamento <span class="text-red-500">*</span></label
             >
             <input
               type="text"
               formControlName="number"
-              placeholder="Ej. Casa 101"
+              placeholder="Ej. A-101"
               class="input-primary"
               [class.border-red-500]="
                 form.get('number')?.invalid && form.get('number')?.touched
               "
             />
-            @if (form.get('number')?.hasError('required') &&
-            form.get('number')?.touched) {
-            <span class="text-xs text-red-500 mt-1 block"
-              >El nombre es requerido</span
+            <span
+              *ngIf="
+                form.get('number')?.hasError('required') &&
+                form.get('number')?.touched
+              "
+              class="text-xs text-red-500 mt-1 block"
             >
-            }
+              Requerido
+            </span>
           </div>
 
-          <!-- Type Select -->
+          <!-- Category Select -->
           <div>
-            <label class="label-bold">Tipo de Unidad</label>
+            <label class="label-bold"
+              >Categoría <span class="text-red-500">*</span></label
+            >
             <ng-select
-              formControlName="type"
-              [items]="typeOptions"
+              formControlName="categoryId"
+              [items]="categories"
+              bindLabel="name"
+              bindValue="_id"
+              placeholder="Seleccione Categoría"
+              appendTo="body"
+              class="custom-ng-select"
+            >
+            </ng-select>
+            <span
+              *ngIf="
+                form.get('categoryId')?.invalid &&
+                form.get('categoryId')?.touched
+              "
+              class="text-xs text-red-500 mt-1 block"
+            >
+              Requerido
+            </span>
+          </div>
+
+          <!-- Status Select -->
+          <div>
+            <label class="label-bold">Estado</label>
+            <ng-select
+              formControlName="status"
+              [items]="statusOptions"
               bindLabel="label"
               bindValue="value"
-              [searchable]="false"
               [clearable]="false"
+              appendTo="body"
               class="custom-ng-select"
             >
             </ng-select>
           </div>
 
-          <!-- Owner Input -->
-          <div class="col-span-1 md:col-span-2">
-            <label class="label-bold">Propietario</label>
+          <!-- Resident Name -->
+          <div>
+            <label class="label-bold">Residente / Propietario (Opcional)</label>
             <input
               type="text"
-              formControlName="owner"
-              placeholder="Nombre del propietario"
+              formControlName="residentName"
+              placeholder="Nombre del responsable"
               class="input-primary"
             />
-          </div>
-        </div>
-      </div>
-
-      <!-- Section: Financials -->
-      <div>
-        <h3
-          class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2"
-        >
-          Financiero
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Monthly Fee -->
-          <div>
-            <label class="label-bold">Tarifa Mensual (Alícuota)</label>
-            <div class="relative">
-              <span class="absolute left-3 top-2.5 text-gray-400 font-medium"
-                >$</span
-              >
-              <input
-                type="number"
-                formControlName="monthlyFee"
-                class="input-primary pl-7"
-                placeholder="0.00"
-              />
-            </div>
+            <span
+              *ngIf="
+                form.get('residentName')?.invalid &&
+                form.get('residentName')?.touched
+              "
+              class="text-xs text-red-500 mt-1 block"
+            >
+              Requerido
+            </span>
           </div>
 
+          <!-- Phone -->
           <div>
-            <label class="label-bold">Saldo Inicial / Actual</label>
-            <div class="relative">
-              <span class="absolute left-3 top-2.5 text-gray-400 font-medium"
-                >$</span
-              >
-              <input
-                type="number"
-                formControlName="balance"
-                class="input-primary pl-7"
-                placeholder="0.00"
-                [class.border-red-500]="
-                  form.get('balance')?.invalid && form.get('balance')?.touched
-                "
-              />
-            </div>
-            <p class="text-xs text-gray-400 mt-1">
-              Saldo positivo: a favor. Saldo negativo: deuda.
-            </p>
+            <label class="label-bold">Teléfono (Opcional)</label>
+            <input
+              type="text"
+              formControlName="phone"
+              placeholder="Ej. 0991234567"
+              class="input-primary"
+            />
           </div>
         </div>
       </div>
@@ -149,7 +156,7 @@
         >
           @if (loading) {
           <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
-          Guardando... } @else { Guardar Unidad }
+          Guardando... } @else { Guardar }
         </button>
       </div>
     </form>

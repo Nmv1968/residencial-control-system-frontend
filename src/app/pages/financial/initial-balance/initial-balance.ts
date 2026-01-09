@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { DebtsService } from '../../../services/debts.service';
 import { HousingService } from '../../../services/housing.service';
+import { MovementsService } from '../../../services/movements.service';
 import { Unit } from '../../../schemas/financial.schemas';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -31,6 +32,7 @@ export class InitialBalanceComponent implements OnInit {
   fb = inject(FormBuilder);
   debtsService = inject(DebtsService);
   housingService = inject(HousingService); // Using HousingService (Refactored) to get units
+  movementsService = inject(MovementsService); // [NEW] injected
 
   private sweetAlert = inject(SweetAlertService); // [NEW]
 
@@ -64,33 +66,53 @@ export class InitialBalanceComponent implements OnInit {
 
     const { unitId, type, amount, observation } = this.form.value;
 
-    // Logic: DEBT -> Positive Amount (Debt). CREDIT -> Negative Amount (Credit/Advance).
-    const finalAmount = type === 'DEBT' ? amount : -amount;
-    const concept = `Saldo Inicial (${
-      type === 'DEBT' ? 'Deuda' : 'A favor'
-    }): ${observation}`;
+    if (type === 'DEBT') {
+      // 1. Existing Logic: Create a Pending Debt
+      const concept = `Saldo Inicial (Deuda): ${observation}`;
+      const payload = {
+        unitId,
+        amount: amount,
+        concept,
+      };
 
-    const payload = {
-      unitId,
-      amount: finalAmount,
-      concept,
-      // Status will optionally be defaulted to PENDING by backend Schema default
-    };
+      this.debtsService.create(payload).subscribe({
+        next: () => this.handleSuccess(),
+        error: (err) => this.handleError(err),
+      });
+    } else {
+      // 2. New Logic: Create an Income Transaction (Credit/Advance)
+      // This updates balance (decreases debt/increases credit) but prevents a "Pending Debt" record.
+      const concept = `Saldo Inicial (A favor): ${observation}`;
 
-    this.debtsService.create(payload).subscribe({
-      next: () => {
-        this.loading = false;
-        this.sweetAlert.success(
-          'Totalmente registrado',
-          'Saldo inicial registrado exitosamente.'
-        );
-        this.form.reset({ type: 'DEBT', amount: 0 });
-      },
-      error: (err) => {
-        this.loading = false;
-        this.sweetAlert.error('Error', 'Error al registrar saldo.');
-        console.error(err);
-      },
-    });
+      const payload = {
+        type: 'Income', // Maps to PAGO in backend
+        concept,
+        amount: amount,
+        date: new Date().toISOString(), // Current date
+        housingId: unitId,
+        evidenceUrl: '', // Optional
+        // provider is not needed for Income
+      };
+
+      this.movementsService.create(payload).subscribe({
+        next: () => this.handleSuccess(),
+        error: (err) => this.handleError(err),
+      });
+    }
+  }
+
+  private handleSuccess() {
+    this.loading = false;
+    this.sweetAlert.success(
+      'Totalmente registrado',
+      'Saldo inicial registrado exitosamente.'
+    );
+    this.form.reset({ type: 'DEBT', amount: 0 });
+  }
+
+  private handleError(err: any) {
+    this.loading = false;
+    this.sweetAlert.error('Error', 'Error al registrar saldo.');
+    console.error(err);
   }
 }

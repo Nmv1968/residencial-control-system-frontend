@@ -34,6 +34,16 @@ export class PaymentMethodFormComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       isActive: [true],
+      isBank: [false],
+      bankName: [''],
+      accountNumber: [''],
+      accountHolder: [''],
+      accountType: [null],
+      additionalData: [''],
+    });
+
+    this.form.get('isBank')?.valueChanges.subscribe((isBank) => {
+      this.updateBankValidators(isBank);
     });
   }
 
@@ -46,13 +56,40 @@ export class PaymentMethodFormComponent implements OnInit {
     }
   }
 
+  updateBankValidators(isBank: boolean) {
+    const bankControls = [
+      'bankName',
+      'accountNumber',
+      'accountHolder',
+      'accountType',
+    ];
+
+    bankControls.forEach((controlName) => {
+      const control = this.form.get(controlName);
+      if (isBank) {
+        control?.setValidators([Validators.required]);
+      } else {
+        control?.clearValidators();
+      }
+      control?.updateValueAndValidity();
+    });
+  }
+
   loadPaymentMethod(id: string) {
     this.paymentMethodsService.findOne(id).subscribe({
       next: (method) => {
         this.form.patchValue({
           name: method.name,
           isActive: method.isActive,
+          isBank: method.isBank,
+          bankName: method.bankName,
+          accountNumber: method.accountNumber,
+          accountHolder: method.accountHolder,
+          accountType: method.accountType,
+          additionalData: method.additionalData,
         });
+        // Trigger validator update in case it was loaded as true
+        this.updateBankValidators(method.isBank || false);
       },
       error: () => {
         this.sweetAlert.error('Error', 'No se pudo cargar el método de pago.');

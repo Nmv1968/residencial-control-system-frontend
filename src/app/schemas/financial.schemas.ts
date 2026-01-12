@@ -29,6 +29,12 @@ export type Unit = z.infer<typeof unitSchema> & {
 export const paymentMethodSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   isActive: z.boolean().default(true),
+  isBank: z.boolean().default(false),
+  bankName: z.string().optional(),
+  accountNumber: z.string().optional(),
+  accountHolder: z.string().optional(),
+  accountType: z.enum(['SAVINGS', 'CURRENT']).optional(),
+  additionalData: z.string().optional(),
 });
 
 export type PaymentMethod = z.infer<typeof paymentMethodSchema> & {

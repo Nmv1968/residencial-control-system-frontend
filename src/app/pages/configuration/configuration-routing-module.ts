@@ -4,6 +4,7 @@ import { CategoryFormComponent } from './categories/category-form/category-form'
 import { CategoryListComponent } from './categories/category-list/category-list';
 import { PaymentMethodFormComponent } from './payment-methods/payment-method-form/payment-method-form';
 import { PaymentMethodListComponent } from './payment-methods/payment-method-list/payment-method-list';
+import { ContactInfoComponent } from './contact-info/contact-info.component';
 
 const routes: Routes = [
   { path: 'categories', component: CategoryListComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'payment-methods', component: PaymentMethodListComponent },
   { path: 'payment-methods/new', component: PaymentMethodFormComponent },
   { path: 'payment-methods/edit/:id', component: PaymentMethodFormComponent },
+  { path: 'contact-info', component: ContactInfoComponent },
   { path: '', redirectTo: 'categories', pathMatch: 'full' },
 ];
 

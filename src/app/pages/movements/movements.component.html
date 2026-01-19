@@ -8,15 +8,15 @@
       </p>
     </div>
     @if (authService.isAuthenticated()) {
-    <a
-      mat-flat-button
-      color="secondary"
-      routerLink="/movements/create"
-      class="bg-primary shadow-lg shadow-blue-900/20"
-    >
-      <mat-icon>add</mat-icon>
-      Nuevo Movimiento
-    </a>
+      <a
+        mat-flat-button
+        color="secondary"
+        routerLink="/movements/create"
+        class="bg-primary shadow-lg shadow-blue-900/20"
+      >
+        <mat-icon>add</mat-icon>
+        Nuevo Movimiento
+      </a>
     }
   </div>
 
@@ -38,7 +38,7 @@
             *matCellDef="let element"
             class="px-6 py-4 text-gray-600 font-medium"
           >
-            {{ element.date | date : "mediumDate" }}
+            {{ element.date | date: "mediumDate" }}
           </td>
         </ng-container>
 
@@ -60,14 +60,16 @@
                 'bg-green-50 text-green-700 border-green-200':
                   element.type === 'Income' && !element.isReversed,
                 'bg-red-50 text-red-700 border-red-200':
-                  element.type === 'Expense' && !element.isReversed
+                  element.type === 'Expense' && !element.isReversed,
               }"
             >
               <mat-icon class="text-xs scale-75 font-bold">{{
                 element.type === "Income" ? "arrow_downward" : "arrow_upward"
               }}</mat-icon>
               {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
-              @if(element.isReversed) { (REV) }
+              @if (element.isReversed) {
+                (REV)
+              }
             </span>
           </td>
         </ng-container>
@@ -113,7 +115,7 @@
                 'text-green-600':
                   element.type === 'Income' && !element.isReversed,
                 'text-gray-800':
-                  element.type === 'Expense' && !element.isReversed
+                  element.type === 'Expense' && !element.isReversed,
               }"
             >
               {{ element.type === "Expense" ? "-" : "+" }}
@@ -154,32 +156,34 @@
           </th>
           <td mat-cell *matCellDef="let element" class="px-6 py-4 text-center">
             @if (authService.isAuthenticated()) {
-            <div class="flex items-center justify-center gap-2">
-              <a
-                mat-icon-button
-                color="primary"
-                [routerLink]="['/movements', element._id]"
-                class="text-blue-600 hover:bg-blue-50"
-                matTooltip="Ver detalles"
-              >
-                <mat-icon>visibility</mat-icon>
-              </a>
-              @if(!element.isReversed) {
-              <button
-                mat-button
-                color="warn"
-                class="border border-red-100 hover:bg-red-50 text-red-600 !h-8 !px-3 font-normal"
-                (click)="reverseMovement(element)"
-              >
-                <mat-icon class="text-sm scale-75 mr-1 text-red-400"
-                  >undo</mat-icon
+              <div class="flex items-center justify-center gap-2">
+                <a
+                  mat-icon-button
+                  color="primary"
+                  [routerLink]="['/movements', element._id]"
+                  class="text-blue-600 hover:bg-blue-50"
+                  matTooltip="Ver detalles"
                 >
-                Revertir
-              </button>
-              } @else {
-              <span class="text-xs text-gray-400 italic px-2">Revertido</span>
-              }
-            </div>
+                  <mat-icon>visibility</mat-icon>
+                </a>
+                @if (!element.isReversed) {
+                  <button
+                    mat-button
+                    color="warn"
+                    class="border border-red-100 hover:bg-red-50 text-red-600 !h-8 !px-3 font-normal"
+                    (click)="reverseMovement(element)"
+                  >
+                    <mat-icon class="text-sm scale-75 mr-1 text-red-400"
+                      >undo</mat-icon
+                    >
+                    Revertir
+                  </button>
+                } @else {
+                  <span class="text-xs text-gray-400 italic px-2"
+                    >Revertido</span
+                  >
+                }
+              </div>
             }
           </td>
         </ng-container>
@@ -191,6 +195,16 @@
           class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
         ></tr>
       </table>
+
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        [pageIndex]="pageIndex"
+        (page)="handlePageEvent($event)"
+        aria-label="Select page"
+      >
+      </mat-paginator>
     </div>
   </div>
 </div>

@@ -97,5 +97,19 @@ export const bulkDebtSchema = z
     {
       message: 'Target ID is required for this scope',
       path: ['targetId'],
-    }
+    },
   );
+
+export interface FinancialMovement {
+  _id: string;
+  type: 'Expense' | 'Income';
+  concept: string;
+  amount: number;
+  date: string | Date;
+  housingId?: string | Unit | any; // Populated or ID
+  evidenceUrl?: string;
+  provider?: string;
+  source: 'Transaction';
+  originalType: string; // PAGO, GASTO, etc.
+  isReversed?: boolean;
+}

@@ -7,9 +7,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { PaginatorNavIntl } from '../../services/paginator-nav.service';
 
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
 import { RouterLink } from '@angular/router';
+import { FinancialMovement } from '../../schemas/financial.schemas';
 
 @Component({
   selector: 'app-movements',
@@ -21,8 +28,10 @@ import { RouterLink } from '@angular/router';
     MatIconModule,
     MatDialogModule,
     MatChipsModule,
+    MatPaginatorModule,
     RouterLink,
   ],
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorNavIntl }],
   templateUrl: './movements.component.html',
 })
 export class MovementsComponent implements OnInit {
@@ -30,7 +39,7 @@ export class MovementsComponent implements OnInit {
   private dialog = inject(MatDialog);
   authService = inject(AuthService);
 
-  movements = signal<any[]>([]);
+  movements = signal<FinancialMovement[]>([]);
   displayedColumns: string[] = [
     'date',
     'type',
@@ -40,17 +49,32 @@ export class MovementsComponent implements OnInit {
     'actions',
   ];
 
+  // Pagination State
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
+
   ngOnInit() {
     this.loadData();
   }
 
   loadData() {
+    const apiPage = this.pageIndex + 1;
     this.movementsService
-      .findAll()
-      .subscribe((data) => this.movements.set(data));
+      .findAll(apiPage, this.pageSize)
+      .subscribe((response) => {
+        this.movements.set(response.data);
+        this.totalItems = response.total;
+      });
   }
 
-  reverseMovement(item: any) {
+  handlePageEvent(e: PageEvent) {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.loadData();
+  }
+
+  reverseMovement(item: FinancialMovement) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: `¿Estás seguro de que deseas REVERTIR este movimiento (${item.concept})? Esto creará un contra-movimiento.`,

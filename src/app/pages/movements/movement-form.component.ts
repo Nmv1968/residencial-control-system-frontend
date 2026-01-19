@@ -14,6 +14,7 @@ import { MovementsService } from '../../services/movements.service';
 import { HousingService } from '../../services/housing.service';
 import { UploadService } from '../../services/upload.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FinancialMovement } from '../../schemas/financial.schemas';
 
 @Component({
   selector: 'app-movement-form',
@@ -109,9 +110,16 @@ export class MovementFormComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       this.loading = true;
-      const formData = {
-        ...this.form.value,
-        date: new Date(this.form.value.date), // Ensure it's sent as Date object
+      const formValue = this.form.value;
+
+      const formData: Partial<FinancialMovement> = {
+        type: formValue.type as 'Income' | 'Expense',
+        concept: formValue.concept,
+        amount: Number(formValue.amount),
+        date: new Date(formValue.date),
+        housingId: formValue.housingId,
+        provider: formValue.provider,
+        evidenceUrl: formValue.evidenceUrl,
       };
 
       this.movementsService.create(formData).subscribe({

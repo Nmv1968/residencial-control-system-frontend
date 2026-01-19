@@ -9,7 +9,7 @@ import {
 import { DebtsService } from '../../../services/debts.service';
 import { HousingService } from '../../../services/housing.service';
 import { MovementsService } from '../../../services/movements.service';
-import { Unit } from '../../../schemas/financial.schemas';
+import { Unit, FinancialMovement } from '../../../schemas/financial.schemas';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DebtListComponent } from '../debts/debt-list/debt-list.component';
@@ -84,11 +84,11 @@ export class InitialBalanceComponent implements OnInit {
       // This updates balance (decreases debt/increases credit) but prevents a "Pending Debt" record.
       const concept = `Saldo Inicial (A favor): ${observation}`;
 
-      const payload = {
+      const payload: Partial<FinancialMovement> = {
         type: 'Income', // Maps to PAGO in backend
         concept,
-        amount: amount,
-        date: new Date().toISOString(), // Current date
+        amount: Number(amount),
+        date: new Date(), // Current date
         housingId: unitId,
         evidenceUrl: '', // Optional
         // provider is not needed for Income
@@ -105,7 +105,7 @@ export class InitialBalanceComponent implements OnInit {
     this.loading = false;
     this.sweetAlert.success(
       'Totalmente registrado',
-      'Saldo inicial registrado exitosamente.'
+      'Saldo inicial registrado exitosamente.',
     );
     this.form.reset({ type: 'DEBT', amount: 0 });
   }

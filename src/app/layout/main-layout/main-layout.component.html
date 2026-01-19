@@ -84,86 +84,114 @@
       -->
       <!-- Financial Section -->
       @if (isAuthenticated()) {
-      <div class="px-4 mb-2 mt-6">
-        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
-          >Financiero</span
-        >
-      </div>
+        <div class="px-4 mb-2 mt-6">
+          <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+            >Financiero</span
+          >
+        </div>
 
-      <a
-        routerLink="/financial/initial-balance"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >account_balance_wallet</mat-icon
+        <a
+          routerLink="/financial/initial-balance"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Saldos Iniciales</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >account_balance_wallet</mat-icon
+          >
+          <span class="font-medium">Saldos Iniciales</span>
+        </a>
 
-      <a
-        routerLink="/financial/debt-wizard"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >post_add</mat-icon
+        <a
+          routerLink="/financial/debt-wizard"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Gen. Deudas</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >post_add</mat-icon
+          >
+          <span class="font-medium">Gen. Deudas</span>
+        </a>
 
-      <a
-        routerLink="/financial/payment-process"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >payments</mat-icon
+        <a
+          routerLink="/financial/payment-process"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Caja / Pagos</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >payments</mat-icon
+          >
+          <span class="font-medium">Caja / Pagos</span>
+        </a>
 
-      <!-- Configuration Section -->
-      <div class="px-4 mb-2 mt-6">
-        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
-          >Configuración</span
-        >
-      </div>
+        <!-- Configuration Section -->
+        <div class="px-4 mb-2 mt-6">
+          <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+            >Configuración</span
+          >
+        </div>
 
-      <a
-        routerLink="/configuration/categories"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >category</mat-icon
+        <a
+          routerLink="/configuration/categories"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Categorías</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >category</mat-icon
+          >
+          <span class="font-medium">Categorías</span>
+        </a>
 
-      <a
-        routerLink="/configuration/payment-methods"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >credit_card</mat-icon
+        <a
+          routerLink="/configuration/payment-methods"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Métodos Pago</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >credit_card</mat-icon
+          >
+          <span class="font-medium">Métodos Pago</span>
+        </a>
 
-      <a
-        routerLink="/configuration/contact-info"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >contact_mail</mat-icon
+        <a
+          routerLink="/configuration/contact-info"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
         >
-        <span class="font-medium">Info. Contacto</span>
-      </a>
+          <mat-icon class="transition-colors group-hover:text-white"
+            >contact_mail</mat-icon
+          >
+          <span class="font-medium">Info. Contacto</span>
+        </a>
       }
     </nav>
+
+    <div
+      *ngIf="
+        contactInfo &&
+        (contactInfo.fullName || contactInfo.phone || contactInfo.email)
+      "
+      class="px-6 py-4 mt-auto border-t border-white/10"
+    >
+      <p
+        class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-2"
+      >
+        Contacto
+      </p>
+      <div class="space-y-2 text-sm text-gray-300">
+        <div *ngIf="contactInfo.fullName" class="flex items-center gap-2">
+          <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">person</mat-icon>
+          <span class="truncate text-black">{{ contactInfo.fullName }}</span>
+        </div>
+        <div *ngIf="contactInfo.phone" class="flex items-center gap-2">
+          <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">phone</mat-icon>
+          <span class="truncate text-black">{{ contactInfo.phone }}</span>
+        </div>
+        <div *ngIf="contactInfo.email" class="flex items-center gap-2">
+          <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">email</mat-icon>
+          <span class="truncate text-black">{{ contactInfo.email }}</span>
+        </div>
+      </div>
+    </div>
   </mat-sidenav>
 
   <!-- Main Content -->
@@ -188,34 +216,34 @@
 
       <div class="flex items-center gap-6">
         @if (isAuthenticated()) {
-        <div class="flex items-center gap-3 pl-6 border-l border-gray-100">
-          <div class="text-right hidden sm:block">
-            <p class="text-sm font-bold text-primary">Administrador</p>
-            <p class="text-xs text-gray-500">admin@orbea.com</p>
-          </div>
-          <button
-            mat-icon-button
-            [matMenuTriggerFor]="userMenu"
-            class="!w-10 !h-10 rounded-full bg-gray-100 flex items-center justify-center text-primary font-bold"
-          >
-            A
-          </button>
-          <mat-menu #userMenu="matMenu">
-            <button mat-menu-item (click)="logout()">
-              <mat-icon>logout</mat-icon>
-              <span>Cerrar Sesión</span>
+          <div class="flex items-center gap-3 pl-6 border-l border-gray-100">
+            <div class="text-right hidden sm:block">
+              <p class="text-sm font-bold text-primary">Administrador</p>
+              <p class="text-xs text-gray-500">admin@orbea.com</p>
+            </div>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="userMenu"
+              class="!w-10 !h-10 rounded-full bg-gray-100 flex items-center justify-center text-primary font-bold"
+            >
+              A
             </button>
-          </mat-menu>
-        </div>
+            <mat-menu #userMenu="matMenu">
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Cerrar Sesión</span>
+              </button>
+            </mat-menu>
+          </div>
         } @else {
-        <a
-          mat-flat-button
-          color="primary"
-          routerLink="/login"
-          class="bg-primary"
-        >
-          Ingresar
-        </a>
+          <a
+            mat-flat-button
+            color="primary"
+            routerLink="/login"
+            class="bg-primary"
+          >
+            Ingresar
+          </a>
         }
       </div>
     </header>

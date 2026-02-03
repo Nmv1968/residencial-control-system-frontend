@@ -25,23 +25,7 @@ export const routes: Routes = [
       { path: 'account-status', component: AccountStatusComponent },
       { path: 'reports', component: ReportsComponent },
 
-      // Public detail pages (no auth required) - must come before :id routes with create/edit
-      {
-        path: 'housing/:id',
-        loadComponent: () =>
-          import('./pages/housing/housing-detail.component').then(
-            (m) => m.HousingDetailComponent,
-          ),
-      },
-      {
-        path: 'movements/:id',
-        loadComponent: () =>
-          import('./pages/movements/movement-detail.component').then(
-            (m) => m.MovementDetailComponent,
-          ),
-      },
-
-      // Protected routes (auth required)
+      // Protected routes (auth required) - specific routes MUST come before :id routes
       {
         path: 'housing/create',
         canActivate: [authGuard],
@@ -59,11 +43,6 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'owners',
-        canActivate: [authGuard],
-        component: OwnersComponent,
-      },
-      {
         path: 'movements/create',
         canActivate: [authGuard],
         loadComponent: () =>
@@ -71,6 +50,31 @@ export const routes: Routes = [
             (m) => m.MovementFormComponent,
           ),
       },
+
+      // Public detail pages (no auth required) - :id routes come after specific routes
+      {
+        path: 'housing/:id',
+        loadComponent: () =>
+          import('./pages/housing/housing-detail.component').then(
+            (m) => m.HousingDetailComponent,
+          ),
+      },
+      {
+        path: 'movements/:id',
+        loadComponent: () =>
+          import('./pages/movements/movement-detail.component').then(
+            (m) => m.MovementDetailComponent,
+          ),
+      },
+      {
+        path: 'financial/payments/:id',
+        loadComponent: () =>
+          import('./pages/financial/payments/payment-detail/payment-detail.component').then(
+            (m) => m.PaymentDetailComponent,
+          ),
+      },
+
+      // Other protected routes
       {
         path: 'configuration',
         canActivate: [authGuard],

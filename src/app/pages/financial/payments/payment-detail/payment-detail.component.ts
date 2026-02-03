@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PaymentsService } from '../../../../services/payments.service';
+import { AuthService } from '../../../../auth/auth.service';
 import { Payment } from '../../../../schemas/financial.schemas';
 
 @Component({
@@ -15,9 +16,23 @@ import { Payment } from '../../../../schemas/financial.schemas';
 export class PaymentDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private paymentsService = inject(PaymentsService);
+  authService = inject(AuthService);
 
   payment: Payment | null = null;
   loading = true;
+
+  get backRoute(): string {
+    // Si no está autenticado y hay un payment con unidad, volver a detalle de vivienda
+    if (!this.authService.isAuthenticated() && this.payment?.unit) {
+      const unitId =
+        typeof this.payment.unit === 'string'
+          ? this.payment.unit
+          : this.payment.unit._id;
+      return `/housing/${unitId}`;
+    }
+    // Si está autenticado, volver al listado de payments
+    return '/financial/payments';
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {

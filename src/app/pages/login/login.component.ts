@@ -8,11 +8,12 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -35,5 +36,9 @@ export class LoginComponent {
         },
       });
     }
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
   }
 }

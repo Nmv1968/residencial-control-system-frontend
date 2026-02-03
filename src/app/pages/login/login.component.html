@@ -1,10 +1,25 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <div class="text-center mb-8">
+    <div class="text-center mb-6">
       <h2 class="text-3xl font-bold text-primary">Acceso al Sistema</h2>
       <p class="text-gray-500 mt-2">
         Ingrese sus credenciales de administrador
       </p>
+    </div>
+
+    <!-- Admin Only Warning -->
+    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r">
+      <div class="flex items-start">
+        <mat-icon class="text-amber-600 mr-3 mt-0.5">warning</mat-icon>
+        <div>
+          <p class="text-sm font-medium text-amber-800">
+            Acceso Exclusivo para Administradores
+          </p>
+          <p class="text-xs text-amber-700 mt-1">
+            Si no eres administrador, por favor regresa a la página de inicio.
+          </p>
+        </div>
+      </div>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
@@ -40,13 +55,22 @@
         />
       </div>
 
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
-      >
-        Ingresar
-      </button>
+      <div class="flex gap-3">
+        <button
+          type="button"
+          (click)="goToHome()"
+          class="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
+        >
+          Ingresar
+        </button>
+      </div>
     </form>
   </div>
 </div>

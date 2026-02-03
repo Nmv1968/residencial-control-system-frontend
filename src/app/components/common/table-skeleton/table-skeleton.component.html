@@ -1,0 +1,18 @@
+<div class="animate-pulse">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th *ngFor="let col of columnsArray" class="px-6 py-4 text-left">
+          <div class="h-3 bg-gray-200 rounded w-20"></div>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let row of rowsArray" class="border-b border-gray-100">
+        <td *ngFor="let col of columnsArray" class="px-6 py-4">
+          <div class="h-4 bg-gray-200 rounded w-full skeleton-shimmer"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -45,7 +45,7 @@
                     class="w-2 h-2 rounded-full"
                     [ngClass]="{
                       'bg-green-500': item.value === 'Income',
-                      'bg-red-500': item.value === 'Expense'
+                      'bg-red-500': item.value === 'Expense',
                     }"
                   ></span>
                   {{ item.label }}
@@ -57,7 +57,7 @@
                     class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider"
                     [ngClass]="{
                       'bg-green-100 text-green-700': item.value === 'Income',
-                      'bg-red-100 text-red-700': item.value === 'Expense'
+                      'bg-red-100 text-red-700': item.value === 'Expense',
                     }"
                   >
                     {{ item.value === "Income" ? "Ingreso" : "Egreso" }}
@@ -76,46 +76,50 @@
           </div>
 
           <!-- Housing Selection (Only for Income) -->
-          @if (form.get('type')?.value === 'Income') {
-          <div class="animate-fade-in">
-            <label class="label-bold"
-              >Vivienda Relacionada <span class="text-red-500">*</span></label
-            >
-            <ng-select
-              formControlName="housingId"
-              [items]="housingList"
-              bindLabel="number"
-              bindValue="_id"
-              placeholder="Seleccionar unidad..."
-              appendTo="body"
-              class="custom-ng-select"
-            >
-            </ng-select>
-            <p class="text-xs text-gray-400 mt-1">
-              Unidad que realiza el pago (Ingreso)
-            </p>
-          </div>
+          @if (form.get("type")?.value === "Income") {
+            <div class="animate-fade-in">
+              <label class="label-bold"
+                >Vivienda Relacionada
+                <span class="text-gray-400 font-normal text-xs"
+                  >(Opcional)</span
+                ></label
+              >
+              <ng-select
+                formControlName="housingId"
+                [items]="housingList"
+                bindLabel="number"
+                bindValue="_id"
+                placeholder="Seleccionar unidad..."
+                appendTo="body"
+                class="custom-ng-select"
+              >
+              </ng-select>
+              <p class="text-xs text-gray-400 mt-1">
+                Selecciona una unidad si el ingreso corresponde a un pago
+                específico
+              </p>
+            </div>
           }
         </div>
 
         <!-- Right Column -->
         <div class="space-y-6">
           <!-- Provider (Only for Expense) -->
-          @if (form.get('type')?.value === 'Expense') {
-          <div class="animate-fade-in">
-            <label class="label-bold"
-              >Proveedor <span class="text-red-500">*</span></label
-            >
-            <input
-              type="text"
-              formControlName="provider"
-              class="input-primary"
-              placeholder="Ej. Empresa Eléctrica"
-            />
-            <p class="text-xs text-gray-400 mt-1">
-              Entidad a quien se realiza el pago (Egreso)
-            </p>
-          </div>
+          @if (form.get("type")?.value === "Expense") {
+            <div class="animate-fade-in">
+              <label class="label-bold"
+                >Proveedor <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                formControlName="provider"
+                class="input-primary"
+                placeholder="Ej. Empresa Eléctrica"
+              />
+              <p class="text-xs text-gray-400 mt-1">
+                Entidad a quien se realiza el pago (Egreso)
+              </p>
+            </div>
           }
 
           <div>
@@ -150,11 +154,13 @@
                 form.get('concept')?.invalid && form.get('concept')?.touched
               "
             ></textarea>
-            @if (form.get('concept')?.hasError('required') &&
-            form.get('concept')?.touched) {
-            <span class="text-xs text-red-500 mt-1"
-              >El concepto es obligatorio</span
-            >
+            @if (
+              form.get("concept")?.hasError("required") &&
+              form.get("concept")?.touched
+            ) {
+              <span class="text-xs text-red-500 mt-1"
+                >El concepto es obligatorio</span
+              >
             }
           </div>
 
@@ -187,23 +193,23 @@
                   (change)="onFileSelected($event)"
                   accept="image/*,application/pdf"
                 />
-                @if (form.get('evidenceUrl')?.value) {
-                <div
-                  class="text-sm text-green-600 flex items-center gap-1 animate-fade-in"
-                >
-                  <mat-icon class="text-base scale-75">check_circle</mat-icon>
-                  <span class="font-medium">Archivo cargado</span>
-                </div>
+                @if (form.get("evidenceUrl")?.value) {
+                  <div
+                    class="text-sm text-green-600 flex items-center gap-1 animate-fade-in"
+                  >
+                    <mat-icon class="text-base scale-75">check_circle</mat-icon>
+                    <span class="font-medium">Archivo cargado</span>
+                  </div>
                 }
               </div>
 
               <!-- Helper to show URL or allow manual edit if absolutely needed, or just hidden storage -->
-              @if (form.get('evidenceUrl')?.value) {
-              <div
-                class="text-xs text-gray-500 break-all bg-gray-50 p-2 rounded border border-gray-200 mt-1 font-mono"
-              >
-                {{ form.get("evidenceUrl")?.value }}
-              </div>
+              @if (form.get("evidenceUrl")?.value) {
+                <div
+                  class="text-xs text-gray-500 break-all bg-gray-50 p-2 rounded border border-gray-200 mt-1 font-mono"
+                >
+                  {{ form.get("evidenceUrl")?.value }}
+                </div>
               }
               <input type="hidden" formControlName="evidenceUrl" />
             </div>
@@ -230,8 +236,11 @@
           class="btn-accent shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:shadow-none min-w-[140px] flex justify-center"
         >
           @if (loading) {
-          <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
-          Procesando... } @else { Registrar }
+            <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
+            Procesando...
+          } @else {
+            Registrar
+          }
         </button>
       </div>
     </form>

@@ -66,8 +66,8 @@ export class MovementFormComponent implements OnInit {
       const providerControl = this.form.get('provider');
 
       if (type === 'Income') {
-        // Ingreso: Require Housing, Disable Provider
-        housingControl?.setValidators([Validators.required]);
+        // Ingreso: Housing is optional, Disable Provider
+        housingControl?.clearValidators();
         providerControl?.clearValidators();
         providerControl?.setValue('');
       } else {

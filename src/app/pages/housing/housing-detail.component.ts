@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { HousingService } from '../../services/housing.service';
 import { DebtsService } from '../../services/debts.service';
 import { PaymentsService } from '../../services/payments.service';
+import { AuthService } from '../../auth/auth.service';
 import { Unit, Debt, Payment } from '../../schemas/financial.schemas';
 
 @Component({
@@ -28,6 +29,7 @@ export class HousingDetailComponent implements OnInit {
   private housingService = inject(HousingService);
   private debtsService = inject(DebtsService);
   private paymentsService = inject(PaymentsService);
+  authService = inject(AuthService);
 
   unit: Unit | null = null;
   pendingDebts: Debt[] = [];
@@ -69,14 +71,14 @@ export class HousingDetailComponent implements OnInit {
         .sort(
           (a, b) =>
             new Date(a.dueDate || 0).getTime() -
-            new Date(b.dueDate || 0).getTime()
+            new Date(b.dueDate || 0).getTime(),
         );
       this.paidDebts = debts
         .filter((d) => d.status === 'PAID' || d.status === 'CANCELLED')
         .sort(
           (a, b) =>
             new Date(b.generationDate).getTime() -
-            new Date(a.generationDate).getTime()
+            new Date(a.generationDate).getTime(),
         );
 
       // Load Payments
@@ -84,7 +86,7 @@ export class HousingDetailComponent implements OnInit {
         this.payments = payments.sort(
           (a, b) =>
             new Date(b.paymentDate).getTime() -
-            new Date(a.paymentDate).getTime()
+            new Date(a.paymentDate).getTime(),
         );
         this.loading = false;
       });

@@ -6,7 +6,10 @@
     <p class="text-gray-500">Gestión de saldos y deudas</p>
   </div>
 
-  <mat-tab-group animationDuration="0ms">
+  <mat-tab-group
+    animationDuration="0ms"
+    (selectedTabChange)="onTabChange($event)"
+  >
     <mat-tab label="Nuevo Registro">
       <div class="py-6">
         <!-- Messages -->

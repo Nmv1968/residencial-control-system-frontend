@@ -7,6 +7,7 @@
   <mat-tab-group
     animationDuration="0ms"
     class="bg-white rounded-lg shadow-sm border border-gray-100 p-2"
+    (selectedTabChange)="onTabChange($event)"
   >
     <!-- Tab 1: Process Payment -->
     <mat-tab label="Procesar Pago">

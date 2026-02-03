@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -11,7 +11,7 @@ import { HousingService } from '../../../services/housing.service';
 import { MovementsService } from '../../../services/movements.service';
 import { Unit, FinancialMovement } from '../../../schemas/financial.schemas';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { DebtListComponent } from '../debts/debt-list/debt-list.component';
 import { SweetAlertService } from '../../../services/sweet-alert.service';
 
@@ -35,6 +35,8 @@ export class InitialBalanceComponent implements OnInit {
   movementsService = inject(MovementsService); // [NEW] injected
 
   private sweetAlert = inject(SweetAlertService); // [NEW]
+
+  @ViewChild(DebtListComponent) debtListComponent!: DebtListComponent;
 
   form: FormGroup;
   units: Unit[] = [];
@@ -114,5 +116,12 @@ export class InitialBalanceComponent implements OnInit {
     this.loading = false;
     this.sweetAlert.error('Error', 'Error al registrar saldo.');
     console.error(err);
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    // When switching to "Historial de Saldos" tab (index 1), refresh the data
+    if (event.index === 1 && this.debtListComponent) {
+      this.debtListComponent.loadDebts();
+    }
   }
 }

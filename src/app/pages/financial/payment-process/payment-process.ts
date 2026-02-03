@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -13,7 +13,7 @@ import { PaymentMethodsService } from '../../../services/payment-methods.service
 import { Unit, Debt, PaymentMethod } from '../../../schemas/financial.schemas';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { UploadService } from '../../../services/upload.service';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { PaymentListComponent } from '../payments/payment-list/payment-list.component';
 import { SweetAlertService } from '../../../services/sweet-alert.service';
 
@@ -53,6 +53,8 @@ export class PaymentProcessComponent implements OnInit {
 
   loading = false;
 
+  @ViewChild(PaymentListComponent) paymentListComponent!: PaymentListComponent;
+
   constructor() {
     this.searchForm = this.fb.group({
       unitId: [null, Validators.required],
@@ -85,7 +87,7 @@ export class PaymentProcessComponent implements OnInit {
     this.paymentMethodsService
       .findAll()
       .subscribe(
-        (data) => (this.paymentMethods = data.filter((m) => m.isActive))
+        (data) => (this.paymentMethods = data.filter((m) => m.isActive)),
       );
   }
 
@@ -131,7 +133,7 @@ export class PaymentProcessComponent implements OnInit {
       if (file.size > 5 * 1024 * 1024) {
         this.sweetAlert.error(
           'Error',
-          'El archivo es demasiado grande (Máx 5MB)'
+          'El archivo es demasiado grande (Máx 5MB)',
         );
         return;
       }
@@ -175,7 +177,7 @@ export class PaymentProcessComponent implements OnInit {
         this.loading = false;
         this.sweetAlert.success(
           'Pago Registrado',
-          'Pago registrado exitosamente.'
+          'Pago registrado exitosamente.',
         );
         this.step = 1;
         this.selectedUnit = null;
@@ -197,5 +199,12 @@ export class PaymentProcessComponent implements OnInit {
     this.step = 1;
     this.selectedUnit = null;
     this.selectedDebts.clear();
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    // When switching to "Historial de Pagos" tab (index 1), refresh the data
+    if (event.index === 1 && this.paymentListComponent) {
+      this.paymentListComponent.loadPayments();
+    }
   }
 }

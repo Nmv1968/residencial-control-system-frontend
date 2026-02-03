@@ -10,10 +10,13 @@ import { AuthService } from '../../auth/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
 import { RouterLink } from '@angular/router';
 import { PaginatorNavIntl } from '../../services/paginator-nav.service';
+import { TableSkeletonComponent } from '../../components/common/table-skeleton/table-skeleton.component';
 import { SweetAlertService } from '../../services/sweet-alert.service';
 
 @Component({
@@ -26,7 +29,10 @@ import { SweetAlertService } from '../../services/sweet-alert.service';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatMenuModule,
+    MatTooltipModule,
     RouterLink,
+    TableSkeletonComponent,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorNavIntl }],
   templateUrl: './housing.component.html',
@@ -78,7 +84,7 @@ export class HousingComponent implements OnInit {
     const confirmed = await this.sweetAlert.confirm(
       '¿Estás seguro?',
       'Esta acción eliminará la vivienda y no se puede deshacer.',
-      'Sí, eliminar'
+      'Sí, eliminar',
     );
 
     if (confirmed) {
@@ -86,7 +92,7 @@ export class HousingComponent implements OnInit {
         next: () => {
           this.sweetAlert.success(
             'Eliminado',
-            'La vivienda ha sido eliminada.'
+            'La vivienda ha sido eliminada.',
           );
           this.loadData();
         },

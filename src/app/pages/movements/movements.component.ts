@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -17,6 +19,7 @@ import { PaginatorNavIntl } from '../../services/paginator-nav.service';
 import { ConfirmDialogComponent } from '../../components/common/confirm-dialog/confirm-dialog.component';
 import { RouterLink } from '@angular/router';
 import { FinancialMovement } from '../../schemas/financial.schemas';
+import { TableSkeletonComponent } from '../../components/common/table-skeleton/table-skeleton.component';
 
 @Component({
   selector: 'app-movements',
@@ -29,7 +32,10 @@ import { FinancialMovement } from '../../schemas/financial.schemas';
     MatDialogModule,
     MatChipsModule,
     MatPaginatorModule,
+    MatTooltipModule,
+    MatMenuModule,
     RouterLink,
+    TableSkeletonComponent,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorNavIntl }],
   templateUrl: './movements.component.html',
@@ -40,12 +46,14 @@ export class MovementsComponent implements OnInit {
   authService = inject(AuthService);
 
   movements = signal<FinancialMovement[]>([]);
+  isLoading = signal(false);
   displayedColumns: string[] = [
     'date',
     'type',
     'concept',
     'amount',
     'housing',
+    'reversed',
     'actions',
   ];
 
@@ -59,13 +67,32 @@ export class MovementsComponent implements OnInit {
   }
 
   loadData() {
+    this.isLoading.set(true);
     const apiPage = this.pageIndex + 1;
     this.movementsService
       .findAll(apiPage, this.pageSize)
       .subscribe((response) => {
         this.movements.set(response.data);
         this.totalItems = response.total;
+        this.isLoading.set(false);
       });
+  }
+
+  // Computed totals
+  get totalIncome(): number {
+    return this.movements()
+      .filter((m) => m.type === 'Income' && !m.isReversed)
+      .reduce((sum, m) => sum + m.amount, 0);
+  }
+
+  get totalExpenses(): number {
+    return this.movements()
+      .filter((m) => m.type === 'Expense' && !m.isReversed)
+      .reduce((sum, m) => sum + m.amount, 0);
+  }
+
+  get balance(): number {
+    return this.totalIncome - this.totalExpenses;
   }
 
   handlePageEvent(e: PageEvent) {

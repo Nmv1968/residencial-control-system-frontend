@@ -9,10 +9,8 @@
     </div>
     @if (authService.isAuthenticated()) {
       <a
-        mat-flat-button
-        color="secondary"
         routerLink="/movements/create"
-        class="bg-primary shadow-lg shadow-blue-900/20"
+        class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors shadow-lg shadow-blue-900/20 flex items-center gap-2 w-fit"
       >
         <mat-icon>add</mat-icon>
         Nuevo Movimiento
@@ -20,181 +18,278 @@
     }
   </div>
 
+  <!-- Financial Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Total Income Card -->
+    <div
+      class="card-base bg-gradient-to-br from-green-50 to-white border-green-100"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-sm font-medium text-green-600 uppercase tracking-wider mb-1"
+          >
+            Total Ingresos
+          </p>
+          <p class="text-2xl font-bold text-green-700">
+            {{ totalIncome | currency }}
+          </p>
+        </div>
+        <div class="bg-green-100 p-3 rounded-full">
+          <mat-icon class="text-green-600">arrow_downward</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Expenses Card -->
+    <div
+      class="card-base bg-gradient-to-br from-red-50 to-white border-red-100"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-sm font-medium text-red-600 uppercase tracking-wider mb-1"
+          >
+            Total Egresos
+          </p>
+          <p class="text-2xl font-bold text-red-700">
+            {{ totalExpenses | currency }}
+          </p>
+        </div>
+        <div class="bg-red-100 p-3 rounded-full">
+          <mat-icon class="text-red-600">arrow_upward</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance Card -->
+    <div
+      class="card-base bg-gradient-to-br from-blue-50 to-white border-blue-100"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-sm font-medium text-blue-600 uppercase tracking-wider mb-1"
+          >
+            Saldo
+          </p>
+          <p
+            class="text-2xl font-bold"
+            [ngClass]="{
+              'text-green-700': balance > 0,
+              'text-red-700': balance < 0,
+              'text-gray-700': balance === 0,
+            }"
+          >
+            {{ balance | currency }}
+          </p>
+        </div>
+        <div class="bg-blue-100 p-3 rounded-full">
+          <mat-icon class="text-blue-600">account_balance</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Table Card -->
   <div class="card-base p-0 overflow-hidden">
     <div class="overflow-x-auto">
-      <table mat-table [dataSource]="movements()" class="w-full">
-        <!-- Date Column -->
-        <ng-container matColumnDef="date">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
-          >
-            Fecha
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="px-6 py-4 text-gray-600 font-medium"
-          >
-            {{ element.date | date: "mediumDate" }}
-          </td>
-        </ng-container>
-
-        <!-- Type Column -->
-        <ng-container matColumnDef="type">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
-          >
-            Tipo
-          </th>
-          <td mat-cell *matCellDef="let element" class="px-6 py-4">
-            <span
-              class="px-2.5 py-1 rounded-full text-xs font-bold border flex items-center w-fit gap-1.5"
-              [ngClass]="{
-                'bg-gray-200 text-gray-500 decoration-slice line-through border-gray-300':
-                  element.isReversed,
-                'bg-green-50 text-green-700 border-green-200':
-                  element.type === 'Income' && !element.isReversed,
-                'bg-red-50 text-red-700 border-red-200':
-                  element.type === 'Expense' && !element.isReversed,
-              }"
+      @if (isLoading()) {
+        <app-table-skeleton
+          [rows]="pageSize"
+          [columns]="7"
+        ></app-table-skeleton>
+      } @else {
+        <table mat-table [dataSource]="movements()" class="w-full">
+          <!-- Date Column -->
+          <ng-container matColumnDef="date">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
             >
-              <mat-icon class="text-xs scale-75 font-bold">{{
-                element.type === "Income" ? "arrow_downward" : "arrow_upward"
-              }}</mat-icon>
-              {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
-              @if (element.isReversed) {
-                (REV)
-              }
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Concept Column -->
-        <ng-container matColumnDef="concept">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
-          >
-            Concepto
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="px-6 py-4 text-gray-800"
-            [class.text-gray-400]="element.isReversed"
-            [class.line-through]="element.isReversed"
-          >
-            {{ element.concept }}
-          </td>
-        </ng-container>
-
-        <!-- Amount Column -->
-        <ng-container matColumnDef="amount">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
-          >
-            Monto
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="px-6 py-4 text-right font-bold"
-          >
-            <span
-              [ngClass]="{
-                'text-gray-400 line-through decoration-gray-400':
-                  element.isReversed,
-                'text-green-600':
-                  element.type === 'Income' && !element.isReversed,
-                'text-gray-800':
-                  element.type === 'Expense' && !element.isReversed,
-              }"
+              Fecha
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="px-6 py-4 text-gray-600 font-medium"
             >
-              {{ element.type === "Expense" ? "-" : "+" }}
-              {{ element.amount | currency }}
-            </span>
-          </td>
-        </ng-container>
+              {{ element.date | date: "mediumDate" }}
+            </td>
+          </ng-container>
 
-        <!-- Housing Column -->
-        <ng-container matColumnDef="housing">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
-          >
-            Vivienda
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element"
-            class="px-6 py-4 text-gray-500"
-          >
-            <div class="flex items-center gap-2">
-              <mat-icon class="text-xs text-gray-400 scale-75">home</mat-icon>
-              {{ element.unidad?.number || element.housingId?.number || "N/A" }}
-            </div>
-          </td>
-        </ng-container>
+          <!-- Type Column -->
+          <ng-container matColumnDef="type">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+            >
+              Tipo
+            </th>
+            <td mat-cell *matCellDef="let element" class="px-6 py-4">
+              <span
+                class="px-2.5 py-1 rounded-full text-xs font-bold border flex items-center w-fit gap-1.5"
+                [ngClass]="{
+                  'bg-gray-200 text-gray-500 decoration-slice line-through border-gray-300':
+                    element.isReversed,
+                  'bg-green-50 text-green-700 border-green-200':
+                    element.type === 'Income' && !element.isReversed,
+                  'bg-red-50 text-red-700 border-red-200':
+                    element.type === 'Expense' && !element.isReversed,
+                }"
+              >
+                <mat-icon class="text-xs scale-75 font-bold">{{
+                  element.type === "Income" ? "arrow_downward" : "arrow_upward"
+                }}</mat-icon>
+                {{ element.type === "Income" ? "Ingreso" : "Egreso" }}
+                @if (element.isReversed) {
+                  (REV)
+                }
+              </span>
+            </td>
+          </ng-container>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center justify-center"
-          >
-            <div class="w-full flex justify-center items-center">Acciones</div>
-          </th>
-          <td mat-cell *matCellDef="let element" class="px-6 py-4 text-center">
-            @if (authService.isAuthenticated()) {
-              <div class="flex items-center justify-center gap-2">
-                <a
-                  mat-icon-button
-                  color="primary"
-                  [routerLink]="['/movements', element._id]"
-                  class="text-blue-600 hover:bg-blue-50"
-                  matTooltip="Ver detalles"
-                >
-                  <mat-icon>visibility</mat-icon>
-                </a>
-                @if (!element.isReversed) {
-                  <button
-                    mat-button
-                    color="warn"
-                    class="border border-red-100 hover:bg-red-50 text-red-600 !h-8 !px-3 font-normal"
-                    (click)="reverseMovement(element)"
-                  >
-                    <mat-icon class="text-sm scale-75 mr-1 text-red-400"
-                      >undo</mat-icon
-                    >
-                    Revertir
-                  </button>
+          <!-- Concept Column -->
+          <ng-container matColumnDef="concept">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+            >
+              Concepto
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="px-6 py-4 text-gray-800"
+              [class.text-gray-400]="element.isReversed"
+              [class.line-through]="element.isReversed"
+            >
+              {{ element.concept }}
+            </td>
+          </ng-container>
+
+          <!-- Amount Column -->
+          <ng-container matColumnDef="amount">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+            >
+              Monto
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="px-6 py-4 text-right font-bold"
+            >
+              <span
+                [ngClass]="{
+                  'text-gray-400 line-through decoration-gray-400':
+                    element.isReversed,
+                  'text-green-600':
+                    element.type === 'Income' && !element.isReversed,
+                  'text-gray-800':
+                    element.type === 'Expense' && !element.isReversed,
+                }"
+              >
+                {{ element.type === "Expense" ? "-" : "+" }}
+                {{ element.amount | currency }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Housing Column -->
+          <ng-container matColumnDef="housing">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+            >
+              Vivienda
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              class="px-6 py-4 text-gray-500"
+            >
+              <div class="flex items-center gap-2">
+                <mat-icon class="text-xs text-gray-400 scale-75">home</mat-icon>
+                {{
+                  element.unidad?.number || element.housingId?.number || "N/A"
+                }}
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Reversed Status Column -->
+          <ng-container matColumnDef="reversed">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center"
+            >
+              Revertido
+            </th>
+            <td mat-cell *matCellDef="let element" class="px-6 py-4">
+              <div class="flex justify-center items-center">
+                @if (element.isReversed) {
+                  <mat-icon class="text-red-500 scale-90">check_box</mat-icon>
                 } @else {
-                  <span class="text-xs text-gray-400 italic px-2"
-                    >Revertido</span
+                  <mat-icon class="text-red-500 scale-90"
+                    >check_box_outline_blank</mat-icon
                   >
                 }
               </div>
-            }
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
-        ></tr>
-      </table>
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center justify-center"
+            >
+              <div class="w-full flex justify-center items-center">
+                Acciones
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element" class="px-6 py-4">
+              <div class="flex justify-center items-center">
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  class="text-gray-600 hover:bg-gray-100"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a mat-menu-item [routerLink]="['/movements', element._id]">
+                    <mat-icon class="text-blue-600">visibility</mat-icon>
+                    <span>Ver detalles</span>
+                  </a>
+                  @if (authService.isAuthenticated() && !element.isReversed) {
+                    <button mat-menu-item (click)="reverseMovement(element)">
+                      <mat-icon class="text-red-600">undo</mat-icon>
+                      <span>Revertir</span>
+                    </button>
+                  }
+                </mat-menu>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
+          ></tr>
+        </table>
+      }
 
       <mat-paginator
         [length]="totalItems"

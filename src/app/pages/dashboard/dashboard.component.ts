@@ -73,56 +73,89 @@ export class DashboardComponent implements OnInit {
   public doughnutChartType: ChartType = 'doughnut';
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: [],
-    datasets: [
-      { data: [], backgroundColor: ['#10B981', '#3B82F6', '#E2E8F0'] },
-    ],
+    datasets: [{ data: [], backgroundColor: ['#10B981', '#E5E7EB'] }],
   };
+
+  // Occupancy data
+  occupancyRate = 0;
+  totalUnits = 0;
+  occupiedUnits = 0;
 
   ngOnInit() {
     this.loadDashboardData();
   }
 
   loadDashboardData() {
-    this.dashboardService.getSummary().subscribe((data) => {
-      this.kpis = data;
+    this.loading = true;
+    let loadedCount = 0;
+    const totalLoads = 4;
+
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount === totalLoads) {
+        this.loading = false;
+      }
+    };
+
+    this.dashboardService.getSummary().subscribe({
+      next: (data) => {
+        this.kpis = data;
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded(),
     });
 
-    this.dashboardService.getIncomeExpensesHistory().subscribe((data) => {
-      this.barChartData = {
-        labels: data.labels,
-        datasets: [
-          {
-            data: data.income,
-            label: 'Ingresos',
-            backgroundColor: '#3B82F6',
-            borderRadius: 4,
-          },
-          {
-            data: data.expenses,
-            label: 'Gastos',
-            backgroundColor: '#EF4444',
-            borderRadius: 4,
-          },
-        ],
-      };
+    this.dashboardService.getIncomeExpensesHistory().subscribe({
+      next: (data) => {
+        this.barChartData = {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.income,
+              label: 'Ingresos',
+              backgroundColor: '#3B82F6',
+              borderRadius: 4,
+            },
+            {
+              data: data.expenses,
+              label: 'Gastos',
+              backgroundColor: '#EF4444',
+              borderRadius: 4,
+            },
+          ],
+        };
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded(),
     });
 
-    this.dashboardService.getOccupancyStats().subscribe((data) => {
-      this.doughnutChartData = {
-        labels: data.labels,
-        datasets: [
-          {
-            data: data.data,
-            backgroundColor: ['#10B981', '#3B82F6', '#CBD5E1'],
-            hoverOffset: 4,
-          },
-        ],
-      };
+    this.dashboardService.getOccupancyStats().subscribe({
+      next: (data) => {
+        this.occupancyRate = data.occupancyRate || 0;
+        this.totalUnits = data.total || 0;
+        this.occupiedUnits = data.data[0] || 0;
+
+        this.doughnutChartData = {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.data,
+              backgroundColor: ['#10B981', '#E5E7EB'],
+              hoverOffset: 4,
+            },
+          ],
+        };
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded(),
     });
 
-    this.dashboardService.getRecentActivity().subscribe((data) => {
-      this.recentActivity = data;
-      this.loading = false;
+    this.dashboardService.getRecentActivity().subscribe({
+      next: (data) => {
+        this.recentActivity = data;
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded(),
     });
   }
 }

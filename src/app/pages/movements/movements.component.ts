@@ -116,7 +116,8 @@ export class MovementsComponent implements OnInit {
     if (this.filters.tipo) activeFilters.tipo = this.filters.tipo;
     if (this.filters.concepto) activeFilters.concepto = this.filters.concepto;
     if (this.filters.unitId) activeFilters.unitId = this.filters.unitId;
-    if (this.filters.isReversed !== undefined) {
+    // Only add isReversed if it's explicitly true or false (not null/undefined)
+    if (typeof this.filters.isReversed === 'boolean') {
       activeFilters.isReversed = this.filters.isReversed;
     }
 

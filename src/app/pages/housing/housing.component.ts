@@ -101,7 +101,8 @@ export class HousingComponent implements OnInit {
     if (this.filters.categoryId)
       activeFilters.categoryId = this.filters.categoryId;
     if (this.filters.status) activeFilters.status = this.filters.status;
-    if (this.filters.hasPendingBalance !== undefined) {
+    // Only add hasPendingBalance if it's explicitly true or false (not null/undefined)
+    if (typeof this.filters.hasPendingBalance === 'boolean') {
       activeFilters.hasPendingBalance = this.filters.hasPendingBalance;
     }
 

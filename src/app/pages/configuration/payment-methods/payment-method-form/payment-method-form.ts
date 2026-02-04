@@ -40,6 +40,7 @@ export class PaymentMethodFormComponent implements OnInit {
       accountHolder: [''],
       accountType: [null],
       additionalData: [''],
+      comentario: [''],
     });
 
     this.form.get('isBank')?.valueChanges.subscribe((isBank) => {
@@ -87,6 +88,7 @@ export class PaymentMethodFormComponent implements OnInit {
           accountHolder: method.accountHolder,
           accountType: method.accountType,
           additionalData: method.additionalData,
+          comentario: method.comentario,
         });
         // Trigger validator update in case it was loaded as true
         this.updateBankValidators(method.isBank || false);
@@ -114,7 +116,7 @@ export class PaymentMethodFormComponent implements OnInit {
           'Éxito',
           `Método de pago ${
             this.isEditMode ? 'actualizado' : 'creado'
-          } correctamente.`
+          } correctamente.`,
         );
         this.router.navigate(['/configuration/payment-methods']);
       },

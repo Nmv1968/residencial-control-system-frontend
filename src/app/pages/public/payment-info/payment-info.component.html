@@ -1,0 +1,194 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        Formas de Pago Disponibles
+      </h1>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Estas son las formas de pago que puede utilizar para realizar los pagos
+        correspondientes al conjunto residencial. Por favor, utilice cualquiera
+        de estos métodos para sus transacciones.
+      </p>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (item of [1, 2, 3]; track item) {
+          <div class="bg-white rounded-lg shadow-md p-6 animate-pulse">
+            <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div class="space-y-3">
+              <div class="h-4 bg-gray-100 rounded"></div>
+              <div class="h-4 bg-gray-100 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-100 rounded w-4/6"></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Payment Methods Grid -->
+    @else if (paymentMethods.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (method of paymentMethods; track method._id) {
+          <div
+            class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200"
+          >
+            <!-- Card Header -->
+            <div
+              class="p-6"
+              [ngClass]="{
+                'bg-gradient-to-r from-blue-50 to-blue-100': method.isBank,
+                'bg-gradient-to-r from-green-50 to-green-100': !method.isBank,
+              }"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="p-3 rounded-full"
+                  [ngClass]="{
+                    'bg-blue-600': method.isBank,
+                    'bg-green-600': !method.isBank,
+                  }"
+                >
+                  <mat-icon class="text-white">{{
+                    getPaymentIcon(method)
+                  }}</mat-icon>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">
+                  {{ method.name }}
+                </h3>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-6 space-y-4">
+              @if (method.isBank) {
+                <!-- Bank Details -->
+                <div class="space-y-3">
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="text-blue-600 text-sm mt-0.5"
+                      >account_balance</mat-icon
+                    >
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500 uppercase">Banco</p>
+                      <p class="text-sm font-semibold text-gray-900">
+                        {{ method.bankName }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="text-blue-600 text-sm mt-0.5"
+                      >credit_card</mat-icon
+                    >
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500 uppercase">
+                        Tipo de Cuenta
+                      </p>
+                      <p class="text-sm font-semibold text-gray-900">
+                        {{ getAccountTypeLabel(method.accountType || "") }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="text-blue-600 text-sm mt-0.5"
+                      >tag</mat-icon
+                    >
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500 uppercase">
+                        Número de Cuenta
+                      </p>
+                      <p class="text-sm font-mono font-semibold text-gray-900">
+                        {{ method.accountNumber }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="text-blue-600 text-sm mt-0.5"
+                      >person</mat-icon
+                    >
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500 uppercase">Titular</p>
+                      <p class="text-sm font-semibold text-gray-900">
+                        {{ method.accountHolder }}
+                      </p>
+                    </div>
+                  </div>
+
+                  @if (method.additionalData) {
+                    <div class="flex items-start gap-2">
+                      <mat-icon class="text-blue-600 text-sm mt-0.5"
+                        >info</mat-icon
+                      >
+                      <div class="flex-1">
+                        <p class="text-xs text-gray-500 uppercase">
+                          Datos Adicionales
+                        </p>
+                        <p class="text-sm text-gray-700">
+                          {{ method.additionalData }}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <!-- Non-Bank Payment Method -->
+                <div class="flex items-center gap-2">
+                  <mat-icon class="text-green-600">payments</mat-icon>
+                  <p class="text-gray-700">
+                    Método de pago no bancario disponible
+                  </p>
+                </div>
+              }
+
+              <!-- Comment -->
+              @if (method.comentario) {
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                  <div class="flex items-start gap-2">
+                    <mat-icon class="text-gray-500 text-sm mt-0.5"
+                      >comment</mat-icon
+                    >
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500 uppercase mb-1">
+                        Comentario
+                      </p>
+                      <p class="text-sm text-gray-700 italic">
+                        {{ method.comentario }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Empty State -->
+    @else {
+      <div class="text-center py-12">
+        <mat-icon class="text-6xl text-gray-300">payment</mat-icon>
+        <p class="mt-4 text-gray-500">
+          No hay formas de pago disponibles en este momento.
+        </p>
+      </div>
+    }
+
+    <!-- Footer Message -->
+    <div class="mt-12 text-center">
+      <div
+        class="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl mx-auto"
+      >
+        <mat-icon class="text-blue-600 text-3xl mb-2">info</mat-icon>
+        <p class="text-sm text-gray-700">
+          Para cualquier consulta o inconveniente con los pagos, por favor
+          contacte a la administración del conjunto residencial.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

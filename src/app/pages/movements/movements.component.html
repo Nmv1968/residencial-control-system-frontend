@@ -18,6 +18,130 @@
     }
   </div>
 
+  <!-- Filter Toggle Button -->
+  <div class="flex items-center gap-4">
+    <button
+      (click)="showFilters = !showFilters"
+      class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+    >
+      <mat-icon>{{ showFilters ? "expand_less" : "filter_list" }}</mat-icon>
+      {{ showFilters ? "Ocultar Filtros" : "Filtros" }}
+    </button>
+  </div>
+
+  <!-- Filters Section (Collapsible) -->
+  @if (showFilters) {
+    <div class="bg-white rounded-lg shadow-md p-6 animate-fade-in">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <!-- Start Date Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Fecha Desde
+          </label>
+          <input
+            type="date"
+            [(ngModel)]="filters.startDate"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+
+        <!-- End Date Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Fecha Hasta
+          </label>
+          <input
+            type="date"
+            [(ngModel)]="filters.endDate"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+
+        <!-- Type Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Tipo
+          </label>
+          <ng-select
+            [(ngModel)]="filters.tipo"
+            placeholder="Seleccionar tipo"
+            [clearable]="true"
+            class="custom-ng-select"
+          >
+            <ng-option *ngFor="let opt of typeOptions" [value]="opt.value">
+              {{ opt.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+
+        <!-- Concept Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Concepto
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="filters.concepto"
+            placeholder="Buscar por concepto..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+
+        <!-- Housing/Unit Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Vivienda
+          </label>
+          <ng-select
+            [(ngModel)]="filters.unitId"
+            placeholder="Seleccionar vivienda"
+            [clearable]="true"
+            class="custom-ng-select"
+          >
+            <ng-option *ngFor="let unit of units" [value]="unit._id">
+              {{ unit.number }}
+            </ng-option>
+          </ng-select>
+        </div>
+
+        <!-- Reversal Status Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Estado de Reverso
+          </label>
+          <ng-select
+            [(ngModel)]="filters.isReversed"
+            placeholder="Seleccionar estado"
+            [clearable]="true"
+            class="custom-ng-select"
+          >
+            <ng-option *ngFor="let opt of reversalOptions" [value]="opt.value">
+              {{ opt.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3 pt-4 border-t border-gray-200">
+        <button
+          (click)="applyFilters()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-md"
+        >
+          <mat-icon>search</mat-icon>
+          Buscar
+        </button>
+        <button
+          (click)="clearFilters()"
+          class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
+        >
+          <mat-icon>clear</mat-icon>
+          Limpiar Filtros
+        </button>
+      </div>
+    </div>
+  }
+
   <!-- Financial Summary Cards -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Total Income Card -->

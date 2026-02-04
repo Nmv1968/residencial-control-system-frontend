@@ -24,6 +24,13 @@ export const routes: Routes = [
       { path: 'movements', component: MovementsComponent },
       { path: 'account-status', component: AccountStatusComponent },
       { path: 'reports', component: ReportsComponent },
+      {
+        path: 'formas-de-pago',
+        loadComponent: () =>
+          import('./pages/public/payment-info/payment-info.component').then(
+            (m) => m.PaymentInfoComponent,
+          ),
+      },
 
       // Protected routes (auth required) - specific routes MUST come before :id routes
       {

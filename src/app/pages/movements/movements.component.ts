@@ -1,6 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MovementsService } from '../../services/movements.service';
+import { HousingService } from '../../services/housing.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthService } from '../../auth/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +29,8 @@ import { TableSkeletonComponent } from '../../components/common/table-skeleton/t
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
+    NgSelectModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
@@ -42,6 +47,7 @@ import { TableSkeletonComponent } from '../../components/common/table-skeleton/t
 })
 export class MovementsComponent implements OnInit {
   private movementsService = inject(MovementsService);
+  private housingService = inject(HousingService);
   private dialog = inject(MatDialog);
   authService = inject(AuthService);
 
@@ -62,20 +68,86 @@ export class MovementsComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
+  // Filter State
+  showFilters = false;
+  filters = {
+    startDate: '',
+    endDate: '',
+    tipo: '',
+    concepto: '',
+    unitId: '',
+    isReversed: undefined as boolean | undefined,
+  };
+
+  units: any[] = [];
+  typeOptions = [
+    { value: 'CARGO_MENSUAL', label: 'Cargo Mensual' },
+    { value: 'PAGO', label: 'Pago' },
+    { value: 'GASTO', label: 'Gasto' },
+    { value: 'AJUSTE', label: 'Ajuste' },
+  ];
+  reversalOptions = [
+    { value: true, label: 'Sí' },
+    { value: false, label: 'No' },
+  ];
+
   ngOnInit() {
+    this.loadUnits();
     this.loadData();
+  }
+
+  loadUnits() {
+    this.housingService.findAll(1, 1000).subscribe({
+      next: (response) => {
+        this.units = response.data;
+      },
+    });
   }
 
   loadData() {
     this.isLoading.set(true);
     const apiPage = this.pageIndex + 1;
+
+    // Build active filters object
+    const activeFilters: any = {};
+    if (this.filters.startDate)
+      activeFilters.startDate = this.filters.startDate;
+    if (this.filters.endDate) activeFilters.endDate = this.filters.endDate;
+    if (this.filters.tipo) activeFilters.tipo = this.filters.tipo;
+    if (this.filters.concepto) activeFilters.concepto = this.filters.concepto;
+    if (this.filters.unitId) activeFilters.unitId = this.filters.unitId;
+    if (this.filters.isReversed !== undefined) {
+      activeFilters.isReversed = this.filters.isReversed;
+    }
+
     this.movementsService
-      .findAll(apiPage, this.pageSize)
+      .findAll(
+        apiPage,
+        this.pageSize,
+        Object.keys(activeFilters).length > 0 ? activeFilters : undefined,
+      )
       .subscribe((response) => {
         this.movements.set(response.data);
         this.totalItems = response.total;
         this.isLoading.set(false);
       });
+  }
+
+  applyFilters() {
+    this.pageIndex = 0;
+    this.loadData();
+  }
+
+  clearFilters() {
+    this.filters = {
+      startDate: '',
+      endDate: '',
+      tipo: '',
+      concepto: '',
+      unitId: '',
+      isReversed: undefined,
+    };
+    this.applyFilters();
   }
 
   // Computed totals

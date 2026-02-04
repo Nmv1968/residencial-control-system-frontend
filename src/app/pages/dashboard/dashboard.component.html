@@ -224,14 +224,14 @@
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-900">
                     @if (item.unit && item.unit !== "N/A") {
-                      <span class="font-medium">{{ item.unit }}</span>
+                      <span class="font-medium">{{ item.unit }} - </span>
                     }
                     @if (item.description) {
                       <span class="text-gray-600">{{ item.description }}</span>
                     }
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{ item.date | date: "short" }}
+                    {{ item.date | date: "dd/MM/yyyy" }}
                   </td>
                   <td
                     class="px-6 py-4 text-sm text-right font-semibold"

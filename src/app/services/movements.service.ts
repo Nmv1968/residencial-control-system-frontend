@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, of } from 'rxjs'; // Replaced forkJoin, catchError since unused or re-add if needed
 import { FinancialMovement } from '../schemas/financial.schemas';
 
@@ -24,14 +24,40 @@ export class MovementsService {
   private transactionsUrl = 'http://localhost:3000/api/v1/transactions';
   private http = inject(HttpClient);
 
-  findAll(page: number = 1, limit: number = 10) {
+  findAll(
+    page: number = 1,
+    limit: number = 10,
+    filters?: {
+      startDate?: string;
+      endDate?: string;
+      tipo?: string;
+      concepto?: string;
+      unitId?: string;
+      isReversed?: boolean;
+    },
+  ) {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    // Add filters if provided
+    if (filters) {
+      if (filters.startDate)
+        params = params.set('startDate', filters.startDate);
+      if (filters.endDate) params = params.set('endDate', filters.endDate);
+      if (filters.tipo) params = params.set('tipo', filters.tipo);
+      if (filters.concepto) params = params.set('concepto', filters.concepto);
+      if (filters.unitId) params = params.set('unitId', filters.unitId);
+      if (filters.isReversed !== undefined) {
+        params = params.set('isReversed', filters.isReversed.toString());
+      }
+    }
+
     return this.http
-      .get<{ data: BackendTransaction[]; total: number }>(
-        this.transactionsUrl,
-        {
-          params: { page, limit },
-        },
-      )
+      .get<{
+        data: BackendTransaction[];
+        total: number;
+      }>(this.transactionsUrl, { params })
       .pipe(
         map((response) => {
           const mappedData: FinancialMovement[] = response.data.map((t) => ({

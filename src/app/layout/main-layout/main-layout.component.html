@@ -237,12 +237,18 @@
           </div>
         } @else {
           <a
-            mat-flat-button
-            color="primary"
             routerLink="/login"
-            class="bg-primary"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
           >
+            <mat-icon class="text-white">login</mat-icon>
             Ingresar
+          </a>
+          <a
+            routerLink="/formas-de-pago"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+          >
+            <mat-icon class="text-white">payment</mat-icon>
+            Formas de Pago
           </a>
         }
       </div>

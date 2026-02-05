@@ -63,16 +63,16 @@ export class HousingComponent implements OnInit {
   filters = {
     number: '',
     categoryId: '',
-    status: '',
-    hasPendingBalance: undefined as boolean | undefined,
+    financialStatus: undefined as string | undefined,
   };
 
   categories: any[] = [];
-  statusOptions = [
-    { value: 'OCCUPIED', label: 'Ocupada' },
-    { value: 'VACANT', label: 'Vacante' },
-    { value: 'MAINTENANCE', label: 'Mantenimiento' },
+  financialStatusOptions = [
+    { value: 'DEBTOR', label: 'Deudor' },
+    { value: 'SOLVENT', label: 'Al día' },
   ];
+
+  displayedColumns = ['number', 'category', 'resident', 'balance', 'actions'];
 
   ngOnInit() {
     this.loadCategories();
@@ -100,10 +100,8 @@ export class HousingComponent implements OnInit {
     if (this.filters.number) activeFilters.number = this.filters.number;
     if (this.filters.categoryId)
       activeFilters.categoryId = this.filters.categoryId;
-    if (this.filters.status) activeFilters.status = this.filters.status;
-    // Only add hasPendingBalance if it's explicitly true or false (not null/undefined)
-    if (typeof this.filters.hasPendingBalance === 'boolean') {
-      activeFilters.hasPendingBalance = this.filters.hasPendingBalance;
+    if (this.filters.financialStatus) {
+      activeFilters.financialStatus = this.filters.financialStatus;
     }
 
     this.housingService
@@ -134,8 +132,7 @@ export class HousingComponent implements OnInit {
     this.filters = {
       number: '',
       categoryId: '',
-      status: '',
-      hasPendingBalance: undefined,
+      financialStatus: undefined,
     };
     this.applyFilters();
   }

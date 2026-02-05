@@ -91,21 +91,6 @@
             </span>
           </div>
 
-          <!-- Status Select -->
-          <div>
-            <label class="label-bold">Estado</label>
-            <ng-select
-              formControlName="status"
-              [items]="statusOptions"
-              bindLabel="label"
-              bindValue="value"
-              [clearable]="false"
-              appendTo="body"
-              class="custom-ng-select"
-            >
-            </ng-select>
-          </div>
-
           <!-- Resident Name -->
           <div>
             <label class="label-bold">Residente / Propietario (Opcional)</label>
@@ -155,8 +140,11 @@
           class="btn-accent shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:shadow-none min-w-[140px] flex justify-center"
         >
           @if (loading) {
-          <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
-          Guardando... } @else { Guardar }
+            <mat-icon class="animate-spin text-sm scale-75 mr-2">sync</mat-icon>
+            Guardando...
+          } @else {
+            Guardar
+          }
         </button>
       </div>
     </form>

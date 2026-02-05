@@ -76,10 +76,19 @@ export class DashboardComponent implements OnInit {
     datasets: [{ data: [], backgroundColor: ['#10B981', '#E5E7EB'] }],
   };
 
-  // Occupancy data
-  occupancyRate = 0;
+  // Financial Status data
+  debtorRate = 0;
   totalUnits = 0;
-  occupiedUnits = 0;
+  debtorUnits = 0;
+  solventUnits = 0;
+
+  // Chart Date Range Filter
+  selectedRange = 6;
+  timeRanges = [
+    { label: 'Últimos 3 Meses', value: 3 },
+    { label: 'Últimos 6 Meses', value: 6 },
+    { label: 'Último Año', value: 12 },
+  ];
 
   ngOnInit() {
     this.loadDashboardData();
@@ -105,42 +114,21 @@ export class DashboardComponent implements OnInit {
       error: () => checkAllLoaded(),
     });
 
-    this.dashboardService.getIncomeExpensesHistory().subscribe({
-      next: (data) => {
-        this.barChartData = {
-          labels: data.labels,
-          datasets: [
-            {
-              data: data.income,
-              label: 'Ingresos',
-              backgroundColor: '#3B82F6',
-              borderRadius: 4,
-            },
-            {
-              data: data.expenses,
-              label: 'Gastos',
-              backgroundColor: '#EF4444',
-              borderRadius: 4,
-            },
-          ],
-        };
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded(),
-    });
+    this.loadChartData(() => checkAllLoaded());
 
-    this.dashboardService.getOccupancyStats().subscribe({
+    this.dashboardService.getFinancialStats().subscribe({
       next: (data) => {
-        this.occupancyRate = data.occupancyRate || 0;
+        this.debtorRate = data.debtorRate || 0;
         this.totalUnits = data.total || 0;
-        this.occupiedUnits = data.data[0] || 0;
+        this.debtorUnits = data.data[0] || 0;
+        this.solventUnits = data.data[1] || 0;
 
         this.doughnutChartData = {
           labels: data.labels,
           datasets: [
             {
               data: data.data,
-              backgroundColor: ['#10B981', '#E5E7EB'],
+              backgroundColor: ['#EF4444', '#10B981'], // Red for Debtors, Green for Solvent
               hoverOffset: 4,
             },
           ],
@@ -157,5 +145,40 @@ export class DashboardComponent implements OnInit {
       },
       error: () => checkAllLoaded(),
     });
+  }
+
+  loadChartData(callback?: () => void) {
+    this.dashboardService
+      .getIncomeExpensesHistory(this.selectedRange)
+      .subscribe({
+        next: (data) => {
+          this.barChartData = {
+            labels: data.labels,
+            datasets: [
+              {
+                data: data.income,
+                label: 'Ingresos',
+                backgroundColor: '#3B82F6',
+                borderRadius: 4,
+              },
+              {
+                data: data.expenses,
+                label: 'Gastos',
+                backgroundColor: '#EF4444',
+                borderRadius: 4,
+              },
+            ],
+          };
+          if (callback) callback();
+        },
+        error: () => {
+          if (callback) callback();
+        },
+      });
+  }
+
+  updateChartRange(months: number) {
+    this.selectedRange = months;
+    this.loadChartData();
   }
 }

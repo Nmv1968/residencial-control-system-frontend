@@ -7,11 +7,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import {
   ContactInfoService,
   ContactInfo,
 } from '../../services/contact-info.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -27,6 +29,7 @@ import {
     MatListModule,
     MatButtonModule,
     MatMenuModule,
+    MatTooltipModule,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
@@ -34,6 +37,8 @@ import {
 export class MainLayoutComponent implements OnInit {
   private authService = inject(AuthService);
   private contactService = inject(ContactInfoService);
+  themeService = inject(ThemeService);
+
   isAuthenticated = this.authService.isAuthenticated;
 
   contactInfo?: ContactInfo;

@@ -39,7 +39,6 @@ export class HousingFormComponent implements OnInit {
   form: FormGroup = this.fb.group({
     number: ['', Validators.required],
     categoryId: [null, Validators.required],
-    status: ['OCCUPIED', Validators.required],
     residentName: [''],
     phone: [''],
   });
@@ -48,12 +47,6 @@ export class HousingFormComponent implements OnInit {
   housingId: string | null = null;
   loading = false;
   categories: Category[] = [];
-
-  statusOptions = [
-    { label: 'Ocupado', value: 'OCCUPIED' },
-    { label: 'Vacío', value: 'VACANT' },
-    { label: 'Mantenimiento', value: 'MAINTENANCE' },
-  ];
 
   private sweetAlert = inject(SweetAlertService); // [NEW]
 
@@ -95,7 +88,7 @@ export class HousingFormComponent implements OnInit {
       error: () => {
         this.sweetAlert.error(
           'Error',
-          'No se pudo cargar la información de la vivienda.'
+          'No se pudo cargar la información de la vivienda.',
         );
         this.router.navigate(['/housing']);
         this.loading = false;
@@ -120,7 +113,7 @@ export class HousingFormComponent implements OnInit {
             'Éxito',
             `La vivienda ha sido ${
               this.isEditing ? 'actualizada' : 'creada'
-            } correctamente.`
+            } correctamente.`,
           );
           this.router.navigate(['/housing']);
         },
@@ -138,7 +131,7 @@ export class HousingFormComponent implements OnInit {
               'Ocurrió un error al guardar. Intenta nuevamente.';
             this.sweetAlert.error(
               'Error',
-              'Ocurrió un error inesperado al guardar.'
+              'Ocurrió un error inesperado al guardar.',
             );
           }
         },

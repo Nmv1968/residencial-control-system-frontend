@@ -1,165 +1,149 @@
-<mat-sidenav-container class="h-screen w-full bg-background-light">
+<mat-sidenav-container
+  class="h-screen w-full bg-background-light dark:bg-gray-900"
+>
   <!-- Sidenav -->
   <mat-sidenav
     #sidenav
     mode="side"
     opened
-    class="w-72 border-none bg-primary text-gray-300 shadow-xl"
+    class="w-72 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 shadow-xl"
     fixedInViewport="false"
   >
     <!-- Logo Area -->
-    <div class="h-20 flex items-center px-8 border-b border-white/10">
+    <div
+      class="h-20 flex items-center px-8 border-b border-gray-100 dark:border-gray-700/50"
+    >
       <div class="flex items-center gap-3">
         <div
-          class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shadow-lg shadow-blue-900/50"
+          class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shadow-lg shadow-blue-500/20"
         >
           <mat-icon class="text-white scale-125">apartment</mat-icon>
         </div>
-        <p class="font-bold text-xl text-primary tracking-wide">
-          Conjunto Orbea
-        </p>
-        <p class="font-bold text-xl text-accent tracking-wide">
-          Control Financiero
-        </p>
+        <div>
+          <p
+            class="font-bold text-lg text-gray-900 dark:text-white leading-tight"
+          >
+            Conjunto Orbea
+          </p>
+          <p class="text-xs font-bold text-accent tracking-wide uppercase">
+            Control Financiero
+          </p>
+        </div>
       </div>
     </div>
 
     <!-- Navigation -->
     <nav class="p-4 space-y-2 mt-4">
       <div class="px-4 mb-2">
-        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+        <span
+          class="text-xs uppercase font-bold text-gray-400 dark:text-gray-500 tracking-wider"
           >Principal</span
         >
       </div>
 
       <a
         routerLink="/dashboard"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
       >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >dashboard</mat-icon
-        >
+        <mat-icon class="transition-colors">dashboard</mat-icon>
         <span class="font-medium">Dashboard</span>
       </a>
 
       <div class="px-4 mb-2 mt-6">
-        <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+        <span
+          class="text-xs uppercase font-bold text-gray-400 dark:text-gray-500 tracking-wider"
           >Gestión</span
         >
       </div>
 
       <a
         routerLink="/housing"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
       >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >home_work</mat-icon
-        >
+        <mat-icon class="transition-colors">home_work</mat-icon>
         <span class="font-medium">Viviendas</span>
       </a>
 
       <a
         routerLink="/movements"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
       >
-        <mat-icon class="transition-colors group-hover:text-white"
-          >receipt_long</mat-icon
-        >
+        <mat-icon class="transition-colors">receipt_long</mat-icon>
         <span class="font-medium">Transacciones</span>
       </a>
 
-      <!-- 
-      <a
-        routerLink="/reports"
-        routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-         class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
-      >
-        <mat-icon class="transition-colors group-hover:text-white">analytics</mat-icon>
-        <span class="font-medium">Reportes</span>
-      </a>
-      -->
       <!-- Financial Section -->
       @if (isAuthenticated()) {
         <div class="px-4 mb-2 mt-6">
-          <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+          <span
+            class="text-xs uppercase font-bold text-gray-400 dark:text-gray-500 tracking-wider"
             >Financiero</span
           >
         </div>
 
         <a
           routerLink="/financial/initial-balance"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >account_balance_wallet</mat-icon
-          >
+          <mat-icon class="transition-colors">account_balance_wallet</mat-icon>
           <span class="font-medium">Saldos Iniciales</span>
         </a>
 
         <a
           routerLink="/financial/debt-wizard"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >post_add</mat-icon
-          >
+          <mat-icon class="transition-colors">post_add</mat-icon>
           <span class="font-medium">Gen. Deudas</span>
         </a>
 
         <a
           routerLink="/financial/payment-process"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >payments</mat-icon
-          >
+          <mat-icon class="transition-colors">payments</mat-icon>
           <span class="font-medium">Caja / Pagos</span>
         </a>
 
         <!-- Configuration Section -->
         <div class="px-4 mb-2 mt-6">
-          <span class="text-xs uppercase font-bold text-gray-500 tracking-wider"
+          <span
+            class="text-xs uppercase font-bold text-gray-400 dark:text-gray-500 tracking-wider"
             >Configuración</span
           >
         </div>
 
         <a
           routerLink="/configuration/categories"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >category</mat-icon
-          >
+          <mat-icon class="transition-colors">category</mat-icon>
           <span class="font-medium">Categorías</span>
         </a>
 
         <a
           routerLink="/configuration/payment-methods"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >credit_card</mat-icon
-          >
+          <mat-icon class="transition-colors">credit_card</mat-icon>
           <span class="font-medium">Métodos Pago</span>
         </a>
 
         <a
           routerLink="/configuration/contact-info"
-          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 group"
+          routerLinkActive="bg-accent text-white shadow-lg shadow-blue-500/30"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 group text-gray-600 dark:text-gray-300"
         >
-          <mat-icon class="transition-colors group-hover:text-white"
-            >contact_mail</mat-icon
-          >
+          <mat-icon class="transition-colors">contact_mail</mat-icon>
           <span class="font-medium">Info. Contacto</span>
         </a>
       }
@@ -170,35 +154,37 @@
         contactInfo &&
         (contactInfo.fullName || contactInfo.phone || contactInfo.email)
       "
-      class="px-6 py-4 mt-auto border-t border-white/10"
+      class="px-6 py-4 mt-auto border-t border-gray-100 dark:border-gray-700"
     >
       <p
         class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-2"
       >
         Contacto
       </p>
-      <div class="space-y-2 text-sm text-gray-300">
+      <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
         <div *ngIf="contactInfo.fullName" class="flex items-center gap-2">
           <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">person</mat-icon>
-          <span class="truncate text-black">{{ contactInfo.fullName }}</span>
+          <span class="truncate">{{ contactInfo.fullName }}</span>
         </div>
         <div *ngIf="contactInfo.phone" class="flex items-center gap-2">
           <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">phone</mat-icon>
-          <span class="truncate text-black">{{ contactInfo.phone }}</span>
+          <span class="truncate">{{ contactInfo.phone }}</span>
         </div>
         <div *ngIf="contactInfo.email" class="flex items-center gap-2">
           <mat-icon class="scale-75 h-5 w-5 -ml-1 text-accent">email</mat-icon>
-          <span class="truncate text-black">{{ contactInfo.email }}</span>
+          <span class="truncate">{{ contactInfo.email }}</span>
         </div>
       </div>
     </div>
   </mat-sidenav>
 
   <!-- Main Content -->
-  <mat-sidenav-content class="flex flex-col h-full bg-background-light">
+  <mat-sidenav-content
+    class="flex flex-col h-full bg-background-light dark:bg-gray-900"
+  >
     <!-- Topbar -->
     <header
-      class="h-20 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-30"
+      class="h-20 bg-white dark:bg-gray-800 border-b border-border dark:border-gray-700 flex items-center justify-between px-8 sticky top-0 z-30"
     >
       <div class="flex items-center gap-4">
         <button
@@ -208,13 +194,26 @@
         >
           <mat-icon>menu</mat-icon>
         </button>
-        <h2 class="text-xl font-semibold text-primary">
+        <h2 class="text-xl font-semibold text-primary dark:text-white">
           <!-- Dynamic Title could go here -->
           Panel de Control
         </h2>
       </div>
 
-      <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4">
+        <!-- Theme Toggle -->
+        <button
+          mat-icon-button
+          (click)="themeService.toggleTheme()"
+          class="text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          [matTooltip]="
+            themeService.isDarkMode() ? 'Modo Claro' : 'Modo Oscuro'
+          "
+        >
+          <mat-icon>{{
+            themeService.isDarkMode() ? "light_mode" : "dark_mode"
+          }}</mat-icon>
+        </button>
         @if (isAuthenticated()) {
           <div class="flex items-center gap-3 pl-6 border-l border-gray-100">
             <div class="text-right hidden sm:block">

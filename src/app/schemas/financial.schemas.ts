@@ -13,7 +13,6 @@ export const unitSchema = z.object({
   number: z.string().min(1, 'Unit Number is required'),
   residentName: z.string().min(1, 'Resident Name is required'),
   phone: z.string().optional(),
-  status: z.enum(['OCCUPIED', 'VACANT', 'MAINTENANCE']),
   categoryId: z.string().min(1, 'Category is required'),
   // Balance is read-only from backend usually, but for display types:
   balance: z.number().optional(),

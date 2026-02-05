@@ -17,8 +17,7 @@ export class HousingService {
     filters?: {
       number?: string;
       categoryId?: string;
-      status?: string;
-      hasPendingBalance?: boolean;
+      financialStatus?: string;
     },
   ): Observable<{ data: Unit[]; total: number }> {
     let params = new HttpParams()
@@ -33,14 +32,8 @@ export class HousingService {
       if (filters.categoryId) {
         params = params.set('categoryId', filters.categoryId);
       }
-      if (filters.status) {
-        params = params.set('status', filters.status);
-      }
-      if (filters.hasPendingBalance !== undefined) {
-        params = params.set(
-          'hasPendingBalance',
-          filters.hasPendingBalance.toString(),
-        );
+      if (filters.financialStatus) {
+        params = params.set('financialStatus', filters.financialStatus);
       }
     }
 

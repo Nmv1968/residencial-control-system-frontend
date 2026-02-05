@@ -14,12 +14,14 @@ export class DashboardService {
     return this.http.get(`${this.apiUrl}/dashboard`);
   }
 
-  getIncomeExpensesHistory(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/dashboard/history`);
+  getIncomeExpensesHistory(months: number = 6): Observable<any> {
+    return this.http.get(`${this.apiUrl}/dashboard/history`, {
+      params: { months: months.toString() },
+    });
   }
 
-  getOccupancyStats(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/dashboard/occupancy`);
+  getFinancialStats(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/dashboard/financial-status`);
   }
 
   getRecentActivity(): Observable<any> {

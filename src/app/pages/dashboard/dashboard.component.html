@@ -2,7 +2,9 @@
   <!-- Header -->
   <div class="flex justify-between items-center">
     <div>
-      <h1 class="text-3xl font-bold text-gray-800">Vista General</h1>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+        Vista General
+      </h1>
       <p class="text-gray-500 mt-1">
         Resumen financiero y operativo del conjunto
       </p>
@@ -62,7 +64,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Cash Balance -->
       <div
-        class="bg-white rounded-lg shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -71,7 +73,7 @@
             >
               Saldo en Caja
             </p>
-            <h3 class="text-2xl font-bold text-gray-900 mt-2">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
               {{ kpis.cashBalance | currency }}
             </h3>
             <p class="text-xs text-gray-500 mt-1">Ingresos - Egresos</p>
@@ -84,7 +86,7 @@
 
       <!-- Receivables -->
       <div
-        class="bg-white rounded-lg shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -93,7 +95,7 @@
             >
               Por Cobrar
             </p>
-            <h3 class="text-2xl font-bold text-gray-900 mt-2">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
               {{ kpis.totalReceivable | currency }}
             </h3>
             <p class="text-xs text-red-500 mt-1">
@@ -106,26 +108,50 @@
         </div>
       </div>
 
-      <!-- Occupancy -->
+      <!-- Solvent (Al día) -->
       <div
-        class="bg-white rounded-lg shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
       >
         <div class="flex items-center justify-between">
           <div>
             <p
               class="text-sm font-medium text-gray-500 uppercase tracking-wide"
             >
-              Ocupación
+              Casas Al Día
             </p>
-            <h3 class="text-2xl font-bold text-gray-900 mt-2">
-              {{ occupancyRate }}%
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
+              {{ solventUnits }}
             </h3>
-            <p class="text-xs text-gray-500 mt-1">
-              {{ occupiedUnits }} de {{ totalUnits }} unidades
+            <p class="text-xs text-green-600 mt-1 font-medium">
+              Sin deudas pendientes
             </p>
           </div>
           <div class="bg-green-100 p-3 rounded-full">
-            <mat-icon class="text-green-600">home</mat-icon>
+            <mat-icon class="text-green-600">check_circle</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debtors (Deudoras) -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p
+              class="text-sm font-medium text-gray-500 uppercase tracking-wide"
+            >
+              Casas Deudoras
+            </p>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
+              {{ debtorUnits }}
+            </h3>
+            <p class="text-xs text-red-500 mt-1 font-medium">
+              {{ debtorRate }}% del total
+            </p>
+          </div>
+          <div class="bg-red-100 p-3 rounded-full">
+            <mat-icon class="text-red-600">warning</mat-icon>
           </div>
         </div>
       </div>
@@ -135,11 +161,29 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Income vs Expenses Chart -->
       <div
-        class="lg:col-span-2 bg-white rounded-lg shadow-md border border-gray-200 p-6"
+        class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6"
       >
-        <h3 class="text-lg font-bold text-gray-800 mb-4">
-          Ingresos vs Gastos (6 Meses)
-        </h3>
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">
+            Ingresos vs Gastos
+          </h3>
+          <div class="flex space-x-2">
+            @for (range of timeRanges; track range.value) {
+              <button
+                class="px-3 py-1 text-xs font-medium rounded-full transition-colors border"
+                [ngClass]="{
+                  'bg-blue-600 text-white border-blue-600':
+                    selectedRange === range.value,
+                  'bg-white text-gray-500 border-gray-200 hover:bg-gray-50':
+                    selectedRange !== range.value,
+                }"
+                (click)="updateChartRange(range.value)"
+              >
+                {{ range.label }}
+              </button>
+            }
+          </div>
+        </div>
         <div class="h-80">
           <canvas
             baseChart
@@ -151,9 +195,11 @@
       </div>
 
       <!-- Occupancy Stats Chart -->
-      <div class="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">
-          Estado de Ocupación
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6"
+      >
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">
+          Estado Financiero
         </h3>
         <div class="h-80 flex items-center justify-center">
           <canvas
@@ -168,10 +214,12 @@
 
     <!-- Recent Activity Table -->
     <div
-      class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden"
     >
-      <div class="px-6 py-4 border-b border-gray-200">
-        <h3 class="text-lg font-bold text-gray-800">Actividad Reciente</h3>
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">
+          Actividad Reciente
+        </h3>
       </div>
 
       @if (recentActivity.length === 0) {
@@ -182,7 +230,9 @@
       } @else {
         <div class="overflow-x-auto">
           <table class="w-full">
-            <thead class="bg-gray-50 border-b border-gray-200">
+            <thead
+              class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600"
+            >
               <tr>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -208,7 +258,9 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
               @for (item of recentActivity; track item.id) {
-                <tr class="hover:bg-gray-50 transition-colors">
+                <tr
+                  class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
                   <td class="px-6 py-4">
                     <span
                       class="px-2 py-1 rounded text-xs font-semibold"
@@ -222,12 +274,16 @@
                       {{ item.type === "CARGO_MENSUAL" ? "CARGO" : item.type }}
                     </span>
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-900">
+                  <td
+                    class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200"
+                  >
                     @if (item.unit && item.unit !== "N/A") {
                       <span class="font-medium">{{ item.unit }} - </span>
                     }
                     @if (item.description) {
-                      <span class="text-gray-600">{{ item.description }}</span>
+                      <span class="text-gray-600 dark:text-gray-400">{{
+                        item.description
+                      }}</span>
                     }
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
@@ -238,7 +294,8 @@
                     [ngClass]="{
                       'text-green-600': item.type === 'PAGO',
                       'text-red-600': item.type === 'GASTO',
-                      'text-gray-800': item.type === 'CARGO_MENSUAL',
+                      'text-gray-800 dark:text-gray-300':
+                        item.type === 'CARGO_MENSUAL',
                     }"
                   >
                     {{ item.type === "GASTO" ? "-" : "+"

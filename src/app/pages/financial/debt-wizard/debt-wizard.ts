@@ -99,13 +99,13 @@ export class DebtWizardComponent implements OnInit {
   }
 
   estimatedCount(): number {
-    if (this.scope === 'ALL') return this.units.length; // Approximate, backend filters by OCCUPIED
+    if (this.scope === 'ALL') return this.units.length;
     if (this.scope === 'CATEGORY')
       return this.units.filter(
         (u) =>
           u.category &&
           (u.category._id === this.form.get('targetId')?.value ||
-            (u.category as any) === this.form.get('targetId')?.value)
+            (u.category as any) === this.form.get('targetId')?.value),
       ).length; // Rough estimate
     if (this.scope === 'SINGLE') return 1;
     return 0;

@@ -4,8 +4,8 @@
   <!-- Sidenav -->
   <mat-sidenav
     #sidenav
-    mode="side"
-    opened
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
     class="w-72 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 shadow-xl"
     fixedInViewport="false"
   >
@@ -25,7 +25,7 @@
           >
             Conjunto Orbea
           </p>
-          <p class="text-xs font-bold text-accent tracking-wide uppercase">
+          <p class="text-xs font-bold text-accent tracking-wider uppercase">
             Control Financiero
           </p>
         </div>
@@ -184,9 +184,9 @@
   >
     <!-- Topbar -->
     <header
-      class="h-20 bg-white dark:bg-gray-800 border-b border-border dark:border-gray-700 flex items-center justify-between px-8 sticky top-0 z-30"
+      class="h-20 bg-white dark:bg-gray-800 border-b border-border dark:border-gray-700 flex items-center justify-between px-4 md:px-8 sticky top-0 z-30"
     >
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 md:gap-4">
         <button
           mat-icon-button
           (click)="sidenav.toggle()"
@@ -194,13 +194,15 @@
         >
           <mat-icon>menu</mat-icon>
         </button>
-        <h2 class="text-xl font-semibold text-primary dark:text-white">
+        <h2
+          class="text-base md:text-xl font-semibold text-primary dark:text-white truncate"
+        >
           <!-- Dynamic Title could go here -->
           Panel de Control
         </h2>
       </div>
 
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 md:gap-4">
         <!-- Theme Toggle -->
         <button
           mat-icon-button
@@ -216,7 +218,7 @@
         </button>
         @if (isAuthenticated()) {
           <div
-            class="flex items-center gap-3 pl-6 border-l border-gray-100 dark:border-gray-700"
+            class="flex items-center gap-3 pl-3 md:pl-6 border-l border-gray-100 dark:border-gray-700"
           >
             <div class="text-right hidden sm:block">
               <p class="text-sm font-bold text-primary dark:text-gray-200">
@@ -228,7 +230,7 @@
             </div>
             <button
               [matMenuTriggerFor]="userMenu"
-              class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-primary dark:text-white font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none"
+              class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-primary dark:text-white font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none text-sm md:text-base"
             >
               {{ (contactInfo?.fullName | slice: 0 : 1) || "A" }}
             </button>
@@ -240,26 +242,34 @@
             </mat-menu>
           </div>
         } @else {
-          <a
-            routerLink="/login"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
-          >
-            <mat-icon class="text-white">login</mat-icon>
-            Ingresar
-          </a>
-          <a
-            routerLink="/formas-de-pago"
-            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
-          >
-            <mat-icon class="text-white">payment</mat-icon>
-            Formas de Pago
-          </a>
+          <div class="flex gap-2">
+            <a
+              routerLink="/login"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 md:px-6 rounded-lg shadow-md flex items-center gap-2 text-xs md:text-base"
+            >
+              <mat-icon
+                class="text-white scale-75 md:scale-100 w-5 h-5 md:w-6 md:h-6"
+                >login</mat-icon
+              >
+              <span class="hidden md:inline">Ingresar</span>
+            </a>
+            <a
+              routerLink="/formas-de-pago"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-3 md:px-6 rounded-lg shadow-md flex items-center gap-2 text-xs md:text-base"
+            >
+              <mat-icon
+                class="text-white scale-75 md:scale-100 w-5 h-5 md:w-6 md:h-6"
+                >payment</mat-icon
+              >
+              <span class="hidden md:inline">Pagos</span>
+            </a>
+          </div>
         }
       </div>
     </header>
 
     <!-- Content Wrapper -->
-    <main class="flex-1 overflow-y-auto w-full p-8">
+    <main class="flex-1 overflow-y-auto w-full p-4 md:p-8">
       <div class="max-w-7xl mx-auto">
         <router-outlet></router-outlet>
       </div>

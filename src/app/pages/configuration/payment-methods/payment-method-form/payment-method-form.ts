@@ -45,6 +45,16 @@ export class PaymentMethodFormComponent implements OnInit {
 
     this.form.get('isBank')?.valueChanges.subscribe((isBank) => {
       this.updateBankValidators(isBank);
+      if (isBank) {
+        this.form.get('isActive')?.setValue(false, { emitEvent: false });
+      }
+    });
+
+    this.form.get('isActive')?.valueChanges.subscribe((isActive) => {
+      if (isActive) {
+        this.form.get('isBank')?.setValue(false, { emitEvent: false });
+        this.updateBankValidators(false);
+      }
     });
   }
 

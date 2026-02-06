@@ -126,9 +126,13 @@
         ></app-table-skeleton>
       } @else {
         <div
-          class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+          class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-x-auto"
         >
-          <table mat-table [dataSource]="housing()" class="w-full">
+          <table
+            mat-table
+            [dataSource]="housing()"
+            class="w-full min-w-[800px]"
+          >
             <!-- Number Column -->
             <ng-container matColumnDef="number">
               <th
@@ -246,7 +250,7 @@
                   @if (authService.isAuthenticated()) {
                     <button
                       mat-menu-item
-                      [routerLink]="['/housing', unit._id, 'edit']"
+                      [routerLink]="['/housing/edit', unit._id]"
                     >
                       <mat-icon>edit</mat-icon>
                       <span>Editar</span>

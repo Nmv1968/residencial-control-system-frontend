@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, of } from 'rxjs'; // Replaced forkJoin, catchError since unused or re-add if needed
 import { FinancialMovement } from '../schemas/financial.schemas';
+import { environment } from '../../environments/environment';
 
 // Minimal backend DTO visualization
 interface BackendTransaction {
@@ -21,7 +22,7 @@ interface BackendTransaction {
   providedIn: 'root',
 })
 export class MovementsService {
-  private transactionsUrl = 'http://localhost:3000/api/v1/transactions';
+  private transactionsUrl = `${environment.apiUrl}/transactions`;
   private http = inject(HttpClient);
 
   findAll(

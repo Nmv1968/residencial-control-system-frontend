@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PeriodsService {
-  private apiUrl = 'http://localhost:3000/api/v1/periods';
+  private apiUrl = `${environment.apiUrl}/periods`;
   private http = inject(HttpClient);
 
   findAll() {

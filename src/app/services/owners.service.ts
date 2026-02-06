@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OwnersService {
-  private apiUrl = 'http://localhost:3000/api/v1/owners';
+  private apiUrl = `${environment.apiUrl}/owners`;
   private http = inject(HttpClient);
 
   findAll() {

@@ -1,3 +1,4 @@
 export const environment = {
-  apiUrl: 'http://localhost:3000/api/v1',
+  apiUrl:
+    'https://orbea-residencial-complex-api-528571908103.us-central1.run.app/api/v1',
 };

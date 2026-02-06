@@ -59,7 +59,7 @@ export class MovementsComponent implements OnInit {
     'concept',
     'amount',
     'housing',
-    'reversed',
+    // 'reversed',
     'actions',
   ];
 

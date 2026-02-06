@@ -1,11 +1,11 @@
-<div class="min-h-screen bg-gray-50 py-8">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
         Formas de Pago Disponibles
       </h1>
-      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+      <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
         Estas son las formas de pago que puede utilizar para realizar los pagos
         correspondientes al conjunto residencial. Por favor, utilice cualquiera
         de estos métodos para sus transacciones.
@@ -16,12 +16,16 @@
     @if (loading) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (item of [1, 2, 3]; track item) {
-          <div class="bg-white rounded-lg shadow-md p-6 animate-pulse">
-            <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 animate-pulse"
+          >
+            <div
+              class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"
+            ></div>
             <div class="space-y-3">
-              <div class="h-4 bg-gray-100 rounded"></div>
-              <div class="h-4 bg-gray-100 rounded w-5/6"></div>
-              <div class="h-4 bg-gray-100 rounded w-4/6"></div>
+              <div class="h-4 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div class="h-4 bg-gray-100 dark:bg-gray-700 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-100 dark:bg-gray-700 rounded w-4/6"></div>
             </div>
           </div>
         }
@@ -33,29 +37,31 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (method of paymentMethods; track method._id) {
           <div
-            class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700"
           >
             <!-- Card Header -->
             <div
               class="p-6"
               [ngClass]="{
-                'bg-gradient-to-r from-blue-50 to-blue-100': method.isBank,
-                'bg-gradient-to-r from-green-50 to-green-100': !method.isBank,
+                'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/40':
+                  method.isBank,
+                'bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/40':
+                  !method.isBank,
               }"
             >
               <div class="flex items-center gap-3">
                 <div
                   class="p-3 rounded-full"
                   [ngClass]="{
-                    'bg-blue-600': method.isBank,
-                    'bg-green-600': !method.isBank,
+                    'bg-blue-600 dark:bg-blue-500': method.isBank,
+                    'bg-green-600 dark:bg-green-500': !method.isBank,
                   }"
                 >
                   <mat-icon class="text-white">{{
                     getPaymentIcon(method)
                   }}</mat-icon>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">
                   {{ method.name }}
                 </h3>
               </div>
@@ -71,8 +77,14 @@
                       >account_balance</mat-icon
                     >
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500 uppercase">Banco</p>
-                      <p class="text-sm font-semibold text-gray-900">
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 uppercase"
+                      >
+                        Banco
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-900 dark:text-white"
+                      >
                         {{ method.bankName }}
                       </p>
                     </div>
@@ -83,24 +95,33 @@
                       >credit_card</mat-icon
                     >
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500 uppercase">
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 uppercase"
+                      >
                         Tipo de Cuenta
                       </p>
-                      <p class="text-sm font-semibold text-gray-900">
+                      <p
+                        class="text-sm font-semibold text-gray-900 dark:text-white"
+                      >
                         {{ getAccountTypeLabel(method.accountType || "") }}
                       </p>
                     </div>
                   </div>
 
                   <div class="flex items-start gap-2">
-                    <mat-icon class="text-blue-600 text-sm mt-0.5"
+                    <mat-icon
+                      class="text-blue-600 dark:text-blue-400 text-sm mt-0.5"
                       >tag</mat-icon
                     >
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500 uppercase">
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 uppercase"
+                      >
                         Número de Cuenta
                       </p>
-                      <p class="text-sm font-mono font-semibold text-gray-900">
+                      <p
+                        class="text-sm font-mono font-semibold text-gray-900 dark:text-white"
+                      >
                         {{ method.accountNumber }}
                       </p>
                     </div>
@@ -111,8 +132,14 @@
                       >person</mat-icon
                     >
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500 uppercase">Titular</p>
-                      <p class="text-sm font-semibold text-gray-900">
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 uppercase"
+                      >
+                        Titular
+                      </p>
+                      <p
+                        class="text-sm font-semibold text-gray-900 dark:text-white"
+                      >
                         {{ method.accountHolder }}
                       </p>
                     </div>
@@ -120,14 +147,17 @@
 
                   @if (method.additionalData) {
                     <div class="flex items-start gap-2">
-                      <mat-icon class="text-blue-600 text-sm mt-0.5"
+                      <mat-icon
+                        class="text-blue-600 dark:text-blue-400 text-sm mt-0.5"
                         >info</mat-icon
                       >
                       <div class="flex-1">
-                        <p class="text-xs text-gray-500 uppercase">
+                        <p
+                          class="text-xs text-gray-500 dark:text-gray-400 uppercase"
+                        >
                           Datos Adicionales
                         </p>
-                        <p class="text-sm text-gray-700">
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
                           {{ method.additionalData }}
                         </p>
                       </div>
@@ -137,8 +167,10 @@
               } @else {
                 <!-- Non-Bank Payment Method -->
                 <div class="flex items-center gap-2">
-                  <mat-icon class="text-green-600">payments</mat-icon>
-                  <p class="text-gray-700">
+                  <mat-icon class="text-green-600 dark:text-green-400"
+                    >payments</mat-icon
+                  >
+                  <p class="text-gray-700 dark:text-gray-300">
                     Método de pago no bancario disponible
                   </p>
                 </div>
@@ -146,16 +178,23 @@
 
               <!-- Comment -->
               @if (method.comentario) {
-                <div class="mt-4 pt-4 border-t border-gray-200">
+                <div
+                  class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+                >
                   <div class="flex items-start gap-2">
-                    <mat-icon class="text-gray-500 text-sm mt-0.5"
+                    <mat-icon
+                      class="text-gray-500 dark:text-gray-400 text-sm mt-0.5"
                       >comment</mat-icon
                     >
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500 uppercase mb-1">
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1"
+                      >
                         Comentario
                       </p>
-                      <p class="text-sm text-gray-700 italic">
+                      <p
+                        class="text-sm text-gray-700 dark:text-gray-300 italic"
+                      >
                         {{ method.comentario }}
                       </p>
                     </div>
@@ -181,10 +220,12 @@
     <!-- Footer Message -->
     <div class="mt-12 text-center">
       <div
-        class="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl mx-auto"
+        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg p-6 max-w-2xl mx-auto"
       >
-        <mat-icon class="text-blue-600 text-3xl mb-2">info</mat-icon>
-        <p class="text-sm text-gray-700">
+        <mat-icon class="text-blue-600 dark:text-blue-400 text-3xl mb-2"
+          >info</mat-icon
+        >
+        <p class="text-sm text-gray-700 dark:text-gray-300">
           Para cualquier consulta o inconveniente con los pagos, por favor
           contacte a la administración del conjunto residencial.
         </p>

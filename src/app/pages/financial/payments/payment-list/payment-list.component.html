@@ -1,17 +1,13 @@
 <div class="space-y-6 p-6 animate-fade-in">
   <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-      <h1 class="text-2xl font-bold text-primary">Historial de Pagos (Caja)</h1>
-      <p class="text-sm text-gray-500">
+      <h1 class="text-2xl font-bold text-primary dark:text-white">
+        Historial de Pagos (Caja)
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
         Registro de todos los cobros realizados
       </p>
     </div>
-    <a
-      routerLink="/financial/payment-process"
-      class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors shadow-lg shadow-blue-900/20 flex items-center gap-2 w-fit"
-    >
-      <mat-icon>payments</mat-icon> Nuevo Cobro
-    </a>
   </div>
 
   <div class="card-base overflow-hidden p-0">
@@ -25,14 +21,14 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+              class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left"
             >
               Fecha
             </th>
             <td
               mat-cell
               *matCellDef="let element"
-              class="px-6 py-4 text-sm text-gray-600"
+              class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300"
             >
               {{ element.paymentDate | date: "mediumDate" }}
             </td>
@@ -43,14 +39,14 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+              class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left"
             >
               Vivienda
             </th>
             <td
               mat-cell
               *matCellDef="let element"
-              class="px-6 py-4 font-medium text-primary"
+              class="px-6 py-4 font-medium text-primary dark:text-blue-300"
             >
               {{ getUnitNumber(element) }}
             </td>
@@ -61,14 +57,14 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-left"
+              class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left"
             >
               Método
             </th>
             <td
               mat-cell
               *matCellDef="let element"
-              class="px-6 py-4 text-sm text-gray-600"
+              class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300"
             >
               {{ element.paymentMethod?.name || "Desconocido" }}
             </td>
@@ -79,14 +75,14 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-right"
+              class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider text-right"
             >
               Monto
             </th>
             <td
               mat-cell
               *matCellDef="let element"
-              class="px-6 py-4 text-right font-bold text-green-700"
+              class="px-6 py-4 text-right font-bold text-green-700 dark:text-green-400"
             >
               {{ element.totalAmount | currency }}
             </td>
@@ -97,7 +93,7 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="px-6 py-4 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider text-center"
+              class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider text-center"
             >
               Acciones
             </th>
@@ -109,7 +105,7 @@
               <a
                 [routerLink]="['/financial/payments', element._id]"
                 mat-icon-button
-                class="text-blue-600 hover:bg-blue-50"
+                class="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 matTooltip="Ver detalles"
               >
                 <mat-icon>visibility</mat-icon>
@@ -121,15 +117,19 @@
           <tr
             mat-row
             *matRowDef="let row; columns: displayedColumns"
-            class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
+            class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b dark:border-gray-700 last:border-0 border-gray-100"
           ></tr>
         </table>
       }
 
       <div *ngIf="payments.length === 0 && !isLoading" class="p-12 text-center">
         <div class="flex flex-col items-center gap-3">
-          <mat-icon class="text-gray-300 scale-150">receipt</mat-icon>
-          <p class="text-gray-500">No hay registros de pagos.</p>
+          <mat-icon class="text-gray-300 dark:text-gray-600 scale-150"
+            >receipt</mat-icon
+          >
+          <p class="text-gray-500 dark:text-gray-400">
+            No hay registros de pagos.
+          </p>
         </div>
       </div>
     </div>

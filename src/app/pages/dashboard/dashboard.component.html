@@ -78,8 +78,10 @@
             </h3>
             <p class="text-xs text-gray-500 mt-1">Ingresos - Egresos</p>
           </div>
-          <div class="bg-blue-100 p-3 rounded-full">
-            <mat-icon class="text-blue-600">account_balance_wallet</mat-icon>
+          <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
+            <mat-icon class="text-blue-600 dark:text-blue-400"
+              >account_balance_wallet</mat-icon
+            >
           </div>
         </div>
       </div>
@@ -98,12 +100,14 @@
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
               {{ kpis.totalReceivable | currency }}
             </h3>
-            <p class="text-xs text-red-500 mt-1">
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1">
               {{ kpis.unitsInArrears }} unidades en mora
             </p>
           </div>
-          <div class="bg-red-100 p-3 rounded-full">
-            <mat-icon class="text-red-600">money_off</mat-icon>
+          <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-full">
+            <mat-icon class="text-red-600 dark:text-red-400"
+              >money_off</mat-icon
+            >
           </div>
         </div>
       </div>
@@ -122,12 +126,16 @@
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
               {{ solventUnits }}
             </h3>
-            <p class="text-xs text-green-600 mt-1 font-medium">
+            <p
+              class="text-xs text-green-600 dark:text-green-400 mt-1 font-medium"
+            >
               Sin deudas pendientes
             </p>
           </div>
-          <div class="bg-green-100 p-3 rounded-full">
-            <mat-icon class="text-green-600">check_circle</mat-icon>
+          <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+            <mat-icon class="text-green-600 dark:text-green-400"
+              >check_circle</mat-icon
+            >
           </div>
         </div>
       </div>
@@ -146,12 +154,12 @@
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">
               {{ debtorUnits }}
             </h3>
-            <p class="text-xs text-red-500 mt-1 font-medium">
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1 font-medium">
               {{ debtorRate }}% del total
             </p>
           </div>
-          <div class="bg-red-100 p-3 rounded-full">
-            <mat-icon class="text-red-600">warning</mat-icon>
+          <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-full">
+            <mat-icon class="text-red-600 dark:text-red-400">warning</mat-icon>
           </div>
         </div>
       </div>
@@ -174,7 +182,7 @@
                 [ngClass]="{
                   'bg-blue-600 text-white border-blue-600':
                     selectedRange === range.value,
-                  'bg-white text-gray-500 border-gray-200 hover:bg-gray-50':
+                  'bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600':
                     selectedRange !== range.value,
                 }"
                 (click)="updateChartRange(range.value)"
@@ -265,9 +273,11 @@
                     <span
                       class="px-2 py-1 rounded text-xs font-semibold"
                       [ngClass]="{
-                        'bg-green-100 text-green-700': item.type === 'PAGO',
-                        'bg-red-100 text-red-700': item.type === 'GASTO',
-                        'bg-blue-100 text-blue-700':
+                        'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300':
+                          item.type === 'PAGO',
+                        'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300':
+                          item.type === 'GASTO',
+                        'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300':
                           item.type === 'CARGO_MENSUAL',
                       }"
                     >
@@ -292,8 +302,9 @@
                   <td
                     class="px-6 py-4 text-sm text-right font-semibold"
                     [ngClass]="{
-                      'text-green-600': item.type === 'PAGO',
-                      'text-red-600': item.type === 'GASTO',
+                      'text-green-600 dark:text-green-400':
+                        item.type === 'PAGO',
+                      'text-red-600 dark:text-red-400': item.type === 'GASTO',
                       'text-gray-800 dark:text-gray-300':
                         item.type === 'CARGO_MENSUAL',
                     }"

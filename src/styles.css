@@ -10,11 +10,64 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   @apply bg-background-light text-primary-light dark:bg-gray-900 dark:text-gray-100;
+  background-image:
+    linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
+    url("./assets/residencial_house_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* gray-300 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* gray-400 */
+}
+
+/* Dark Mode Scrollbar */
+.dark,
+.dark * {
+  scrollbar-color: #4b5563 #111827; /* gray-600 gray-900 */
+}
+
+.dark ::-webkit-scrollbar-track,
+.dark *::-webkit-scrollbar-track {
+  background: #111827 !important; /* gray-900 */
+}
+
+.dark ::-webkit-scrollbar-thumb,
+.dark *::-webkit-scrollbar-thumb {
+  background: #4b5563 !important; /* gray-600 */
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover,
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: #6b7280 !important; /* gray-500 */
 }
 
 /* Dark Mode Variables Override */
 .dark body {
   background-color: #0f172a;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.96)),
+    url("./assets/residencial_house_bg.png");
 }
 
 .dark .card-base {
@@ -113,4 +166,162 @@ input.mat-input-element {
 
 .ng-select.custom-ng-select .ng-select-container:hover {
   border-color: #3b82f6;
+}
+
+/* Dark Mode for ng-select */
+.dark .ng-select.custom-ng-select .ng-select-container {
+  background-color: #374151; /* bg-gray-700 */
+  border-color: #4b5563; /* border-gray-600 */
+  color: #fff;
+}
+
+.dark .ng-select.custom-ng-select .ng-value-label {
+  color: #fff;
+}
+
+.dark .ng-select.custom-ng-select .ng-input > input {
+  color: #fff;
+}
+
+.dark .ng-dropdown-panel {
+  background-color: #374151; /* bg-gray-700 */
+  border-color: #4b5563; /* border-gray-600 */
+}
+
+.dark .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: #374151;
+  color: #d1d5db; /* text-gray-300 */
+}
+
+.dark .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: #4b5563; /* bg-gray-600 */
+  color: #fff;
+}
+
+.dark
+  .ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected {
+  background-color: #374151;
+  color: #3b82f6; /* text-blue-500 */
+}
+
+/* GLOBAL TABLE DARK MODE FIXES */
+.dark .mat-mdc-table,
+.dark .mat-table {
+  background-color: transparent !important;
+}
+
+.dark .mat-mdc-header-row,
+.dark .mat-mdc-row,
+.dark .mat-header-row,
+.dark .mat-row,
+.dark tr {
+  background-color: #1f2937 !important; /* bg-gray-800 */
+  border-bottom-color: #374151 !important; /* border-gray-700 */
+}
+
+/* Ensure hover effect is visible on dark mode rows if needed */
+.dark .mat-mdc-row:hover,
+.dark .mat-row:hover,
+.dark tr:hover {
+  background-color: #374151 !important; /* bg-gray-700 */
+}
+
+.dark .mat-mdc-header-cell,
+.dark .mat-header-cell,
+.dark th {
+  background-color: #111827 !important; /* bg-gray-900 (slightly darker for headers) */
+  color: #e5e7eb !important; /* text-gray-200 */
+  border-bottom-color: #374151 !important;
+}
+
+.dark .mat-mdc-cell,
+.dark .mat-cell,
+.dark td {
+  color: #d1d5db !important; /* text-gray-300 */
+  border-bottom-color: #374151 !important;
+}
+
+/* Paginator Fixes */
+.dark .mat-mdc-paginator,
+.dark .mat-paginator {
+  background-color: #1f2937 !important; /* bg-gray-800 */
+  color: #e5e7eb !important; /* text-gray-200 */
+}
+
+.dark .mat-mdc-paginator-container,
+.dark .mat-paginator-container {
+  background-color: #1f2937 !important;
+}
+
+.dark .mat-mdc-icon-button,
+.dark .mat-mdc-paginator-icon {
+  color: #9ca3af !important; /* text-gray-400 */
+}
+
+.dark .mat-mdc-select-value {
+  color: #e5e7eb !important;
+}
+
+.dark .mat-mdc-select-arrow {
+  color: #9ca3af !important;
+}
+
+/* Material Menu Dark Mode */
+.dark .mat-mdc-menu-panel,
+.dark .mat-mdc-menu-content {
+  background-color: #1f2937 !important; /* bg-gray-800 */
+}
+
+.dark .mat-mdc-menu-item {
+  color: #e5e7eb !important; /* text-gray-200 */
+}
+
+.dark .mat-mdc-menu-item:hover {
+  background-color: #374151 !important; /* bg-gray-700 */
+}
+
+.dark .mat-mdc-menu-item .mat-icon {
+  color: #9ca3af !important; /* text-gray-400 */
+}
+
+/* Specific icon colors in menu items inside dark mode can be overridden locally or handled by generic utility classes on the icon itself if they have specific colors like text-red-600.
+   However, we need to ensure the base text color is readable. */
+
+/* Material Tabs Dark Mode */
+.dark .mat-mdc-tab-header {
+  border-bottom-color: #374151 !important; /* border-gray-700 */
+}
+
+.dark .mat-mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: #9ca3af !important; /* text-gray-400 */
+}
+
+.dark .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #fff !important; /* text-white */
+}
+
+.dark .mat-mdc-tab-header-pagination-chevron {
+  color: #fff !important;
+}
+
+/* Custom Large ng-select Dark Mode */
+.dark .custom-ng-select-lg .ng-select-container {
+  background-color: #374151 !important; /* bg-gray-700 */
+  border-color: #4b5563 !important; /* border-gray-600 */
+  color: #fff !important;
+  min-height: 50px; /* Preserve the lg size logic if needed, or just match overrides */
+}
+
+.dark .custom-ng-select-lg .ng-value-label {
+  color: #fff !important;
+}
+
+.dark .custom-ng-select-lg .ng-input > input {
+  color: #fff !important;
+}
+
+.dark .custom-ng-select-lg .ng-placeholder {
+  color: #9ca3af !important; /* text-gray-400 */
 }

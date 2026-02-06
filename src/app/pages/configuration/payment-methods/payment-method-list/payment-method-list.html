@@ -2,7 +2,9 @@
   <!-- Header -->
   <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-      <h1 class="text-2xl font-bold text-primary">Formas de Pago</h1>
+      <h1 class="text-2xl font-bold text-primary dark:text-white">
+        Formas de Pago
+      </h1>
       <p class="text-gray-500 text-sm">
         Administra las formas de pago del conjunto
       </p>
@@ -17,47 +19,56 @@
   </div>
 
   <!-- Table Container -->
-  <div class="card-base overflow-hidden p-0">
+  <div
+    class="card-base overflow-hidden p-0 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+  >
     <div class="overflow-x-auto">
       @if (isLoading) {
       <app-table-skeleton [rows]="5" [columns]="5"></app-table-skeleton>
       } @else {
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
             <th
-              class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider"
+              class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-200 uppercase tracking-wider"
             >
               Nombre
             </th>
             <th
-              class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider"
+              class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-200 uppercase tracking-wider"
             >
               Estado
             </th>
             <th
-              class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider"
+              class="px-6 py-4 text-center text-xs font-bold text-gray-500 dark:text-gray-200 uppercase tracking-wider"
             >
               Acciones
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody
+          class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+        >
           <tr
             *ngFor="let method of paymentMethods"
-            class="hover:bg-gray-50 transition-colors border-b last:border-0 border-gray-100"
+            class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b last:border-0 border-gray-100 dark:border-gray-700"
           >
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
+              <div class="text-sm font-medium text-gray-900 dark:text-gray-200">
                 {{ method.name }}
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <span
-                [class]="method.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
                 class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300':
+                    method.isActive,
+                  'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300':
+                    !method.isActive
+                }"
               >
-                {{ method.isActive ? 'Activo' : 'Inactivo' }}
+                {{ method.isActive ? "Activo" : "Inactivo" }}
               </span>
             </td>
             <td class="px-6 py-4">
@@ -65,7 +76,7 @@
                 <button
                   mat-icon-button
                   [matMenuTriggerFor]="menu"
-                  class="text-gray-600 hover:bg-gray-100"
+                  class="text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
                 >
                   <mat-icon>more_vert</mat-icon>
                 </button>

@@ -3,23 +3,25 @@
   <div class="mb-8">
     <div class="flex items-center justify-between relative">
       <div
-        class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 z-0"
+        class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 dark:bg-gray-700 z-0"
       ></div>
 
       <div class="relative z-10 flex flex-col items-center">
         <div
           class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors"
-          [ngClass]="step >= 1 ? 'bg-blue-600' : 'bg-gray-300'"
+          [ngClass]="step >= 1 ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'"
         >
           1
         </div>
-        <span class="text-xs mt-2 font-medium text-gray-600">Alcance</span>
+        <span class="text-xs mt-2 font-medium text-gray-600 dark:text-gray-400"
+          >Alcance</span
+        >
       </div>
 
       <div class="relative z-10 flex flex-col items-center">
         <div
           class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors"
-          [ngClass]="step >= 2 ? 'bg-blue-600' : 'bg-gray-300'"
+          [ngClass]="step >= 2 ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'"
         >
           2
         </div>
@@ -29,7 +31,7 @@
       <div class="relative z-10 flex flex-col items-center">
         <div
           class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors"
-          [ngClass]="step >= 3 ? 'bg-blue-600' : 'bg-gray-300'"
+          [ngClass]="step >= 3 ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'"
         >
           3
         </div>
@@ -38,8 +40,12 @@
     </div>
   </div>
 
-  <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-100">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Generador de Cuotas</h2>
+  <div
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-100 dark:border-gray-700"
+  >
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+      Generador de Cuotas
+    </h2>
 
     <div
       *ngIf="successMessage"
@@ -57,15 +63,17 @@
     <form [formGroup]="form">
       <!-- Step 1: Scope -->
       <div *ngIf="step === 1" class="space-y-6 animate-fade-in">
-        <label class="block text-sm font-bold text-gray-700 mb-2"
+        <label
+          class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
           >Seleccione el Objetivo</label
         >
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <label
-            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 transition-colors"
+            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors dark:border-gray-600"
             [class.border-blue-500]="scope === 'ALL'"
             [class.bg-blue-50]="scope === 'ALL'"
+            [class.dark:bg-blue-900]="scope === 'ALL'"
           >
             <input
               type="radio"
@@ -74,17 +82,21 @@
               class="sr-only"
             />
             <div class="text-center">
-              <span class="block font-bold text-lg mb-1">Todos</span>
-              <span class="text-xs text-gray-500"
+              <span
+                class="block font-bold text-lg mb-1 text-gray-900 dark:text-white"
+                >Todos</span
+              >
+              <span class="text-xs text-gray-500 dark:text-gray-400"
                 >Todas las viviendas ocupadas</span
               >
             </div>
           </label>
 
           <label
-            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 transition-colors"
+            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors dark:border-gray-600"
             [class.border-blue-500]="scope === 'CATEGORY'"
             [class.bg-blue-50]="scope === 'CATEGORY'"
+            [class.dark:bg-blue-900]="scope === 'CATEGORY'"
           >
             <input
               type="radio"
@@ -93,17 +105,21 @@
               class="sr-only"
             />
             <div class="text-center">
-              <span class="block font-bold text-lg mb-1">Por Categoría</span>
-              <span class="text-xs text-gray-500"
+              <span
+                class="block font-bold text-lg mb-1 text-gray-900 dark:text-white"
+                >Por Categoría</span
+              >
+              <span class="text-xs text-gray-500 dark:text-gray-400"
                 >Ej: Departamentos, Locales</span
               >
             </div>
           </label>
 
           <label
-            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 transition-colors"
+            class="cursor-pointer border rounded-lg p-4 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors dark:border-gray-600"
             [class.border-blue-500]="scope === 'SINGLE'"
             [class.bg-blue-50]="scope === 'SINGLE'"
+            [class.dark:bg-blue-900]="scope === 'SINGLE'"
           >
             <input
               type="radio"
@@ -112,8 +128,13 @@
               class="sr-only"
             />
             <div class="text-center">
-              <span class="block font-bold text-lg mb-1">Individual</span>
-              <span class="text-xs text-gray-500">Una sola vivienda</span>
+              <span
+                class="block font-bold text-lg mb-1 text-gray-900 dark:text-white"
+                >Individual</span
+              >
+              <span class="text-xs text-gray-500 dark:text-gray-400"
+                >Una sola vivienda</span
+              >
             </div>
           </label>
         </div>
@@ -158,7 +179,7 @@
           <input
             type="text"
             formControlName="concept"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 dark:text-white"
             placeholder="Ej: Marzo 2026"
           />
         </div>
@@ -170,7 +191,7 @@
           <input
             type="number"
             formControlName="amount"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 dark:text-white"
           />
         </div>
 
@@ -181,37 +202,39 @@
           <input
             type="date"
             formControlName="dueDate"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 dark:text-white"
           />
         </div>
       </div>
 
       <!-- Step 3: Confirmation -->
       <div *ngIf="step === 3" class="space-y-6 animate-fade-in text-center">
-        <div class="bg-blue-50 p-6 rounded-lg inline-block text-left w-full">
+        <div
+          class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg inline-block text-left w-full border border-blue-100 dark:border-blue-800"
+        >
           <h3
-            class="font-bold text-blue-900 mb-4 text-lg border-b border-blue-200 pb-2"
+            class="font-bold text-blue-900 dark:text-blue-100 mb-4 text-lg border-b border-blue-200 dark:border-blue-700 pb-2"
           >
             Resumen de Generación
           </h3>
           <div class="grid grid-cols-2 gap-4 text-sm">
-            <div class="text-gray-500">Objetivo:</div>
-            <div class="font-bold text-gray-900">
+            <div class="text-gray-500 dark:text-gray-400">Objetivo:</div>
+            <div class="font-bold text-gray-900 dark:text-white">
               {{ getSelectedTargetName() }}
             </div>
 
-            <div class="text-gray-500">Concepto:</div>
-            <div class="font-bold text-gray-900">
+            <div class="text-gray-500 dark:text-gray-400">Concepto:</div>
+            <div class="font-bold text-gray-900 dark:text-white">
               {{ form.get('concept')?.value }}
             </div>
 
-            <div class="text-gray-500">Monto:</div>
-            <div class="font-bold text-gray-900">
+            <div class="text-gray-500 dark:text-gray-400">Monto:</div>
+            <div class="font-bold text-gray-900 dark:text-white">
               {{ form.get('amount')?.value | currency }}
             </div>
 
-            <div class="text-gray-500">Estimación:</div>
-            <div class="font-bold text-gray-900">
+            <div class="text-gray-500 dark:text-gray-400">Estimación:</div>
+            <div class="font-bold text-gray-900 dark:text-white">
               {{ estimatedCount() > 0 ? ('~' + estimatedCount() + ' deudas') :
               'Indeterminado' }}
             </div>
@@ -224,12 +247,14 @@
       </div>
 
       <!-- Navigation Actions -->
-      <div class="flex justify-between pt-8 border-t border-gray-100 mt-6">
+      <div
+        class="flex justify-between pt-8 border-t border-gray-100 dark:border-gray-700 mt-6"
+      >
         <button
           *ngIf="step > 1"
           type="button"
           (click)="prevStep()"
-          class="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+          class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
         >
           Atrás
         </button>

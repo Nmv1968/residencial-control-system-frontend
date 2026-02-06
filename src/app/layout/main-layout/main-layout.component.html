@@ -215,17 +215,22 @@
           }}</mat-icon>
         </button>
         @if (isAuthenticated()) {
-          <div class="flex items-center gap-3 pl-6 border-l border-gray-100">
+          <div
+            class="flex items-center gap-3 pl-6 border-l border-gray-100 dark:border-gray-700"
+          >
             <div class="text-right hidden sm:block">
-              <p class="text-sm font-bold text-primary">Administrador</p>
-              <p class="text-xs text-gray-500">admin@orbea.com</p>
+              <p class="text-sm font-bold text-primary dark:text-gray-200">
+                {{ contactInfo?.fullName || "Administrador" }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ contactInfo?.email || "admin@conjunto.com" }}
+              </p>
             </div>
             <button
-              mat-icon-button
               [matMenuTriggerFor]="userMenu"
-              class="!w-10 !h-10 rounded-full bg-gray-100 flex items-center justify-center text-primary font-bold"
+              class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-primary dark:text-white font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none"
             >
-              A
+              {{ (contactInfo?.fullName | slice: 0 : 1) || "A" }}
             </button>
             <mat-menu #userMenu="matMenu">
               <button mat-menu-item (click)="logout()">

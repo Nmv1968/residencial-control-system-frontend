@@ -5,13 +5,13 @@
       <a
         routerLink="/housing"
         mat-icon-button
-        class="bg-white border border-gray-200 text-gray-500 hover:text-primary hover:border-primary transition-all"
+        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary hover:border-primary transition-all"
       >
         <mat-icon>arrow_back</mat-icon>
       </a>
       <div class="flex items-center gap-2 text-sm text-gray-500">
         <mat-icon class="scale-100">home</mat-icon>
-        <h1 class="text-2xl font-bold text-gray-800">
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
           {{
             loading
               ? "Cargando..."
@@ -41,19 +41,21 @@
     <div class="md:col-span-1 space-y-6">
       <!-- Info Card -->
       <div
-        class="bg-white rounded-lg shadow border border-gray-100 p-6 space-y-4"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-100 dark:border-gray-700 p-6 space-y-4"
       >
-        <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+        <div
+          class="flex items-center gap-3 pb-4 border-b border-gray-100 dark:border-gray-700"
+        >
           <div
             class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold"
           >
             {{ unit.number | slice: 0 : 1 }}
           </div>
           <div>
-            <div class="font-bold text-gray-900">
+            <div class="font-bold text-gray-900 dark:text-white">
               {{ unit.number || "Sin Residente" }}
             </div>
-            <div class="text-xs text-gray-500">
+            <div class="text-xs text-gray-500 dark:text-gray-400">
               {{ unit.category?.name || "Sin Categoría" }}
             </div>
           </div>
@@ -64,7 +66,7 @@
             <div class="text-xs font-bold uppercase text-gray-400">
               Residente
             </div>
-            <div class="font-medium text-gray-800">
+            <div class="font-medium text-gray-800 dark:text-gray-200">
               {{ unit.residentName }}
             </div>
           </div>
@@ -72,13 +74,15 @@
 
         <div>
           <div class="text-xs font-bold uppercase text-gray-400">Teléfono</div>
-          <div class="font-medium text-gray-800">{{ unit.phone || "N/A" }}</div>
+          <div class="font-medium text-gray-800 dark:text-gray-200">
+            {{ unit.phone || "N/A" }}
+          </div>
         </div>
       </div>
 
       <!-- Financial Card -->
       <div
-        class="bg-white rounded-lg shadow border border-gray-100 p-6 text-center"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-100 dark:border-gray-700 p-6 text-center"
       >
         <div class="text-xs font-bold uppercase text-gray-400 mb-2">
           Saldo Actual
@@ -95,8 +99,10 @@
         <div
           class="inline-block px-3 py-1 rounded-full text-xs font-bold"
           [ngClass]="{
-            'bg-green-100 text-green-700': (unit?.balance || 0) <= 0,
-            'bg-red-100 text-red-700': (unit?.balance || 0) > 0,
+            'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300':
+              (unit?.balance || 0) <= 0,
+            'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300':
+              (unit?.balance || 0) > 0,
           }"
         >
           {{ (unit?.balance || 0) > 0 ? "CON DEUDA" : "AL DÍA" }}
@@ -106,41 +112,71 @@
 
     <!-- Main Content Tabs -->
     <div
-      class="md:col-span-3 bg-white rounded-lg shadow border border-gray-100 overflow-hidden min-h-[500px]"
+      class="md:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-100 dark:border-gray-700 overflow-hidden min-h-[500px]"
     >
       <mat-tab-group animationDuration="0ms">
         <!-- Tab 1: Pending Debts -->
         <mat-tab label="Deudas Pendientes">
           <div class="p-6">
-            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <h3
+              class="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2"
+            >
               <mat-icon class="text-red-500">warning</mat-icon> Cuentas por
               Cobrar
             </h3>
             <table mat-table [dataSource]="pendingDebts" class="w-full">
               <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Generado</th>
-                <td mat-cell *matCellDef="let d">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Generado
+                </th>
+                <td mat-cell *matCellDef="let d" class="dark:text-gray-300">
                   {{ d.generationDate | date: "shortDate" }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="concept">
-                <th mat-header-cell *matHeaderCellDef>Concepto</th>
-                <td mat-cell *matCellDef="let d">{{ d.concept }}</td>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Concepto
+                </th>
+                <td mat-cell *matCellDef="let d" class="dark:text-gray-300">
+                  {{ d.concept }}
+                </td>
               </ng-container>
               <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef class="text-right">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-right dark:bg-gray-700 dark:text-gray-200"
+                >
                   Monto
                 </th>
-                <td mat-cell *matCellDef="let d" class="text-right font-bold">
+                <td
+                  mat-cell
+                  *matCellDef="let d"
+                  class="text-right font-bold dark:text-gray-200"
+                >
                   {{ d.amount | currency }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="dueDate">
-                <th mat-header-cell *matHeaderCellDef>Vence</th>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Vence
+                </th>
                 <td
                   mat-cell
                   *matCellDef="let d"
-                  class="text-red-600 font-medium"
+                  class="text-red-600 dark:text-red-400 font-medium"
                 >
                   {{ d.dueDate | date: "shortDate" }}
                 </td>
@@ -149,11 +185,12 @@
               <tr
                 mat-row
                 *matRowDef="let row; columns: displayedColumnsDebts"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0"
               ></tr>
             </table>
             <div
               *ngIf="pendingDebts.length === 0"
-              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+              class="p-8 text-center text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded mt-4 border border-gray-100 dark:border-gray-700"
             >
               No hay deudas pendientes.
             </div>
@@ -163,44 +200,68 @@
         <!-- Tab 2: Payments History -->
         <mat-tab label="Historial Pagos">
           <div class="p-6">
-            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <mat-icon class="text-green-600">payments</mat-icon> Pagos
-              Realizados
+            <h3
+              class="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2"
+            >
+              <mat-icon class="text-green-600 dark:text-green-400"
+                >payments</mat-icon
+              >
+              Pagos Realizados
             </h3>
             <table mat-table [dataSource]="payments" class="w-full">
               <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                <td mat-cell *matCellDef="let p">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Fecha
+                </th>
+                <td mat-cell *matCellDef="let p" class="dark:text-gray-300">
                   {{ p.paymentDate | date: "shortDate" }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="method">
-                <th mat-header-cell *matHeaderCellDef>Método</th>
-                <td mat-cell *matCellDef="let p">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Método
+                </th>
+                <td mat-cell *matCellDef="let p" class="dark:text-gray-300">
                   {{ p.paymentMethod?.name || "N/A" }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef class="text-right">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-right dark:bg-gray-700 dark:text-gray-200"
+                >
                   Total
                 </th>
                 <td
                   mat-cell
                   *matCellDef="let p"
-                  class="text-right font-bold text-green-700"
+                  class="text-right font-bold text-green-700 dark:text-green-400"
                 >
                   {{ p.totalAmount | currency }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="text-center">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-center dark:bg-gray-700 dark:text-gray-200"
+                >
                   Acciones
                 </th>
                 <td mat-cell *matCellDef="let p" class="text-center">
                   <a
                     [routerLink]="['/financial/payments', p._id]"
                     mat-icon-button
-                    class="text-blue-600 hover:bg-blue-50"
+                    class="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   >
                     <mat-icon class="scale-90">visibility</mat-icon>
                   </a>
@@ -213,11 +274,12 @@
               <tr
                 mat-row
                 *matRowDef="let row; columns: displayedColumnsPayments"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0"
               ></tr>
             </table>
             <div
               *ngIf="payments.length === 0"
-              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+              class="p-8 text-center text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded mt-4 border border-gray-100 dark:border-gray-700"
             >
               No hay pagos registrados.
             </div>
@@ -227,40 +289,66 @@
         <!-- Tab 3: Paid/Historical Debts -->
         <mat-tab label="Histórico Deudas">
           <div class="p-6">
-            <h3 class="font-bold text-gray-800 mb-4">
+            <h3 class="font-bold text-gray-800 dark:text-white mb-4">
               Deudas Pagadas o Canceladas
             </h3>
             <table mat-table [dataSource]="paidDebts" class="w-full">
               <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                <td mat-cell *matCellDef="let d">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Fecha
+                </th>
+                <td mat-cell *matCellDef="let d" class="dark:text-gray-300">
                   {{ d.generationDate | date: "shortDate" }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="concept">
-                <th mat-header-cell *matHeaderCellDef>Concepto</th>
-                <td mat-cell *matCellDef="let d">{{ d.concept }}</td>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Concepto
+                </th>
+                <td mat-cell *matCellDef="let d" class="dark:text-gray-300">
+                  {{ d.concept }}
+                </td>
               </ng-container>
               <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef class="text-right">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-right dark:bg-gray-700 dark:text-gray-200"
+                >
                   Monto
                 </th>
                 <td
                   mat-cell
                   *matCellDef="let d"
-                  class="text-right font-medium text-gray-500"
+                  class="text-right font-medium text-gray-500 dark:text-gray-400"
                 >
                   {{ d.amount | currency }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="dark:bg-gray-700 dark:text-gray-200"
+                >
+                  Estado
+                </th>
                 <td mat-cell *matCellDef="let d">
                   <span
                     class="px-2 py-0.5 rounded text-xs font-medium"
                     [ngClass]="{
-                      'bg-green-100 text-green-800': d.status === 'PAID',
-                      'bg-gray-100 text-gray-800': d.status === 'CANCELLED',
+                      'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300':
+                        d.status === 'PAID',
+                      'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300':
+                        d.status === 'CANCELLED',
                     }"
                   >
                     {{
@@ -280,11 +368,12 @@
               <tr
                 mat-row
                 *matRowDef="let row; columns: displayedColumnsPaidDebts"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0"
               ></tr>
             </table>
             <div
               *ngIf="paidDebts.length === 0"
-              class="p-8 text-center text-gray-400 bg-gray-50 rounded mt-4"
+              class="p-8 text-center text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded mt-4 border border-gray-100 dark:border-gray-700"
             >
               No hay historial de deudas pagadas.
             </div>

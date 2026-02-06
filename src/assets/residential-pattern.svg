@@ -1,0 +1,11 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="buildings" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <path d="M10,100 L10,80 L30,60 L50,80 L50,100 M60,100 L60,70 L80,50 L100,70 L100,100" 
+            fill="none" stroke="#cbd5e1" stroke-width="1.5" opacity="0.4"/>
+      <rect x="20" y="85" width="10" height="10" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.4"/>
+      <rect x="70" y="75" width="10" height="10" fill="none" stroke="#cbd5e1" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#buildings)" />
+</svg>

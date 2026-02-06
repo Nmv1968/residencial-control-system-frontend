@@ -1,12 +1,16 @@
 <div class="max-w-4xl mx-auto p-6 animate-fade-in space-y-6">
   <div>
-    <h1 class="text-2xl font-bold text-gray-800">Gestión de Cobros</h1>
-    <p class="text-gray-500">Procesamiento de pagos y control de caja</p>
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+      Gestión de Cobros
+    </h1>
+    <p class="text-gray-500 dark:text-gray-400">
+      Procesamiento de pagos y control de caja
+    </p>
   </div>
 
   <mat-tab-group
     animationDuration="0ms"
-    class="bg-white rounded-lg shadow-sm border border-gray-100 p-2"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-2"
     (selectedTabChange)="onTabChange($event)"
   >
     <!-- Tab 1: Process Payment -->
@@ -15,7 +19,8 @@
         <!-- Step 1: Search -->
         <div *ngIf="step === 1" class="max-w-xl mx-auto py-8">
           <form [formGroup]="searchForm" (ngSubmit)="onUnitSelect()">
-            <label class="block text-sm font-bold text-gray-700 mb-2"
+            <label
+              class="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-2"
               >Buscar Vivienda</label
             >
             <div class="flex gap-4">
@@ -46,26 +51,28 @@
         <div *ngIf="step === 2 && selectedUnit">
           <!-- Header Info -->
           <div
-            class="bg-gray-50 rounded-lg p-4 mb-6 flex justify-between items-center border border-gray-200"
+            class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6 flex justify-between items-center border border-gray-200 dark:border-gray-600"
           >
             <div>
-              <h3 class="font-bold text-xl text-gray-800">
+              <h3 class="font-bold text-xl text-gray-800 dark:text-white">
                 {{ selectedUnit.number }}
               </h3>
-              <div class="text-sm text-gray-500">
+              <div class="text-sm text-gray-500 dark:text-gray-300">
                 {{ selectedUnit.residentName }}
               </div>
             </div>
             <div class="text-right">
               <div
-                class="text-xs text-gray-500 uppercase font-bold tracking-wider"
+                class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wider"
               >
                 Saldo Actual
               </div>
               <div
                 class="font-bold text-2xl"
                 [class.text-red-500]="(selectedUnit.balance || 0) > 0"
+                [class.text-red-400]="(selectedUnit.balance || 0) > 0"
                 [class.text-green-500]="(selectedUnit.balance || 0) <= 0"
+                [class.text-green-400]="(selectedUnit.balance || 0) <= 0"
               >
                 {{ (selectedUnit.balance || 0) | currency }}
               </div>
@@ -75,7 +82,9 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Debts List -->
             <div>
-              <h4 class="font-bold text-gray-700 mb-4 flex items-center">
+              <h4
+                class="font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center"
+              >
                 <span
                   class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-2"
                   >1</span
@@ -84,10 +93,12 @@
               </h4>
 
               <div
-                class="border rounded-lg overflow-hidden max-h-96 overflow-y-auto"
+                class="border dark:border-gray-600 rounded-lg overflow-hidden max-h-96 overflow-y-auto"
               >
                 <table class="w-full text-sm text-left">
-                  <thead class="bg-gray-50 text-gray-500 font-medium border-b">
+                  <thead
+                    class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 font-medium border-b dark:border-gray-600"
+                  >
                     <tr>
                       <th class="p-3 w-10"></th>
                       <th class="p-3">Concepto</th>
@@ -97,7 +108,7 @@
                   <tbody class="divide-y">
                     <tr
                       *ngFor="let debt of pendingDebts"
-                      class="hover:bg-blue-50 cursor-pointer"
+                      class="hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer border-b dark:border-gray-700 last:border-0"
                       (click)="toggleDebt(debt)"
                     >
                       <td class="p-3">
@@ -108,19 +119,22 @@
                         />
                       </td>
                       <td class="p-3">
-                        <div class="font-medium text-gray-900">
+                        <div class="font-medium text-gray-900 dark:text-white">
                           {{ debt.concept }}
                         </div>
-                        <div class="text-xs text-gray-500">
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
                           {{ debt.dueDate | date }}
                         </div>
                       </td>
-                      <td class="p-3 text-right font-medium">
+                      <td class="p-3 text-right font-medium dark:text-gray-200">
                         {{ debt.amount | currency }}
                       </td>
                     </tr>
                     <tr *ngIf="pendingDebts.length === 0">
-                      <td colspan="3" class="p-6 text-center text-gray-500">
+                      <td
+                        colspan="3"
+                        class="p-6 text-center text-gray-500 dark:text-gray-400"
+                      >
                         No hay deudas pendientes.
                       </td>
                     </tr>
@@ -131,7 +145,9 @@
 
             <!-- Payment Form -->
             <div>
-              <h4 class="font-bold text-gray-700 mb-4 flex items-center">
+              <h4
+                class="font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center"
+              >
                 <span
                   class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-2"
                   >2</span
@@ -142,28 +158,28 @@
               <form
                 [formGroup]="paymentForm"
                 (ngSubmit)="onSubmit()"
-                class="bg-gray-50 p-6 rounded-lg border border-gray-200 space-y-4"
+                class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600 space-y-4"
               >
                 <div>
                   <label
-                    class="block text-xs font-bold text-gray-500 uppercase mb-1"
+                    class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1"
                     >Monto a Pagar</label
                   >
                   <input
                     type="number"
                     formControlName="amount"
-                    class="w-full text-xl font-bold p-2 border-b-2 border-green-500 bg-transparent focus:outline-none text-green-700"
+                    class="w-full text-xl font-bold p-2 border-b-2 border-green-500 bg-transparent focus:outline-none text-green-700 dark:text-green-400"
                   />
                 </div>
 
                 <div>
                   <label
-                    class="block text-xs font-bold text-gray-500 uppercase mb-1"
+                    class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1"
                     >Método de Pago</label
                   >
                   <select
                     formControlName="paymentMethodId"
-                    class="w-full p-2 border rounded bg-white"
+                    class="w-full p-2 border rounded bg-white dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                   >
                     <option [ngValue]="null">Seleccione...</option>
                     <option *ngFor="let m of paymentMethods" [value]="m._id">
@@ -174,37 +190,37 @@
 
                 <div>
                   <label
-                    class="block text-xs font-bold text-gray-500 uppercase mb-1"
+                    class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1"
                     >Fecha de Pago</label
                   >
                   <input
                     type="date"
                     formControlName="paymentDate"
-                    class="w-full p-2 border rounded bg-white"
+                    class="w-full p-2 border rounded bg-white dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                   />
                 </div>
 
                 <div>
                   <label
-                    class="block text-xs font-bold text-gray-500 uppercase mb-1"
+                    class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1"
                     >Comprobante (Opcional)</label
                   >
                   <input
                     type="file"
                     (change)="onFileSelected($event)"
-                    class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/30 dark:file:text-blue-300 dark:hover:file:bg-blue-900/50"
                   />
                 </div>
 
                 <div>
                   <label
-                    class="block text-xs font-bold text-gray-500 uppercase mb-1"
+                    class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1"
                     >Observación</label
                   >
                   <textarea
                     formControlName="observation"
                     rows="2"
-                    class="w-full p-2 border rounded bg-white"
+                    class="w-full p-2 border rounded bg-white dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                   ></textarea>
                 </div>
 
@@ -212,7 +228,7 @@
                   <button
                     type="button"
                     (click)="back()"
-                    class="px-4 py-2 border border-gray-300 rounded text-gray-600 hover:bg-white bg-white"
+                    class="px-4 py-2 border border-gray-300 dark:border-gray-500 rounded text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600 bg-white dark:bg-gray-700"
                   >
                     Cancelar
                   </button>

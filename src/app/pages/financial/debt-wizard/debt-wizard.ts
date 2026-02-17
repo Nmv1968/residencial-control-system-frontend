@@ -100,13 +100,22 @@ export class DebtWizardComponent implements OnInit {
 
   estimatedCount(): number {
     if (this.scope === 'ALL') return this.units.length;
-    if (this.scope === 'CATEGORY')
-      return this.units.filter(
-        (u) =>
-          u.category &&
-          (u.category._id === this.form.get('targetId')?.value ||
-            (u.category as any) === this.form.get('targetId')?.value),
-      ).length; // Rough estimate
+    if (this.scope === 'CATEGORY') {
+      const selectedCategoryId = this.form.get('targetId')?.value;
+      if (!selectedCategoryId) return 0;
+
+      return this.units.filter((u) => {
+        if (!u.category) return false;
+
+        // Handle case where category is an object with _id
+        if (typeof u.category === 'object' && u.category._id) {
+          return u.category._id === selectedCategoryId;
+        }
+
+        // Handle case where category is just an ID string
+        return u.category === selectedCategoryId;
+      }).length;
+    }
     if (this.scope === 'SINGLE') return 1;
     return 0;
   }
